@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkbattery_fly_admin=self.webpackChunkbattery_fly_admin||[]).push([[798],{6798:function(e,n,t){t.r(n);var a=t(3329);n.default=function(){return(0,a.jsx)(a.Fragment,{children:"PromoCodesPage"})}}}]);
+//# sourceMappingURL=798.53140a0f.chunk.js.map

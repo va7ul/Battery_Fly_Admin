@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/730.ccf6dfd9.chunk.js","mappings":"gJAIA,UAJsB,WACpB,OAAOA,EAAAA,EAAAA,KAAAC,EAAAA,SAAA,CAAAC,SAAE,iBACX,C","sources":["pages/CustomersPage.jsx"],"sourcesContent":["const CustomersPage = () => {\n  return <>CustomersPage</>;\n};\n\nexport default CustomersPage;\n"],"names":["_jsx","_Fragment","children"],"sourceRoot":""}
