@@ -39,7 +39,7 @@ export const LoginForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
+      login: '',
       password: '',
     },
     validationSchema: signInSchema,
@@ -52,15 +52,15 @@ export const LoginForm = () => {
     <>
       <StyledForm onSubmit={formik.handleSubmit}>
         <Field
-          id="email"
-          name="email"
+          id="login"
+          name="login"
           label="Логін"
           type="text"
-          value={formik.values.email}
+          value={formik.values.login}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
+          error={formik.touched.login && Boolean(formik.errors.login)}
+          helperText={formik.touched.login && formik.errors.login}
         />
         <Field
           id="password"

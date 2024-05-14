@@ -38,7 +38,7 @@ const handleRefreshRejected = state => {
 };
 
 const handleEntranceFulfilled = (state, { payload }) => {
-  state.login = payload.user.firstName; //змінити!!!
+  state.login = payload.login;
   state.token = payload.token;
   state.errorStatus = null;
   state.isLoading = false;
@@ -46,7 +46,7 @@ const handleEntranceFulfilled = (state, { payload }) => {
 };
 
 const handleRefreshFulfilled = (state, { payload }) => {
-  state.login = payload.user.firstName; //змінити!!!
+  state.login = payload.login;
   state.isLoggedIn = true;
   state.isRefreshing = false;
 };

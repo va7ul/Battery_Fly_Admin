@@ -24,7 +24,7 @@ export const login = createAsyncThunk(
   'admin/signin',
   async (dataUser, thunkApi) => {
     try {
-      const { data } = await axios.post('auth/signin', dataUser);
+      const { data } = await axios.post('adm/signin', dataUser);
       setAuthHeader(data.token);
       return data;
     } catch (error) {
@@ -37,7 +37,7 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logOut = createAsyncThunk('admin/signout', async (_, thunkAPI) => {
+export const logOut = createAsyncThunk('adm/signout', async (_, thunkAPI) => {
   try {
     await axios.post('auth/signout');
     clearAuthHeader();
@@ -58,7 +58,7 @@ export const refreshAdmin = createAsyncThunk(
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get('auth/current');
+      const { data } = await axios.get('adm/current');
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
