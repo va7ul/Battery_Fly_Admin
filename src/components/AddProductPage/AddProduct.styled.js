@@ -10,7 +10,7 @@ export const Title = styled.p`
 export const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 `;
 
 export const Label = styled.label`
@@ -31,13 +31,28 @@ export const StyledField = styled(Field)`
   width: 1060px;
   height: 34px;
   padding: 4px 8px;
-  color: ${props => props.theme.colors.greyOutput};
+  color: ${props => props.theme.colors.textPrimary};
   border: transparent;
   border-radius: 8px;
   background: ${props => props.theme.colors.greyBackgroundPaper};
 
   &:focus {
-    color: ${props => props.theme.colors.textPrimary};
+    outline: none;
+    border: 1px solid ${props => props.theme.colors.hoverColor};
+  }
+`;
+
+export const StyledTextField = styled(Field)`
+  width: 1060px;
+  height: 102px;
+  padding: 4px 8px;
+  color: ${props => props.theme.colors.textPrimary};
+  border: transparent;
+  border-radius: 8px;
+  background: ${props => props.theme.colors.greyBackgroundPaper};
+  resize: vertical;
+
+  &:focus {
     outline: none;
     border: 1px solid ${props => props.theme.colors.hoverColor};
   }
