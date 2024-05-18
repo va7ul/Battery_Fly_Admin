@@ -14,6 +14,7 @@ const LoginPage = lazyLoadPage('LoginPage');
 const OrdersPage = lazyLoadPage('OrdersPage');
 const CustomersPage = lazyLoadPage('CustomersPage');
 const AssortmentPage = lazyLoadPage('AssortmentPage');
+const AddProductPage = lazyLoadPage('AddProductPage');
 const Print3DPage = lazyLoadPage('Print3DPage');
 const BannersPage = lazyLoadPage('BannersPage');
 const PromoCodesPage = lazyLoadPage('PromoCodesPage');
@@ -55,7 +56,13 @@ export const App = () => {
           element={
             <PrivateRoute redirectTo="/" component={<AssortmentPage />} />
           }
-        />
+          />
+         <Route
+          path="admin/assortment/addProduct"
+          element={
+            <PrivateRoute redirectTo="/" component={<AddProductPage />} />
+          }
+          />  
         <Route
           path="admin/print-3D"
           element={<PrivateRoute redirectTo="/" component={<Print3DPage />} />}
