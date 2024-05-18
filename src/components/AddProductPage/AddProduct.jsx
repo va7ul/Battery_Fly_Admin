@@ -1,11 +1,14 @@
 import { Formik } from 'formik';
-import { StyledForm, Title, Label, Box, StyledField, StyledTextField } from "./AddProduct.styled";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import { yellow } from '@mui/material/colors';
+import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField } from "./AddProduct.styled";
 
 
 export const AddProduct = () => {
 
     return (
-     <div>
+     <Container>
             <Formik
                 initialValues={{
                     // name: name,
@@ -55,6 +58,17 @@ export const AddProduct = () => {
                     {/* <StyledErrorMessage name="lastName" component="div" /> */}
                 </Box>
                     </Label>
+                    <FormControlLabel control={<Checkbox
+                        // value={selectedSealing}
+                        // checked={selectedSealing}
+                        // onChange={handleSealing}
+                        // disabled={typeof oneProductPrice === "string"}
+                        sx={{
+                            // color: yellow[800],
+                            '&.Mui-checked': {
+                                color: yellow[800],
+                            },
+                        }} />} label="Знижка" />
                      <Label>
                         Відсоток знижки
                         <Box>
@@ -78,6 +92,6 @@ export const AddProduct = () => {
                     </Label>
                 </StyledForm>
             </Formik>
-            </div>
+            </Container>
     )
 };
