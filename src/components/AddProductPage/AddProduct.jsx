@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { StyledForm, Title, Label, Box, StyledField } from "./AddProduct.styled";
+import { StyledForm, Title, Label, Box, StyledField, StyledTextField } from "./AddProduct.styled";
 
 
 export const AddProduct = () => {
@@ -44,7 +44,7 @@ export const AddProduct = () => {
                     <Label>
                         Повний опис
                         <Box>
-                    <StyledField name="description" type="text" />
+                    <StyledTextField name="description" type="text" component="textarea"/>
                     {/* <StyledErrorMessage name="patronymic" component="div" /> */}
                 </Box>
                     </Label>
