@@ -8,17 +8,17 @@ export const AddProduct = () => {
      <div>
             <Formik
                 initialValues={{
-                    // firstName: firstName,
-                    // lastName: lastName,
-                    // patronymic: patronymic,
+                    // name: name,
+                    // price: price,
+                    // description: description,
                 }}
                 // validationSchema={userDataSchema}
                 // onSubmit={(values, _) => {
                 //     const userData = {
-                //         firstName: values.firstName,
-                //         lastName: values.lastName,
-                //         patronymic: values.patronymic,
-                //         tel: formikTel,
+                //         name: values.name,
+                //         price: values.price,
+                //         description: values.description,
+
                 //     };
                 // }}
             >
@@ -36,7 +36,7 @@ export const AddProduct = () => {
                     <Label>
                         Ціна за одиницю
                         <Box>
-                    <StyledField name="price" type="number" />
+                    <StyledField name="price" type="text" />
                     {/* <StyledErrorMessage name="lastName" component="div" /> */}
                 </Box>
                     </Label>
@@ -46,6 +46,34 @@ export const AddProduct = () => {
                         <Box>
                     <StyledTextField name="description" type="text" component="textarea"/>
                     {/* <StyledErrorMessage name="patronymic" component="div" /> */}
+                </Box>
+                    </Label>
+                     <Label>
+                        Кількість
+                        <Box>
+                    <StyledField name="quantity" type="text" />
+                    {/* <StyledErrorMessage name="lastName" component="div" /> */}
+                </Box>
+                    </Label>
+                     <Label>
+                        Відсоток знижки
+                        <Box>
+                    <StyledField name="discount" type="text" />
+                    {/* <StyledErrorMessage name="lastName" component="div" /> */}
+                </Box>
+                    </Label>
+                     <Label>
+                        Категорія
+                        <Box>
+                    <StyledField name="category" type="text" />
+                    {/* <StyledErrorMessage name="lastName" component="div" /> */}
+                </Box>
+                    </Label>
+                      <Label>
+                        Тип
+                        <Box>
+                    <StyledField name="type" type="text" />
+                    {/* <StyledErrorMessage name="lastName" component="div" /> */}
                 </Box>
                     </Label>
                 </StyledForm>
