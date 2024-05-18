@@ -2,6 +2,8 @@ import { Formik } from 'formik';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { yellow } from '@mui/material/colors';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
 import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton } from "./AddProduct.styled";
 
 
@@ -64,7 +66,6 @@ export const AddProduct = () => {
                         // onChange={handleSealing}
                         // disabled={typeof oneProductPrice === "string"}
                         sx={{
-                            // color: yellow[800],
                             '&.Mui-checked': {
                                 color: yellow[800],
                             },
@@ -90,6 +91,13 @@ export const AddProduct = () => {
                             {/* <StyledErrorMessage name="lastName" component="div" /> */}
                         </Box>
                     </Label>
+                    <FormControlLabel control={<Checkbox sx={{
+                            '&.Mui-checked': {
+                                color: yellow[800],
+                            },
+                        }}
+                        icon={<FavoriteBorder />} checkedIcon={<Favorite />} />}
+                         label="Популярний" />
                     <Label>
                         Інформація
                         <Box>
