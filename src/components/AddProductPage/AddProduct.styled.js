@@ -61,3 +61,20 @@ export const StyledTextField = styled(Field)`
     border: 1px solid ${props => props.theme.colors.hoverColor};
   }
 `;
+
+export const SubmitButton = styled.button`
+  width: 200px;
+  height: 60px;
+  padding: 18px 30px;
+  border-radius: 12px;
+  border: none;
+  font-size: 20px;
+  font-weight: 500;
+  background: ${props => props.theme.colors.secondary};
+  margin-left: auto;
+
+  &:hover,
+  &:focus {
+    background: ${props => props.theme.colors.hoverColor};
+  }
+`;
