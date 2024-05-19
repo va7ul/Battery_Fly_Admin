@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Formik } from 'formik';
 import { styled } from '@mui/material/styles';
+import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import Favorite from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
@@ -15,7 +16,7 @@ const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
   height: 1,
-  overflow: 'hidden',
+//   overflow: 'hidden',
   position: 'absolute',
   bottom: 0,
   left: 0,
@@ -117,16 +118,34 @@ export const AddProduct = () => {
                             <StyledErrorMessage name="quantity" component="div" />
                         </Box>
                     </Label>
-                    <FormControlLabel name="sale" control={<Checkbox
-                        // value={selectedSealing}
-                        // checked={selectedSealing}
-                        // onChange={handleSealing}
-                        // disabled={typeof oneProductPrice === "string"}
-                        sx={{
-                            '&.Mui-checked': {
-                                color: yellow[800],
-                            },
-                        }} />} label="Знижка" />
+                    <FormControl>
+                        <FormLabel id="demo-row-radio-buttons-group-label"
+                            sx={{
+                                color: 'black',
+                                fontSize: '15px',
+                                fontWeight: '600',
+                                '&.Mui-focused': {
+                                    color: 'black',
+                                }
+                            }}
+                        >Знижка</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                        >
+                            <FormControlLabel value="yes" control={<Radio sx={{
+                                '&.Mui-checked': {
+                                    color: yellow[800],
+                                },
+                            }} />} label="Так" />
+                            <FormControlLabel value="no" control={<Radio sx={{
+                                '&.Mui-checked': {
+                                    color: yellow[800],
+                                },
+                            }} />} label="Ні" />
+                        </RadioGroup>
+                    </FormControl>
                     <Label>
                         Відсоток знижки
                         <Box>
@@ -148,13 +167,34 @@ export const AddProduct = () => {
                             <StyledErrorMessage name="type" component="div" />
                         </Box>
                     </Label>
-                    <FormControlLabel control={<Checkbox sx={{
-                        '&.Mui-checked': {
-                            color: yellow[800],
-                        },
-                    }}
-                        icon={<FavoriteBorder />} checkedIcon={<Favorite />} />}
-                        label="Популярний" name="popular" />
+                    <FormControl>
+                        <FormLabel id="demo-row-radio-buttons-group-label"
+                            sx={{
+                                color: 'black',
+                                fontSize: '15px',
+                                fontWeight: '600',
+                                '&.Mui-focused': {
+                                    color: 'black',
+                                }
+                            }}
+                        >Популярний</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                        >
+                            <FormControlLabel value="yes" control={<Radio sx={{
+                                '&.Mui-checked': {
+                                    color: yellow[800],
+                                },
+                            }} />} label="Так" />
+                            <FormControlLabel value="no" control={<Radio sx={{
+                                '&.Mui-checked': {
+                                    color: yellow[800],
+                                },
+                            }} />} label="Ні" />
+                        </RadioGroup>
+                    </FormControl>
                     <Label>
                         Інформація
                         <Box>
