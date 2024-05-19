@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import {
   persistStore,
@@ -11,6 +11,8 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { adminReducer } from './admin/adminSlice';
+import { oneProductReducer } from './products/oneProductSlice';
+import { productsListReducer } from './products/productsListSlice';
 
 const adminPersistConfig = {
   key: 'admin',
@@ -18,9 +20,15 @@ const adminPersistConfig = {
   whitelist: ['token', 'isLoggedIn'],
 };
 
+const productsReducer = combineReducers({
+  oneProduct: oneProductReducer,
+  productsList: productsListReducer,
+});
+
 export const store = configureStore({
   reducer: {
     admin: persistReducer(adminPersistConfig, adminReducer),
+    products: productsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

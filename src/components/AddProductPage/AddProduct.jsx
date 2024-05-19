@@ -10,14 +10,14 @@ import { yellow } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
-import { productSchema } from 'common/schemas/productSchema';
+// import { productSchema } from 'common/schemas/productSchema';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
   height: 1,
 //   overflow: 'hidden',
-  position: 'absolute',
+//   position: 'absolute',
   bottom: 0,
   left: 0,
   whiteSpace: 'nowrap',
@@ -65,6 +65,9 @@ export const AddProduct = () => {
                     formData.append('popular', values.popular);
                     formData.append('information', values.information);
                     console.log(formData);
+                      for (const value of formData.values()) {
+      console.log(value);
+    }  //це для відображення полів, які відправляєш
                 }}
             >
                 
