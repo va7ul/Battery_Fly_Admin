@@ -20,4 +20,5 @@ export const DesktopWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-left: auto;
+  gap: 100px;
 `;

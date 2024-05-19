@@ -7,7 +7,6 @@ export const Item = styled.li`
   border-top: 1px solid ${props => props.theme.colors.greyBackgroundPaper};
   border: none;
   padding: 0;
-  margin-right: 30px;
 
   &:nth-child(6) {
     margin-right: 6px;
@@ -32,5 +31,27 @@ export const StyledLink = styled(NavLink)`
   &.active,
   :hover {
     color: ${props => props.theme.colors.hoverColor};
+  }
+`;
+
+export const StyledTitle = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  padding: 28px 0;
+  cursor: pointer;
+  color: ${props => props.theme.colors.textPrimary};
+  transition: ${props => props.theme.transition.main};
+
+  &.active,
+  :hover {
+    color: ${props => props.theme.colors.hoverColor};
+
+    svg {
+      stroke: ${props => props.theme.colors.hoverColor};
+      transform: rotate(270deg) scale(1.4);
+    }
   }
 `;
