@@ -24,6 +24,8 @@ const BatteriesForToysPage = lazyLoadPage('BatteriesForToysPage');
 const DevicesPage = lazyLoadPage('DevicesPage');
 const MaterialsPage = lazyLoadPage('MaterialsPage');
 const CardPage = lazyLoadPage('CardPage');
+const AddProductPage = lazyLoadPage('AddProductPage');
+const AddProductZbirkyPage = lazyLoadPage('AddProductZbirkyPage');
 const CustomersPage = lazyLoadPage('CustomersPage');
 const Print3DPage = lazyLoadPage('Print3DPage');
 const BannersPage = lazyLoadPage('BannersPage');
@@ -123,13 +125,25 @@ export const App = () => {
         <Route
           path="admin/assortment/:cardId"
           element={<PrivateRoute redirectTo="/" component={<CardPage />} />}
-        />
+          />
+           <Route
+          path="admin/assortment/addProduct"
+          element={
+            <PrivateRoute redirectTo="/" component={<AddProductPage />} />
+          }
+          /> 
+            <Route
+          path="admin/assortment/AddProductZbirky"
+          element={
+            <PrivateRoute redirectTo="/" component={<AddProductZbirkyPage />} />
+          }
+          />  
         <Route
           path="admin/customers"
           element={
             <PrivateRoute redirectTo="/" component={<CustomersPage />} />
           }
-        />
+          />
         <Route
           path="admin/print-3D"
           element={<PrivateRoute redirectTo="/" component={<Print3DPage />} />}
