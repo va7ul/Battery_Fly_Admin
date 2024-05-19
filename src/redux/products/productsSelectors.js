@@ -1,7 +1,7 @@
-// export const selectOneProductIsLoading = state =>
-//   state.products.oneProduct.isLoading;
-// export const selectOneProductError = state => state.products.oneProduct.error;
-// export const selectOneProduct = state => state.products.oneProduct.result;
+export const selectOneProductIsLoading = state =>
+  state.products.oneProduct.isLoading;
+export const selectOneProductError = state => state.products.oneProduct.error;
+export const selectOneProduct = state => state.products.oneProduct.result;
 // export const selectOneProductPrice = state =>
 //   state.products.oneProduct.result.priceOneProduct;
 // export const selectSelectedHolder = state =>
