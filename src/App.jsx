@@ -12,8 +12,19 @@ const lazyLoadPage = importPath => lazy(() => import(`./pages/${importPath}`));
 
 const LoginPage = lazyLoadPage('LoginPage');
 const OrdersPage = lazyLoadPage('OrdersPage');
+const Batteries18650Page = lazyLoadPage('Batteries18650Page');
+const Batteries21700Page = lazyLoadPage('Batteries21700Page');
+const Batteries32650Page = lazyLoadPage('Batteries32650Page');
+const BatteriesLiPoPage = lazyLoadPage('BatteriesLipoPage');
+const BatteriesLifepo4Page = lazyLoadPage('BatteriesLifepo4Page');
+const AssemblyPage = lazyLoadPage('AssembliesPage');
+const BatteriesForFPVPage = lazyLoadPage('BatteriesForFPVPage');
+const BatteriesForTransportPage = lazyLoadPage('BatteriesForTransportPage');
+const BatteriesForToysPage = lazyLoadPage('BatteriesForToysPage');
+const DevicesPage = lazyLoadPage('DevicesPage');
+const MaterialsPage = lazyLoadPage('MaterialsPage');
+const CardPage = lazyLoadPage('CardPage');
 const CustomersPage = lazyLoadPage('CustomersPage');
-const AssortmentPage = lazyLoadPage('AssortmentPage');
 const Print3DPage = lazyLoadPage('Print3DPage');
 const BannersPage = lazyLoadPage('BannersPage');
 const PromoCodesPage = lazyLoadPage('PromoCodesPage');
@@ -45,15 +56,78 @@ export const App = () => {
           element={<PrivateRoute redirectTo="/" component={<OrdersPage />} />}
         />
         <Route
-          path="admin/customers"
+          path="admin/assortment/batteries-18650"
           element={
-            <PrivateRoute redirectTo="/" component={<CustomersPage />} />
+            <PrivateRoute redirectTo="/" component={<Batteries18650Page />} />
           }
         />
         <Route
-          path="admin/assortment"
+          path="admin/assortment/batteries-21700"
           element={
-            <PrivateRoute redirectTo="/" component={<AssortmentPage />} />
+            <PrivateRoute redirectTo="/" component={<Batteries21700Page />} />
+          }
+        />
+        <Route
+          path="admin/assortment/batteries-32650"
+          element={
+            <PrivateRoute redirectTo="/" component={<Batteries32650Page />} />
+          }
+        />
+        <Route
+          path="admin/assortment/batteries-li-po"
+          element={
+            <PrivateRoute redirectTo="/" component={<BatteriesLiPoPage />} />
+          }
+        />
+        <Route
+          path="admin/assortment/batteries-lifepo4"
+          element={
+            <PrivateRoute redirectTo="/" component={<BatteriesLifepo4Page />} />
+          }
+        />
+        <Route
+          path="admin/assortment/assembly"
+          element={<PrivateRoute redirectTo="/" component={<AssemblyPage />} />}
+        />
+        <Route
+          path="admin/assortment/batteries-for-fpv"
+          element={
+            <PrivateRoute redirectTo="/" component={<BatteriesForFPVPage />} />
+          }
+        />
+        <Route
+          path="admin/assortment/batteries-for-transport"
+          element={
+            <PrivateRoute
+              redirectTo="/"
+              component={<BatteriesForTransportPage />}
+            />
+          }
+        />
+        <Route
+          path="admin/assortment/batteries-for-toys"
+          element={
+            <PrivateRoute redirectTo="/" component={<BatteriesForToysPage />} />
+          }
+        />
+        <Route
+          path="admin/assortment/devices"
+          element={<PrivateRoute redirectTo="/" component={<DevicesPage />} />}
+        />
+        <Route
+          path="admin/assortment/materials"
+          element={
+            <PrivateRoute redirectTo="/" component={<MaterialsPage />} />
+          }
+        />
+        <Route
+          path="admin/assortment/:cardId"
+          element={<PrivateRoute redirectTo="/" component={<CardPage />} />}
+        />
+        <Route
+          path="admin/customers"
+          element={
+            <PrivateRoute redirectTo="/" component={<CustomersPage />} />
           }
         />
         <Route

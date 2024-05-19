@@ -3,13 +3,6 @@ import { createGlobalStyle, css } from 'styled-components';
 import 'modern-normalize';
 
 export const themeMUI = createTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      mobile: 360,
-      desktop: 1280,
-    },
-  },
   palette: {
     secondary: {
       main: 'rgba(251, 208, 110, 1)',
@@ -34,9 +27,6 @@ export const themeMUI = createTheme({
     },
     success: {
       main: 'rgba(20, 211, 16, 1)',
-    },
-    primary: {
-      main: 'rgba(247, 247, 247, 1)',
     },
   },
   typography: {
@@ -159,3 +149,10 @@ export const hidden = css`
   clip: rect(0 0 0 0);
   overflow: hidden;
 `;
+
+export const getRotation = props => {
+  if (props.handleopen) {
+    return `rotate(90deg)`;
+  }
+  return 'rotate(270deg)';
+};
