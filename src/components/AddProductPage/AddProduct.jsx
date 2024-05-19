@@ -1,11 +1,26 @@
 import { Formik } from 'formik';
+import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { yellow } from '@mui/material/colors';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
-import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton } from "./AddProduct.styled";
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
+import { productSchema } from 'common/schemas/productSchema';
 
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 export const AddProduct = () => {
 
@@ -13,19 +28,23 @@ export const AddProduct = () => {
         <Container>
             <Formik
                 initialValues={{
-                    // name: name,
-                    // price: price,
-                    // description: description,
-                }}
-            // validationSchema={userDataSchema}
-            // onSubmit={(values, _) => {
-            //     const userData = {
-            //         name: values.name,
-            //         price: values.price,
-            //         description: values.description,
+                    name: '',
+                    price: '',
+                    description: '',
+                    image: [],
+                    quantity: '',
+                    sale: false,
+                    discount: '',
+                    category: '',
+                    type: '',
+                    popular: false,
+                    information: '',
 
-            //     };
-            // }}
+                }}
+            validationSchema={productSchema}
+                onSubmit={values => {
+         console.log(values);
+       }}
             >
                 
                 <StyledForm>
@@ -34,15 +53,15 @@ export const AddProduct = () => {
                         Назва товару
                         <Box>
                             <StyledField name="name" type="text" />
-                            {/* <StyledErrorMessage name="firstName" component="div" /> */}
+                            <StyledErrorMessage name="name" component="div" />
                         </Box>
                     </Label>
 
                     <Label>
                         Ціна за одиницю
                         <Box>
-                            <StyledField name="price" type="text" />
-                            {/* <StyledErrorMessage name="lastName" component="div" /> */}
+                            <StyledField name="price" type="number" />
+                            <StyledErrorMessage name="price" component="div" />
                         </Box>
                     </Label>
 
@@ -50,14 +69,29 @@ export const AddProduct = () => {
                         Повний опис
                         <Box>
                             <StyledTextField name="description" type="text" component="textarea" />
-                            {/* <StyledErrorMessage name="patronymic" component="div" /> */}
+                            <StyledErrorMessage name="description" component="div" />
                         </Box>
                     </Label>
+                       <Button
+                        component="label"
+                        name="image"
+      role={undefined}
+      variant="contained"
+      tabIndex={-1}
+      startIcon={<CloudUploadIcon />}
+    >
+      Завантажити фото
+                        <VisuallyHiddenInput
+                            accept="image/*"
+                            type="file"
+                            multiple
+                        />
+    </Button>
                     <Label>
                         Кількість
                         <Box>
                             <StyledField name="quantity" type="text" />
-                            {/* <StyledErrorMessage name="lastName" component="div" /> */}
+                            <StyledErrorMessage name="quantity" component="div" />
                         </Box>
                     </Label>
                     <FormControlLabel control={<Checkbox
@@ -69,26 +103,26 @@ export const AddProduct = () => {
                             '&.Mui-checked': {
                                 color: yellow[800],
                             },
-                        }} />} label="Знижка" />
+                        }} />} label="Знижка" name="sale" />
                     <Label>
                         Відсоток знижки
                         <Box>
                             <StyledField name="discount" type="text" />
-                            {/* <StyledErrorMessage name="lastName" component="div" /> */}
+                            <StyledErrorMessage name="discount" component="div" />
                         </Box>
                     </Label>
                     <Label>
                         Категорія
                         <Box>
                             <StyledField name="category" type="text" />
-                            {/* <StyledErrorMessage name="lastName" component="div" /> */}
+                            <StyledErrorMessage name="category" component="div" />
                         </Box>
                     </Label>
                     <Label>
                         Тип
                         <Box>
                             <StyledField name="type" type="text" />
-                            {/* <StyledErrorMessage name="lastName" component="div" /> */}
+                            <StyledErrorMessage name="type" component="div" />
                         </Box>
                     </Label>
                     <FormControlLabel control={<Checkbox sx={{
@@ -97,12 +131,12 @@ export const AddProduct = () => {
                             },
                         }}
                         icon={<FavoriteBorder />} checkedIcon={<Favorite />} />}
-                         label="Популярний" />
+                         label="Популярний" name="popular" />
                     <Label>
                         Інформація
                         <Box>
-                            <StyledTextField name="Інформація" type="text" component="textarea" />
-                            {/* <StyledErrorMessage name="patronymic" component="div" /> */}
+                            <StyledTextField name="information" type="text" component="textarea" />
+                            <StyledErrorMessage name="information" component="div" />
                         </Box>
                     </Label>
                     <SubmitButton
