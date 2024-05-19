@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Formik } from 'formik';
 import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -23,6 +24,12 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 export const AddProduct = () => {
+    const [images, setImages] = useState('');
+    
+    const attachImages = e => {
+        setImages(e.currentTarget.files)
+        console.log(e.currentTarget.files)
+    };
 
     return (
         <Container>
@@ -31,7 +38,7 @@ export const AddProduct = () => {
                     name: '',
                     price: '',
                     description: '',
-                    image: [],
+                    image: '',
                     quantity: '',
                     sale: false,
                     discount: '',
@@ -41,10 +48,23 @@ export const AddProduct = () => {
                     information: '',
 
                 }}
-            validationSchema={productSchema}
+                // validationSchema={productSchema}
                 onSubmit={values => {
-         console.log(values);
-       }}
+                    console.log(values);
+                    const formData = new FormData();
+                    formData.append('name', values.name);
+                    formData.append('price', values.price);
+                    formData.append('description', values.description);
+                    formData.append('image', images);
+                    formData.append('quantity', values.quantity);
+                    formData.append('sale', values.sale);
+                    formData.append('discount', values.discount);
+                    formData.append('category', values.category);
+                    formData.append('type', values.type);
+                    formData.append('popular', values.popular);
+                    formData.append('information', values.information);
+                    console.log(formData);
+                }}
             >
                 
                 <StyledForm>
@@ -72,21 +92,24 @@ export const AddProduct = () => {
                             <StyledErrorMessage name="description" component="div" />
                         </Box>
                     </Label>
-                       <Button
+                    <Button
                         component="label"
-                        name="image"
-      role={undefined}
-      variant="contained"
-      tabIndex={-1}
-      startIcon={<CloudUploadIcon />}
-    >
-      Завантажити фото
+                        
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                        
+                    >
+                        Завантажити фото
                         <VisuallyHiddenInput
                             accept="image/*"
                             type="file"
+                            name="image"
+                            onChange={attachImages}
                             multiple
                         />
-    </Button>
+                    </Button>
                     <Label>
                         Кількість
                         <Box>
@@ -94,7 +117,7 @@ export const AddProduct = () => {
                             <StyledErrorMessage name="quantity" component="div" />
                         </Box>
                     </Label>
-                    <FormControlLabel control={<Checkbox
+                    <FormControlLabel name="sale" control={<Checkbox
                         // value={selectedSealing}
                         // checked={selectedSealing}
                         // onChange={handleSealing}
@@ -103,7 +126,7 @@ export const AddProduct = () => {
                             '&.Mui-checked': {
                                 color: yellow[800],
                             },
-                        }} />} label="Знижка" name="sale" />
+                        }} />} label="Знижка" />
                     <Label>
                         Відсоток знижки
                         <Box>
@@ -126,12 +149,12 @@ export const AddProduct = () => {
                         </Box>
                     </Label>
                     <FormControlLabel control={<Checkbox sx={{
-                            '&.Mui-checked': {
-                                color: yellow[800],
-                            },
-                        }}
+                        '&.Mui-checked': {
+                            color: yellow[800],
+                        },
+                    }}
                         icon={<FavoriteBorder />} checkedIcon={<Favorite />} />}
-                         label="Популярний" name="popular" />
+                        label="Популярний" name="popular" />
                     <Label>
                         Інформація
                         <Box>
