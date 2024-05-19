@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Form, Field } from 'formik';
+import { Form, Field, ErrorMessage } from 'formik';
 
 export const Container = styled.div`
   padding: 40px 110px;
@@ -44,6 +44,11 @@ export const StyledField = styled(Field)`
     outline: none;
     border: 1px solid ${props => props.theme.colors.hoverColor};
   }
+`;
+
+export const StyledErrorMessage = styled(ErrorMessage)`
+  color: ${props => props.theme.colors.error};
+  font-size: 12px;
 `;
 
 export const StyledTextField = styled(Field)`
