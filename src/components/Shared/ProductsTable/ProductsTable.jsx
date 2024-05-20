@@ -1,23 +1,27 @@
 import * as React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { selectProducts } from '../../../redux/products/productsSelectors';
+import { getParams } from 'utils/helpers';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import {
   DataGrid,
   GridToolbar,
+  GridPagination,
   GridActionsCellItem,
   useGridApiRef,
 } from '@mui/x-data-grid';
 
-export const ProductsTable = () => {
+export const ProductsTable = ({ category }) => {
   const apiRef = useGridApiRef();
   const navigate = useNavigate();
-  const location = useLocation();
   const products = useSelector(selectProducts);
+  const { paramsCategory, paramsType, paramsSubType } = getParams(category);
 
   const autosizeOptions = useMemo(
     () => ({
@@ -28,6 +32,26 @@ export const ProductsTable = () => {
     []
   );
 
+  const CustomFooter = props => {
+    const handleClick = () => {
+      navigate(
+        `/admin/assortment/${paramsCategory}/${paramsType}/${paramsSubType}`
+      );
+    };
+    return (
+      <>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleClick}
+          sx={{ marginLeft: '10px', marginRight: 'auto' }}
+        >
+          Додати товар
+        </Button>
+        <GridPagination />
+      </>
+    );
+  };
   const rows = useMemo(
     () =>
       products.map(el => ({
@@ -144,6 +168,7 @@ export const ProductsTable = () => {
         hideFooterSelectedRowCount
         slots={{
           toolbar: GridToolbar,
+          pagination: CustomFooter,
         }}
         slotProps={{
           toolbar: {
