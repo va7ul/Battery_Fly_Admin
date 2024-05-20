@@ -41,7 +41,7 @@ export const AddProduct = ({ category, type }) => {
                     formData.append('image', images);
                     formData.append('quantity', values.quantity);
                     formData.append('sale', sale);
-                    formData.append('discount', values.discount);
+                    formData.append('discount', values.discount || 10);
                     formData.append('category', category);
                     formData.append('type', type);
                     formData.append('popular', popular);
@@ -127,13 +127,14 @@ export const AddProduct = ({ category, type }) => {
                                 }} />} label="Ні" />
                         </RadioGroup>
                     </FormControl>
-                    <Label>
+                  {  sale &&  <Label>
                         Відсоток знижки
                         <Box>
-                            <StyledField name="discount" type="text" />
+                            <StyledField name="discount" type="number" />
                             <StyledErrorMessage name="discount" component="div" />
                         </Box>
-                    </Label>
+                    </Label>}
+                  
                     <Label>
                         Категорія
                         <Box>
