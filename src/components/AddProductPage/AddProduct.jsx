@@ -141,13 +141,15 @@ export const AddProduct = ({ category, type }) => {
                             <StyledErrorMessage name="category" component="div" />
                         </Box>
                     </Label>
-                    <Label>
+
+                    {type !== "null" && <Label>
                         Тип
                         <Box>
                             <StyledField name="type" type="text" value={type} />
                             <StyledErrorMessage name="type" component="div" />
                         </Box>
-                    </Label>
+                    </Label>}
+                     
                     <FormControl>
                         <FormLabel id="demo-row-radio-buttons-group-label"
                             sx={{
