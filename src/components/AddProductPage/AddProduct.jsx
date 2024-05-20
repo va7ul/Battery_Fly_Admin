@@ -1,35 +1,21 @@
 import { useState } from 'react';
 import { Formik } from 'formik';
-import { styled } from '@mui/material/styles';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
-import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
 // import { productSchema } from 'common/schemas/productSchema';
+import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
 
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-//   overflow: 'hidden',
-//   position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
-
-export const AddProduct = () => {
+export const AddProduct = ({ category, type }) => {
     const [images, setImages] = useState('');
-    
+    const [sale, setSale] = useState(false);
+    const [popular, setPopular] = useState(false);
+
     const attachImages = e => {
         setImages(e.currentTarget.files)
-        console.log(e.currentTarget.files)
     };
 
     return (
@@ -39,15 +25,11 @@ export const AddProduct = () => {
                     name: '',
                     price: '',
                     description: '',
-                    image: '',
                     quantity: '',
-                    sale: false,
                     discount: '',
                     category: '',
                     type: '',
-                    popular: false,
                     information: '',
-
                 }}
                 // validationSchema={productSchema}
                 onSubmit={values => {
@@ -58,16 +40,16 @@ export const AddProduct = () => {
                     formData.append('description', values.description);
                     formData.append('image', images);
                     formData.append('quantity', values.quantity);
-                    formData.append('sale', values.sale);
+                    formData.append('sale', sale);
                     formData.append('discount', values.discount);
-                    formData.append('category', values.category);
-                    formData.append('type', values.type);
-                    formData.append('popular', values.popular);
+                    formData.append('category', category);
+                    formData.append('type', type);
+                    formData.append('popular', popular);
                     formData.append('information', values.information);
-                    console.log(formData);
-                      for (const value of formData.values()) {
-      console.log(value);
-    }  //це для відображення полів, які відправляєш
+                    
+                    for (const value of formData) {
+                        console.log(value);
+                    }  //це для відображення полів, які відправляєш
                 }}
             >
                 
@@ -96,24 +78,14 @@ export const AddProduct = () => {
                             <StyledErrorMessage name="description" component="div" />
                         </Box>
                     </Label>
-                    <Button
-                        component="label"
-                        
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon />}
-                        
-                    >
-                        Завантажити фото
-                        <VisuallyHiddenInput
-                            accept="image/*"
-                            type="file"
-                            name="image"
-                            onChange={attachImages}
-                            multiple
-                        />
-                    </Button>
+                     
+                    <input
+                        accept="image/*"
+                        type="file"
+                        name="image"
+                        onChange={attachImages}
+                        multiple
+                    />
                     <Label>
                         Кількість
                         <Box>
@@ -137,16 +109,22 @@ export const AddProduct = () => {
                             aria-labelledby="demo-row-radio-buttons-group-label"
                             name="row-radio-buttons-group"
                         >
-                            <FormControlLabel value="yes" control={<Radio sx={{
-                                '&.Mui-checked': {
-                                    color: yellow[800],
-                                },
-                            }} />} label="Так" />
-                            <FormControlLabel value="no" control={<Radio sx={{
-                                '&.Mui-checked': {
-                                    color: yellow[800],
-                                },
-                            }} />} label="Ні" />
+                            <FormControlLabel
+                                value="yes"
+                                onChange={() => { setSale(true) }}
+                                control={<Radio sx={{
+                                    '&.Mui-checked': {
+                                        color: yellow[800],
+                                    },
+                                }} />} label="Так" />
+                            <FormControlLabel
+                                value="no"
+                                onChange={() => { setSale(false) }}
+                                control={<Radio sx={{
+                                    '&.Mui-checked': {
+                                        color: yellow[800],
+                                    },
+                                }} />} label="Ні" />
                         </RadioGroup>
                     </FormControl>
                     <Label>
@@ -159,14 +137,14 @@ export const AddProduct = () => {
                     <Label>
                         Категорія
                         <Box>
-                            <StyledField name="category" type="text" />
+                            <StyledField name="category" type="text" value={category} />
                             <StyledErrorMessage name="category" component="div" />
                         </Box>
                     </Label>
                     <Label>
                         Тип
                         <Box>
-                            <StyledField name="type" type="text" />
+                            <StyledField name="type" type="text" value={type} />
                             <StyledErrorMessage name="type" component="div" />
                         </Box>
                     </Label>
@@ -186,16 +164,22 @@ export const AddProduct = () => {
                             aria-labelledby="demo-row-radio-buttons-group-label"
                             name="row-radio-buttons-group"
                         >
-                            <FormControlLabel value="yes" control={<Radio sx={{
-                                '&.Mui-checked': {
-                                    color: yellow[800],
-                                },
-                            }} />} label="Так" />
-                            <FormControlLabel value="no" control={<Radio sx={{
-                                '&.Mui-checked': {
-                                    color: yellow[800],
-                                },
-                            }} />} label="Ні" />
+                            <FormControlLabel
+                                value="yes"
+                                onChange={() => { setPopular(true) }}
+                                control={<Radio sx={{
+                                    '&.Mui-checked': {
+                                        color: yellow[800],
+                                    },
+                                }} />} label="Так" />
+                            <FormControlLabel
+                                value="no"
+                                onChange={() => { setPopular(false) }}
+                                control={<Radio sx={{
+                                    '&.Mui-checked': {
+                                        color: yellow[800],
+                                    },
+                                }} />} label="Ні" />
                         </RadioGroup>
                     </FormControl>
                     <Label>
