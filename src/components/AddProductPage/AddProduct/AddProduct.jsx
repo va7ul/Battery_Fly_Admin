@@ -18,6 +18,12 @@ export const AddProduct = ({ category, type }) => {
         setImages(e.currentTarget.files)
     };
 
+    const changeType = () => {
+        if (type === 'null') {
+            return category;
+        }
+    };
+
     return (
         <Container>
             <Formik
@@ -43,7 +49,7 @@ export const AddProduct = ({ category, type }) => {
                     formData.append('sale', sale);
                     formData.append('discount', values.discount || 10);
                     formData.append('category', category);
-                    formData.append('type', type);
+                    formData.append('type', type = changeType() || type);
                     formData.append('popular', popular);
                     formData.append('information', values.information);
                     
