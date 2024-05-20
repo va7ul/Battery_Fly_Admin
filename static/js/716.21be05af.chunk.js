@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkbattery_fly_admin=self.webpackChunkbattery_fly_admin||[]).push([[716],{2716:function(e,t,n){n.r(t);var a=n(3329);t.default=function(){return(0,a.jsx)(a.Fragment,{children:"AssortmentPage"})}}}]);
-//# sourceMappingURL=716.21be05af.chunk.js.map
