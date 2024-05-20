@@ -21,7 +21,7 @@ export const Label = styled.label`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
 `;
 
