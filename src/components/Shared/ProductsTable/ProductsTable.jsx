@@ -1,14 +1,14 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { selectProducts } from '../../../redux/products/productsSelectors';
 import { getParams } from 'utils/helpers';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import { Box, Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import {
   DataGrid,
   GridToolbar,
@@ -18,6 +18,8 @@ import {
 } from '@mui/x-data-grid';
 
 export const ProductsTable = ({ category }) => {
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const apiRef = useGridApiRef();
   const navigate = useNavigate();
   const products = useSelector(selectProducts);
@@ -31,6 +33,12 @@ export const ProductsTable = ({ category }) => {
     }),
     []
   );
+
+  useEffect(() => {
+    if (apiRef.current) {
+      apiRef.current.autosizeColumns(autosizeOptions);
+    }
+  }, [apiRef, autosizeOptions, products, open]);
 
   const CustomFooter = props => {
     const handleClick = () => {
@@ -52,6 +60,7 @@ export const ProductsTable = ({ category }) => {
       </>
     );
   };
+
   const rows = useMemo(
     () =>
       products.map(el => ({
@@ -66,12 +75,6 @@ export const ProductsTable = ({ category }) => {
       })),
     [products]
   );
-
-  useEffect(() => {
-    if (apiRef.current) {
-      apiRef.current.autosizeColumns(autosizeOptions);
-    }
-  }, [apiRef, autosizeOptions, products]);
 
   const columns = [
     {
@@ -149,7 +152,15 @@ export const ProductsTable = ({ category }) => {
   };
 
   const handleDeleteClick = id => () => {
-    // setRows(rows.filter(row => row.id !== id));
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const deleteProduct = () => {
+    dispatch();
   };
 
   return (
@@ -159,6 +170,49 @@ export const ProductsTable = ({ category }) => {
         maxWidth: '100%',
       }}
     >
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            },
+          },
+        }}
+        sx={{
+          '& .MuiDialog-paper': {
+            bgcolor: 'secondary.main',
+            borderRadius: '18px',
+          },
+        }}
+      >
+        <DialogTitle id="alert-dialog-title">
+          Ви впевнені, що хочете видалити товар?
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={deleteProduct}
+            sx={{
+              color: 'text.primary',
+              '&:hover': { color: 'hoverColor.main' },
+            }}
+          >
+            Підтвердити
+          </Button>
+          <Button
+            onClick={handleClose}
+            sx={{
+              color: 'text.primary',
+              '&:hover': { color: 'hoverColor.main' },
+            }}
+          >
+            Скасувати
+          </Button>
+        </DialogActions>
+      </Dialog>
       <DataGrid
         apiRef={apiRef}
         rows={rows}
