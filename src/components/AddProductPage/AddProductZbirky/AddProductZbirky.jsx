@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Select  from 'react-select';
 import { Formik } from 'formik';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -7,9 +8,9 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
 // import { productSchema } from 'common/schemas/productSchema';
-import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
+import { Container, StyledForm, Title, Subtitle, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 
-export const AddProduct = ({ category, type }) => {
+export const AddProductZbirky = ({ category }) => {
     const [images, setImages] = useState('');
     const [sale, setSale] = useState(false);
     const [popular, setPopular] = useState(false);
@@ -18,6 +19,12 @@ export const AddProduct = ({ category, type }) => {
         setImages(e.currentTarget.files)
     };
 
+    const opt = ['3', '4', '6', '8', '9', '12', '15', '18', '21', '24', '29']
+    const options = opt.map(i => {
+        return {
+            value: i, label: i
+        };
+    })
     return (
         <Container>
             <Formik
@@ -28,7 +35,6 @@ export const AddProduct = ({ category, type }) => {
                     quantity: '',
                     discount: '',
                     category: '',
-                    type: '',
                     information: '',
                 }}
                 // validationSchema={productSchema}
@@ -43,7 +49,6 @@ export const AddProduct = ({ category, type }) => {
                     formData.append('sale', sale);
                     formData.append('discount', values.discount || 10);
                     formData.append('category', category);
-                    formData.append('type', type);
                     formData.append('popular', popular);
                     formData.append('information', values.information);
                     
@@ -87,7 +92,7 @@ export const AddProduct = ({ category, type }) => {
                         multiple
                     />
                     <Label>
-                        Кількість
+                        Кількість в наявності
                         <Box>
                             <StyledField name="quantity" type="text" />
                             <StyledErrorMessage name="quantity" component="div" />
@@ -127,7 +132,7 @@ export const AddProduct = ({ category, type }) => {
                                 }} />} label="Ні" />
                         </RadioGroup>
                     </FormControl>
-                  {  sale &&  <Label>
+                    {sale && <Label>
                         Відсоток знижки
                         <Box>
                             <StyledField name="discount" type="number" />
@@ -142,15 +147,14 @@ export const AddProduct = ({ category, type }) => {
                             <StyledErrorMessage name="category" component="div" />
                         </Box>
                     </Label>
-
-                    {type !== "null" && <Label>
-                        Тип
-                        <Box>
-                            <StyledField name="type" type="text" value={type} />
-                            <StyledErrorMessage name="type" component="div" />
-                        </Box>
-                    </Label>}
-                     
+                    <div>
+                        <Subtitle>Ємність енергії:</Subtitle>
+                        <Select
+                            closeMenuOnSelect={false}
+                            isMulti
+                            options={options}
+                        />
+                    </div>
                     <FormControl>
                         <FormLabel id="demo-row-radio-buttons-group-label"
                             sx={{
