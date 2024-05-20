@@ -8,7 +8,7 @@ import {
 } from '../redux/products/productsSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
 
-const CardPage = () => {
+const EditProductPage = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectOneProductIsLoading);
   const error = useSelector(selectOneProductError);
@@ -36,4 +36,4 @@ const CardPage = () => {
   );
 };
 
-export default CardPage;
+export default EditProductPage;
