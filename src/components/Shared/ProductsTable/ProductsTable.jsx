@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +15,7 @@ import {
   GridActionsCellItem,
   useGridApiRef,
 } from '@mui/x-data-grid';
+import { CustomNoRowsOverlay } from '../NoRowsOverlay/NoRowsOverlay';
 
 export const ProductsTable = ({ category }) => {
   const [open, setOpen] = useState(false);
@@ -164,12 +164,7 @@ export const ProductsTable = ({ category }) => {
   };
 
   return (
-    <Box
-      sx={{
-        height: '100%',
-        maxWidth: '100%',
-      }}
-    >
+    <Box>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -214,6 +209,7 @@ export const ProductsTable = ({ category }) => {
         </DialogActions>
       </Dialog>
       <DataGrid
+        autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
@@ -223,6 +219,7 @@ export const ProductsTable = ({ category }) => {
         slots={{
           toolbar: GridToolbar,
           pagination: CustomFooter,
+          noRowsOverlay: CustomNoRowsOverlay,
         }}
         slotProps={{
           toolbar: {
@@ -232,6 +229,7 @@ export const ProductsTable = ({ category }) => {
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
         }}
+        sx={{ '--DataGrid-overlayHeight': '300px' }}
       />
     </Box>
   );
