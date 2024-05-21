@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Select  from 'react-select';
 import { Formik } from 'formik';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -8,12 +7,13 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
 // import { productSchema } from 'common/schemas/productSchema';
-import { Container, StyledForm, Title, Subtitle, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
+import { Container, StyledForm, Title, Subtitle, Label, Box, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 
 export const AddProductZbirky = ({ category }) => {
     const [images, setImages] = useState('');
     const [sale, setSale] = useState(false);
     const [popular, setPopular] = useState(false);
+    const [holder, setHolder] = useState(false);
 
     const attachImages = e => {
         setImages(e.currentTarget.files)
@@ -147,14 +147,73 @@ export const AddProductZbirky = ({ category }) => {
                             <StyledErrorMessage name="category" component="div" />
                         </Box>
                     </Label>
-                    <div>
-                        <Subtitle>Ємність енергії:</Subtitle>
-                        <Select
-                            closeMenuOnSelect={false}
-                            isMulti
-                            options={options}
-                        />
-                    </div>
+
+                    <FormControl>
+                        <FormLabel id="demo-row-radio-buttons-group-label"
+                            sx={{
+                                color: 'black',
+                                fontSize: '15px',
+                                fontWeight: '600',
+                                '&.Mui-focused': {
+                                    color: 'black',
+                                }
+                            }}
+                        >Наявність холдерів</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                        >
+                            <FormControlLabel
+                                value="yes"
+                                onChange={() => { setHolder(true) }}
+                                control={<Radio sx={{
+                                    '&.Mui-checked': {
+                                        color: yellow[800],
+                                    },
+                                }} />} label="Так" />
+                            <FormControlLabel
+                                value="no"
+                                onChange={() => { setHolder(false) }}
+                                control={<Radio sx={{
+                                    '&.Mui-checked': {
+                                        color: yellow[800],
+                                    },
+                                }} />} label="Ні" />
+                        </RadioGroup>
+                    </FormControl>
+
+                    <Subtitle>Блок характеристик ємності</Subtitle>
+                    <BoxCapacity>
+                        <LabelCapacity>
+                            Значення ємності
+                            <Box>
+                                <CapacityField name="capacity" type="number" />
+                                <StyledErrorMessage name="capacity" component="div" />
+                            </Box>
+                        </LabelCapacity>
+                        <LabelCapacity>
+                            Характеристики
+                            <Box>
+                                <CapacityTextField name="description" type="text" component="textarea" />
+                                <StyledErrorMessage name="description" component="div" />
+                            </Box>
+                        </LabelCapacity>
+                        <LabelCapacity>
+                            Ціна
+                            <Box>
+                                <CapacityField name="price" type="number" />
+                                <StyledErrorMessage name="price" component="div" />
+                            </Box>
+                        </LabelCapacity>
+                        <LabelCapacity>
+                            Кількість холдерів
+                            <Box>
+                                <CapacityField name="holder" type="number" />
+                                <StyledErrorMessage name="holder" component="div" />
+                            </Box>
+                        </LabelCapacity>
+                    </BoxCapacity>
                     <FormControl>
                         <FormLabel id="demo-row-radio-buttons-group-label"
                             sx={{
