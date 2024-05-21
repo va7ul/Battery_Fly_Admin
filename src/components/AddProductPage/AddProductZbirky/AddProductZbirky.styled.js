@@ -56,7 +56,8 @@ export const BoxCapacity = styled.div`
 
 export const Input = styled.input`
   background: ${props => props.theme.colors.greyBackgroundPaper};
-  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
 `;
 
 export const StyledField = styled(Field)`
