@@ -13,6 +13,7 @@ import {
 import { adminReducer } from './admin/adminSlice';
 import { oneProductReducer } from './products/oneProductSlice';
 import { productsListReducer } from './products/productsListSlice';
+import { customersReducer } from './customers/customersSlice';
 
 const adminPersistConfig = {
   key: 'admin',
@@ -29,6 +30,7 @@ export const store = configureStore({
   reducer: {
     admin: persistReducer(adminPersistConfig, adminReducer),
     products: productsReducer,
+    customers: customersReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
