@@ -51,6 +51,12 @@ export const BoxCapacity = styled.div`
   flex-direction: column;
   border: dashed grey;
   padding: 10px 10px 26px 10px;
+  gap: 10px;
+`;
+
+export const Input = styled.input`
+  background: ${props => props.theme.colors.greyBackgroundPaper};
+  border-radius: 6px;
 `;
 
 export const StyledField = styled(Field)`
