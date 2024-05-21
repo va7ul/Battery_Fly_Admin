@@ -3,6 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { selectCustomers } from '../../redux/customers/customersSelectors';
 import { Box } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
 
 export const CustomersTable = () => {
   const apiRef = useGridApiRef();
@@ -78,19 +79,15 @@ export const CustomersTable = () => {
     },
     {
       field: 'verifiedEmail',
-      headerName: 'Верифікована пошта',
+      headerName: 'Верифікований',
       type: 'boolean',
     },
   ];
 
   return (
-    <Box
-      sx={{
-        height: '100%',
-        maxWidth: '100%',
-      }}
-    >
+    <Box>
       <DataGrid
+        autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
@@ -99,6 +96,7 @@ export const CustomersTable = () => {
         hideFooterSelectedRowCount
         slots={{
           toolbar: GridToolbar,
+          noRowsOverlay: CustomNoRowsOverlay,
         }}
         slotProps={{
           toolbar: {
@@ -116,6 +114,7 @@ export const CustomersTable = () => {
           //   },
           // },
         }}
+        sx={{ '--DataGrid-overlayHeight': '300px' }}
       />
     </Box>
   );
