@@ -178,3 +178,16 @@ export const getOneProduct = createAsyncThunk(
     }
   }
 );
+
+export const addProduct = createAsyncThunk(
+  'adm/product-add',
+  async (formData, thunkApi) => {
+    try {
+      const { data } = await axios.post(`adm/product-add`, formData);
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
