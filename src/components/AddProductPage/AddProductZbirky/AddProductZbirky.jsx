@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
 // import { productSchema } from 'common/schemas/productSchema';
-import { Container, StyledForm, Title, Subtitle, Label, BoxField, AddButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
+import { Container, StyledForm, Title, Subtitle, Input, Label, BoxField, AddButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 
 export const AddProductZbirky = ({ category }) => {
     const [images, setImages] = useState('');
@@ -19,12 +19,14 @@ export const AddProductZbirky = ({ category }) => {
         setImages(e.currentTarget.files)
     };
 
-    const opt = ['3', '4', '6', '8', '9', '12', '15', '18', '21', '24', '29']
-    const options = opt.map(i => {
-        return {
-            value: i, label: i
-        };
-    })
+    const [arr, setArr] = useState([1])
+
+    const addBlock = () => {
+        const length = arr.length;
+        setArr([...arr, length+1])
+        console.log(arr)
+    }
+    
     return (
         <Container>
             <Formik
@@ -85,7 +87,7 @@ export const AddProductZbirky = ({ category }) => {
                         </BoxField>
                     </Label>
                      
-                    <input
+                    <Input
                         accept="image/*"
                         type="file"
                         name="image"
@@ -185,7 +187,9 @@ export const AddProductZbirky = ({ category }) => {
                     </FormControl>
 
                     <Subtitle>Блок характеристик ємності</Subtitle>
-                    <BoxCapacity>
+                    
+                    {arr.map((elem, index) => {
+                        return <BoxCapacity key={index}>
                         <LabelCapacity>
                             Значення ємності
                             <BoxField>
@@ -207,16 +211,20 @@ export const AddProductZbirky = ({ category }) => {
                                 <StyledErrorMessage name="price" component="div" />
                             </BoxField>
                         </LabelCapacity>
-                        <LabelCapacity>
+                        { holder && <LabelCapacity>
                             Кількість холдерів
                             <BoxField>
                                 <CapacityField name="holder" type="number" />
                                 <StyledErrorMessage name="holder" component="div" />
                             </BoxField>
-                        </LabelCapacity>
+                        </LabelCapacity>}
+                        
                     </BoxCapacity>
+                  
+                    })}
 
-                    <AddButton type='button'>
+                    <AddButton type='button'
+                    onClick={addBlock}>
                         + добавити ємність
                     </AddButton>
                     <FormControl>
