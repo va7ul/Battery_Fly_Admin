@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom';
 
 const AddProductPage = () => {
   const { category, type, subType } = useParams();
-  console.log(category, type, subType);
-
     return subType === 'zbirka' ? <AddProductZbirky category={category} /> : <AddProduct category={category} type={type} />;
 };
 
