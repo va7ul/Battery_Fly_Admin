@@ -6,8 +6,9 @@ export const Container = styled.div`
 `;
 
 export const Subtitle = styled.p`
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
+  color: ${props => props.theme.colors.hoverColor};
 `;
 
 export const Title = styled.p`
@@ -30,14 +31,45 @@ export const Label = styled.label`
   font-weight: 600;
 `;
 
+export const LabelCapacity = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 20px;
+`;
+
 export const Box = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 5px;
 `;
 
+export const BoxCapacity = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: dashed grey;
+  padding: 10px 10px 26px 10px;
+`;
+
 export const StyledField = styled(Field)`
   width: 1060px;
+  height: 34px;
+  padding: 4px 8px;
+  color: ${props => props.theme.colors.textPrimary};
+  border: transparent;
+  border-radius: 8px;
+  background: ${props => props.theme.colors.greyBackgroundPaper};
+
+  &:focus {
+    outline: none;
+    border: 1px solid ${props => props.theme.colors.hoverColor};
+  }
+`;
+
+export const CapacityField = styled(Field)`
+  width: 1000px;
   height: 34px;
   padding: 4px 8px;
   color: ${props => props.theme.colors.textPrimary};
@@ -58,7 +90,23 @@ export const StyledErrorMessage = styled(ErrorMessage)`
 
 export const StyledTextField = styled(Field)`
   width: 1060px;
-  height: 102px;
+  height: 170px;
+  padding: 4px 8px;
+  color: ${props => props.theme.colors.textPrimary};
+  border: transparent;
+  border-radius: 8px;
+  background: ${props => props.theme.colors.greyBackgroundPaper};
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    border: 1px solid ${props => props.theme.colors.hoverColor};
+  }
+`;
+
+export const CapacityTextField = styled(Field)`
+  width: 1000px;
+  height: 150px;
   padding: 4px 8px;
   color: ${props => props.theme.colors.textPrimary};
   border: transparent;
@@ -88,87 +136,3 @@ export const SubmitButton = styled.button`
     background: ${props => props.theme.colors.hoverColor};
   }
 `;
-
-export const selectStyles = {
-  control: styles => ({
-    ...styles,
-    backgroundColor: 'rgba(225, 225, 225, 1)',
-    borderRadius: '6px',
-    borderStyle: 'none',
-    width: '140px',
-    maxHeight: '30px',
-    minHeight: '25px',
-    border: '1px solid rgb(31, 31, 31)',
-    ':hover': { borderColor: 'currentColor', boxShadow: 'none' },
-    '@media only screen and (min-width: 1280px)': {
-      width: '226px',
-      minHeight: '42px',
-      borderRadius: '12px',
-    },
-  }),
-  menu: styles => ({
-    ...styles,
-    backgroundColor: 'rgba(225, 225, 225, 1)',
-    fontSize: '10px',
-    width: '140px',
-    border: '1px solid rgb(31, 31, 31)',
-    '@media only screen and (min-width: 1280px)': {
-      fontSize: '20px',
-      width: '226px',
-      borderRadius: '12px',
-    },
-  }),
-  input: styles => ({ ...styles, display: 'none' }),
-  option: (styles, { isDisabled, isFocused, isSelected }) => {
-    return {
-      ...styles,
-      backgroundColor: isFocused ? 'rgb(255, 208, 100)' : undefined,
-      color: !isDisabled
-        ? isSelected
-          ? 'rgb(31, 31, 31);'
-          : 'rgb(31, 31, 31);'
-        : undefined,
-      cursor: isDisabled ? 'not-allowed' : 'default',
-      padding: '2px 8px',
-      ':active': {
-        ...styles[':active'],
-        backgroundColor: !isDisabled
-          ? isSelected
-            ? 'rgb(255, 208, 100)'
-            : 'rgb(255, 208, 100)'
-          : undefined,
-      },
-      '@media only screen and (min-width: 1280px)': {
-        borderRadius: '6px',
-      },
-    };
-  },
-  placeholder: styles => ({
-    ...styles,
-    fontSize: '10px',
-    padding: '0px 8px',
-    margin: 0,
-    '@media only screen and (min-width: 1280px)': {
-      fontSize: '20px',
-    },
-  }),
-  indicatorsContainer: styles => ({
-    ...styles,
-    height: '30px',
-    width: '38px',
-    '@media only screen and (min-width: 1280px)': {
-      height: '42px',
-      width: '40px',
-    },
-  }),
-  valueContainer: styles => ({ ...styles, padding: 0 }),
-  singleValue: styles => ({
-    ...styles,
-    fontSize: '10px',
-    margin: 0,
-    padding: '8px',
-    '@media only screen and (min-width: 1280px)': {
-      fontSize: '20px',
-    },
-  }),
-};
