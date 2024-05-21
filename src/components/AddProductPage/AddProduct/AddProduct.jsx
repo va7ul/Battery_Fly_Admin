@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -6,16 +7,20 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
+import { addProduct } from '../../../redux/products/productsOperations';
 // import { productSchema } from 'common/schemas/productSchema';
 import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
 
 export const AddProduct = ({ category, type }) => {
-    const [images, setImages] = useState('');
+  const dispatch = useDispatch();
+
+    const [images, setImages] = useState([]);
     const [sale, setSale] = useState(false);
     const [popular, setPopular] = useState(false);
 
     const attachImages = e => {
         setImages(e.currentTarget.files)
+        console.log(e.currentTarget.files)
     };
 
     const changeType = () => {
@@ -39,12 +44,11 @@ export const AddProduct = ({ category, type }) => {
                 }}
                 // validationSchema={productSchema}
                 onSubmit={values => {
-                    console.log(values);
                     const formData = new FormData();
                     formData.append('name', values.name);
                     formData.append('price', values.price);
                     formData.append('description', values.description);
-                    formData.append('image', images);
+                    formData.append('files', [...images]);
                     formData.append('quantity', values.quantity);
                     formData.append('sale', sale);
                     formData.append('discount', values.discount || 10);
@@ -52,7 +56,8 @@ export const AddProduct = ({ category, type }) => {
                     formData.append('type', type = changeType() || type);
                     formData.append('popular', popular);
                     formData.append('information', values.information);
-                    
+
+                    dispatch(addProduct(formData))
                     for (const value of formData) {
                         console.log(value);
                     }  //це для відображення полів, які відправляєш
