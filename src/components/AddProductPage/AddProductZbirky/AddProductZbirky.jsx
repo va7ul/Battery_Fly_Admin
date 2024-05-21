@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
 // import { productSchema } from 'common/schemas/productSchema';
-import { Container, StyledForm, Title, Subtitle, Label, Box, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
+import { Container, StyledForm, Title, Subtitle, Label, BoxField, AddButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 
 export const AddProductZbirky = ({ category }) => {
     const [images, setImages] = useState('');
@@ -49,6 +49,7 @@ export const AddProductZbirky = ({ category }) => {
                     formData.append('sale', sale);
                     formData.append('discount', values.discount || 10);
                     formData.append('category', category);
+                    formData.append('holder', holder);
                     formData.append('popular', popular);
                     formData.append('information', values.information);
                     
@@ -62,26 +63,26 @@ export const AddProductZbirky = ({ category }) => {
                     <Title>Додавання товару</Title>
                     <Label>
                         Назва товару
-                        <Box>
+                        <BoxField>
                             <StyledField name="name" type="text" />
                             <StyledErrorMessage name="name" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
 
                     <Label>
                         Ціна за одиницю
-                        <Box>
+                        <BoxField>
                             <StyledField name="price" type="number" />
                             <StyledErrorMessage name="price" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
 
                     <Label>
                         Повний опис
-                        <Box>
+                        <BoxField>
                             <StyledTextField name="description" type="text" component="textarea" />
                             <StyledErrorMessage name="description" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
                      
                     <input
@@ -93,10 +94,10 @@ export const AddProductZbirky = ({ category }) => {
                     />
                     <Label>
                         Кількість в наявності
-                        <Box>
+                        <BoxField>
                             <StyledField name="quantity" type="text" />
                             <StyledErrorMessage name="quantity" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
                     <FormControl>
                         <FormLabel id="demo-row-radio-buttons-group-label"
@@ -134,18 +135,18 @@ export const AddProductZbirky = ({ category }) => {
                     </FormControl>
                     {sale && <Label>
                         Відсоток знижки
-                        <Box>
+                        <BoxField>
                             <StyledField name="discount" type="number" />
                             <StyledErrorMessage name="discount" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>}
                   
                     <Label>
                         Категорія
-                        <Box>
+                        <BoxField>
                             <StyledField name="category" type="text" value={category} />
                             <StyledErrorMessage name="category" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
 
                     <FormControl>
@@ -187,33 +188,37 @@ export const AddProductZbirky = ({ category }) => {
                     <BoxCapacity>
                         <LabelCapacity>
                             Значення ємності
-                            <Box>
+                            <BoxField>
                                 <CapacityField name="capacity" type="number" />
                                 <StyledErrorMessage name="capacity" component="div" />
-                            </Box>
+                            </BoxField>
                         </LabelCapacity>
                         <LabelCapacity>
                             Характеристики
-                            <Box>
+                            <BoxField>
                                 <CapacityTextField name="description" type="text" component="textarea" />
                                 <StyledErrorMessage name="description" component="div" />
-                            </Box>
+                            </BoxField>
                         </LabelCapacity>
                         <LabelCapacity>
                             Ціна
-                            <Box>
+                            <BoxField>
                                 <CapacityField name="price" type="number" />
                                 <StyledErrorMessage name="price" component="div" />
-                            </Box>
+                            </BoxField>
                         </LabelCapacity>
                         <LabelCapacity>
                             Кількість холдерів
-                            <Box>
+                            <BoxField>
                                 <CapacityField name="holder" type="number" />
                                 <StyledErrorMessage name="holder" component="div" />
-                            </Box>
+                            </BoxField>
                         </LabelCapacity>
                     </BoxCapacity>
+
+                    <AddButton type='button'>
+                        + добавити ємність
+                    </AddButton>
                     <FormControl>
                         <FormLabel id="demo-row-radio-buttons-group-label"
                             sx={{
@@ -250,10 +255,10 @@ export const AddProductZbirky = ({ category }) => {
                     </FormControl>
                     <Label>
                         Інформація
-                        <Box>
+                        <BoxField>
                             <StyledTextField name="information" type="text" component="textarea" />
                             <StyledErrorMessage name="information" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
                     <SubmitButton
                         type="submit"

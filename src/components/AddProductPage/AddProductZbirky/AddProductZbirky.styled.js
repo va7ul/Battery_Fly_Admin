@@ -40,7 +40,7 @@ export const LabelCapacity = styled.label`
   margin-left: 20px;
 `;
 
-export const Box = styled.div`
+export const BoxField = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 5px;
@@ -130,6 +130,22 @@ export const SubmitButton = styled.button`
   font-weight: 500;
   background: ${props => props.theme.colors.secondary};
   margin-left: auto;
+
+  &:hover,
+  &:focus {
+    background: ${props => props.theme.colors.hoverColor};
+  }
+`;
+
+export const AddButton = styled.button`
+  width: 170px;
+  height: 30px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  background: ${props => props.theme.colors.secondary};
+  margin-bottom: 10px;
 
   &:hover,
   &:focus {
