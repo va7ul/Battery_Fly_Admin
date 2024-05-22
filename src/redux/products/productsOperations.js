@@ -180,7 +180,7 @@ export const getOneProduct = createAsyncThunk(
 );
 
 export const addProduct = createAsyncThunk(
-  'adm/product-add',
+  'products/product-add',
   async (formData, thunkApi) => {
     const config = {
       headers: {
