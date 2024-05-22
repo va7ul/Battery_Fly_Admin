@@ -182,8 +182,13 @@ export const getOneProduct = createAsyncThunk(
 export const addProduct = createAsyncThunk(
   'adm/product-add',
   async (formData, thunkApi) => {
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
     try {
-      const { data } = await axios.post(`adm/product-add`, formData);
+      const { data } = await axios.post(`adm/product-add`, formData, config);
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
