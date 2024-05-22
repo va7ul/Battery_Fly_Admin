@@ -1,11 +1,10 @@
-import { AddProduct } from 'components/AddProductPage/AddProduct';
+import { AddProduct } from 'components/AddProductPage/AddProduct/AddProduct';
+import { AddProductZbirky } from 'components/AddProductPage/AddProductZbirky/AddProductZbirky';
 import { useParams } from 'react-router-dom';
 
 const AddProductPage = () => {
   const { category, type, subType } = useParams();
-  console.log(category, type, subType);
-
-    return subType === 'zbirka' ? <>Твій компонент для збірки</> : <AddProduct category={category} type={type} />;
+    return subType === 'zbirka' ? <AddProductZbirky category={category} /> : <AddProduct category={category} type={type} />;
 };
 
 export default AddProductPage;

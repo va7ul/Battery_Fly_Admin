@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -6,16 +8,32 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
-// import { productSchema } from 'common/schemas/productSchema';
-import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
+import { addProduct } from '../../../redux/products/productsOperations';
+import { productSchema } from '../../../common/schemas/productSchema'
+import { Container, StyledForm, Title, Label, Box, StyledField, Input, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
 
 export const AddProduct = ({ category, type }) => {
-    const [images, setImages] = useState('');
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [images, setImages] = useState([]);
     const [sale, setSale] = useState(false);
     const [popular, setPopular] = useState(false);
 
     const attachImages = e => {
-        setImages(e.currentTarget.files)
+        setImages(e.currentTarget.files);
+    };
+
+    const changeType = () => {
+        if (type === 'null') {
+            return category;
+        }
+    };
+
+    const AddProductButton = () => {
+        navigate(
+            `/admin/assortment/batteries-${type}`
+        );
     };
 
     return (
@@ -27,29 +45,33 @@ export const AddProduct = ({ category, type }) => {
                     description: '',
                     quantity: '',
                     discount: '',
-                    category: '',
-                    type: '',
                     information: '',
                 }}
-                // validationSchema={productSchema}
+                enctype="multipart/form-data"
+                validationSchema={productSchema}
                 onSubmit={values => {
-                    console.log(values);
                     const formData = new FormData();
                     formData.append('name', values.name);
                     formData.append('price', values.price);
                     formData.append('description', values.description);
-                    formData.append('image', images);
                     formData.append('quantity', values.quantity);
                     formData.append('sale', sale);
                     formData.append('discount', values.discount || 10);
                     formData.append('category', category);
-                    formData.append('type', type);
+                    formData.append('type', type = changeType() || type);
                     formData.append('popular', popular);
                     formData.append('information', values.information);
+
+                    for (const image of images) {
+                        formData.append('files', image)
+                    }
                     
-                    for (const value of formData) {
-                        console.log(value);
-                    }  //це для відображення полів, які відправляєш
+                    dispatch(addProduct(formData)).then(result => {
+                        if (result.meta.requestStatus === 'fulfilled') {
+                            AddProductButton();
+                        }
+                    
+                    })
                 }}
             >
                 
@@ -74,22 +96,22 @@ export const AddProduct = ({ category, type }) => {
                     <Label>
                         Повний опис
                         <Box>
-                            <StyledTextField name="description" type="text" component="textarea" />
+                            <StyledTextField name="description" type="text" component="textarea" placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" />
                             <StyledErrorMessage name="description" component="div" />
                         </Box>
                     </Label>
                      
-                    <input
+                    <Input
                         accept="image/*"
                         type="file"
-                        name="image"
+                        name="files"
                         onChange={attachImages}
                         multiple
                     />
                     <Label>
-                        Кількість
+                        Кількість в наявності
                         <Box>
-                            <StyledField name="quantity" type="text" />
+                            <StyledField name="quantity" type="number" />
                             <StyledErrorMessage name="quantity" component="div" />
                         </Box>
                     </Label>
@@ -127,7 +149,7 @@ export const AddProduct = ({ category, type }) => {
                                 }} />} label="Ні" />
                         </RadioGroup>
                     </FormControl>
-                  {  sale &&  <Label>
+                    {sale && <Label>
                         Відсоток знижки
                         <Box>
                             <StyledField name="discount" type="number" />
@@ -137,18 +159,12 @@ export const AddProduct = ({ category, type }) => {
                   
                     <Label>
                         Категорія
-                        <Box>
                             <StyledField name="category" type="text" value={category} />
-                            <StyledErrorMessage name="category" component="div" />
-                        </Box>
                     </Label>
 
                     {type !== "null" && <Label>
                         Тип
-                        <Box>
                             <StyledField name="type" type="text" value={type} />
-                            <StyledErrorMessage name="type" component="div" />
-                        </Box>
                     </Label>}
                      
                     <FormControl>
@@ -200,5 +216,5 @@ export const AddProduct = ({ category, type }) => {
                 </StyledForm>
             </Formik>
         </Container>
-    )
+    );
 };

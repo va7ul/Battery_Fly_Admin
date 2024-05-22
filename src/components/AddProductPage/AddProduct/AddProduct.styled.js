@@ -67,6 +67,12 @@ export const StyledTextField = styled(Field)`
   }
 `;
 
+export const Input = styled.input`
+  background: ${props => props.theme.colors.greyBackgroundPaper};
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
+`;
+
 export const SubmitButton = styled.button`
   width: 200px;
   height: 60px;
