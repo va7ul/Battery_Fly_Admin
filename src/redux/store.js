@@ -14,6 +14,8 @@ import { adminReducer } from './admin/adminSlice';
 import { oneProductReducer } from './products/oneProductSlice';
 import { productsListReducer } from './products/productsListSlice';
 import { customersReducer } from './customers/customersSlice';
+import { oneOrderReducer } from './orders/oneOrderSlice';
+import { ordersListReducer } from './orders/ordersListSlice';
 
 const adminPersistConfig = {
   key: 'admin',
@@ -26,11 +28,17 @@ const productsReducer = combineReducers({
   productsList: productsListReducer,
 });
 
+const ordersReducer = combineReducers({
+  oneOrder: oneOrderReducer,
+  ordersList: ordersListReducer,
+});
+
 export const store = configureStore({
   reducer: {
     admin: persistReducer(adminPersistConfig, adminReducer),
     products: productsReducer,
     customers: customersReducer,
+    orders: ordersReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
