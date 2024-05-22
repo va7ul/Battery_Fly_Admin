@@ -12,6 +12,7 @@ const lazyLoadPage = importPath => lazy(() => import(`./pages/${importPath}`));
 
 const LoginPage = lazyLoadPage('LoginPage');
 const OrdersPage = lazyLoadPage('OrdersPage');
+const OrderDetailsPage = lazyLoadPage('OrderDetailsPage');
 const Batteries18650Page = lazyLoadPage('Batteries18650Page');
 const Batteries21700Page = lazyLoadPage('Batteries21700Page');
 const Batteries32650Page = lazyLoadPage('Batteries32650Page');
@@ -55,6 +56,12 @@ export const App = () => {
         <Route
           path="admin/orders"
           element={<PrivateRoute redirectTo="/" component={<OrdersPage />} />}
+        />
+        <Route
+          path="admin/orders/:orderId"
+          element={
+            <PrivateRoute redirectTo="/" component={<OrderDetailsPage />} />
+          }
         />
         <Route
           path="admin/assortment/batteries-18650"
