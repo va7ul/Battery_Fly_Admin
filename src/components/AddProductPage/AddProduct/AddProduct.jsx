@@ -10,7 +10,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
 import { addProduct } from '../../../redux/products/productsOperations';
 import { productSchema } from '../../../common/schemas/productSchema'
-import { Container, StyledForm, Title, Label, Box, StyledField, Input, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
+import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
 
 export const AddProduct = ({ category, type }) => {
     const dispatch = useDispatch();
@@ -100,14 +100,17 @@ export const AddProduct = ({ category, type }) => {
                             <StyledErrorMessage name="description" component="div" />
                         </Box>
                     </Label>
-                     
-                    <Input
-                        accept="image/*"
-                        type="file"
-                        name="files"
-                        onChange={attachImages}
-                        multiple
-                    />
+                    <Box>
+                        <SubTitle>Додати фото</SubTitle>
+                        
+                        <Input
+                            accept="image/*"
+                            type="file"
+                            name="files"
+                            onChange={attachImages}
+                            multiple
+                        />
+                    </Box>
                     <Label>
                         Кількість в наявності
                         <Box>
@@ -159,12 +162,16 @@ export const AddProduct = ({ category, type }) => {
                   
                     <Label>
                         Категорія
+                        <Box>
                             <StyledField name="category" type="text" value={category} />
+                        </Box>
                     </Label>
 
                     {type !== "null" && <Label>
                         Тип
+                        <Box>
                             <StyledField name="type" type="text" value={type} />
+                        </Box>
                     </Label>}
                      
                     <FormControl>
