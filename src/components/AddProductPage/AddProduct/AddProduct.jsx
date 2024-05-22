@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -9,7 +9,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
 import { addProduct } from '../../../redux/products/productsOperations';
 // import { productSchema } from 'common/schemas/productSchema';
-import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
+import { Container, StyledForm, Title, Label, Box, StyledField, Input, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
 
 export const AddProduct = ({ category, type }) => {
   const dispatch = useDispatch();
@@ -20,7 +20,6 @@ export const AddProduct = ({ category, type }) => {
 
     const attachImages = e => {
         setImages(e.currentTarget.files)
-        console.log(e.currentTarget.files)
     };
 
     const changeType = () => {
@@ -42,13 +41,13 @@ export const AddProduct = ({ category, type }) => {
                     type: '',
                     information: '',
                 }}
+                enctype="multipart/form-data"
                 // validationSchema={productSchema}
                 onSubmit={values => {
                     const formData = new FormData();
                     formData.append('name', values.name);
                     formData.append('price', values.price);
                     formData.append('description', values.description);
-                    formData.append('files', [...images]);
                     formData.append('quantity', values.quantity);
                     formData.append('sale', sale);
                     formData.append('discount', values.discount || 10);
@@ -57,10 +56,11 @@ export const AddProduct = ({ category, type }) => {
                     formData.append('popular', popular);
                     formData.append('information', values.information);
 
+                    for (const image of images) {
+                        formData.append('files', image)
+                    }
+                    
                     dispatch(addProduct(formData))
-                    for (const value of formData) {
-                        console.log(value);
-                    }  //це для відображення полів, які відправляєш
                 }}
             >
                 
@@ -90,10 +90,10 @@ export const AddProduct = ({ category, type }) => {
                         </Box>
                     </Label>
                      
-                    <input
+                    <Input
                         accept="image/*"
                         type="file"
-                        name="image"
+                        name="files"
                         onChange={attachImages}
                         multiple
                     />
