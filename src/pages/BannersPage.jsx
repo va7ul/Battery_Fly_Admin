@@ -1,5 +1,7 @@
+import { Banners } from 'components/Banners/Banners';
+
 const BannersPage = () => {
-  return <>BannersPage</>;
+  return <Banners />;
 };
 
 export default BannersPage;
