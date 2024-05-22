@@ -25,6 +25,12 @@ export const Label = styled.label`
   font-weight: 600;
 `;
 
+export const SubTitle = styled.p`
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+`;
+
 export const Box = styled.div`
   display: flex;
   flex-direction: column;
