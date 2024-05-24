@@ -43,6 +43,7 @@ export const LabelCapacity = styled.label`
 export const BoxField = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   margin-top: 5px;
 `;
 
@@ -50,7 +51,7 @@ export const BoxCapacity = styled.div`
   display: flex;
   flex-direction: column;
   border: dashed grey;
-  padding: 10px 10px 26px 10px;
+  padding: 10px;
   gap: 10px;
 `;
 
@@ -138,8 +139,7 @@ export const SubmitButton = styled.button`
   background: ${props => props.theme.colors.secondary};
   margin-left: auto;
 
-  &:hover,
-  &:focus {
+  &:hover {
     background: ${props => props.theme.colors.hoverColor};
   }
 `;
@@ -154,8 +154,22 @@ export const AddButton = styled.button`
   background: ${props => props.theme.colors.secondary};
   margin-bottom: 10px;
 
-  &:hover,
-  &:focus {
+  &:hover {
+    background: ${props => props.theme.colors.hoverColor};
+  }
+`;
+
+export const DeleteButton = styled.button`
+  width: 170px;
+  height: 30px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  background: ${props => props.theme.colors.secondary};
+  margin-right: 20px;
+
+  &:hover {
     background: ${props => props.theme.colors.hoverColor};
   }
 `;
