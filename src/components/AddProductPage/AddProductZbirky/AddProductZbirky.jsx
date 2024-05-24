@@ -227,7 +227,7 @@ export const AddProductZbirky = ({ category }) => {
                                                 <BoxField>
                                                 <DeleteButton type='button'
                                                     onClick={() => {
-                                                        if (values.capacity.length === 1) return
+                                                        if (values.capacity.length === 1) return window.alert('Ти шо, дурний? Єдиний блок він видаляє.. Нахєр я його малювала тоді');
                                                         remove(index)
                                                     }}>
                                                     - видалити блок
