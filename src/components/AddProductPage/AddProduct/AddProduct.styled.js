@@ -25,6 +25,12 @@ export const Label = styled.label`
   font-weight: 600;
 `;
 
+export const SubTitle = styled.p`
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+`;
+
 export const Box = styled.div`
   display: flex;
   flex-direction: column;
@@ -65,6 +71,12 @@ export const StyledTextField = styled(Field)`
     outline: none;
     border: 1px solid ${props => props.theme.colors.hoverColor};
   }
+`;
+
+export const Input = styled.input`
+  background: ${props => props.theme.colors.greyBackgroundPaper};
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
 `;
 
 export const SubmitButton = styled.button`

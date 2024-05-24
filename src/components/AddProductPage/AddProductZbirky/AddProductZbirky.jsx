@@ -7,17 +7,26 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
 // import { productSchema } from 'common/schemas/productSchema';
-import { Container, StyledForm, Title, Label, Box, StyledField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
+import { Container, StyledForm, Title, Subtitle, Input, Label, BoxField, AddButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 
-export const AddProduct = ({ category, type }) => {
+export const AddProductZbirky = ({ category }) => {
     const [images, setImages] = useState('');
     const [sale, setSale] = useState(false);
     const [popular, setPopular] = useState(false);
+    const [holder, setHolder] = useState(false);
 
     const attachImages = e => {
         setImages(e.currentTarget.files)
     };
 
+    const [arr, setArr] = useState([1])
+
+    const addBlock = () => {
+        const length = arr.length;
+        setArr([...arr, length+1])
+        console.log(arr)
+    }
+    
     return (
         <Container>
             <Formik
@@ -28,7 +37,6 @@ export const AddProduct = ({ category, type }) => {
                     quantity: '',
                     discount: '',
                     category: '',
-                    type: '',
                     information: '',
                 }}
                 // validationSchema={productSchema}
@@ -43,7 +51,7 @@ export const AddProduct = ({ category, type }) => {
                     formData.append('sale', sale);
                     formData.append('discount', values.discount || 10);
                     formData.append('category', category);
-                    formData.append('type', type);
+                    formData.append('holder', holder);
                     formData.append('popular', popular);
                     formData.append('information', values.information);
                     
@@ -57,29 +65,29 @@ export const AddProduct = ({ category, type }) => {
                     <Title>Додавання товару</Title>
                     <Label>
                         Назва товару
-                        <Box>
+                        <BoxField>
                             <StyledField name="name" type="text" />
                             <StyledErrorMessage name="name" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
 
                     <Label>
                         Ціна за одиницю
-                        <Box>
+                        <BoxField>
                             <StyledField name="price" type="number" />
                             <StyledErrorMessage name="price" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
 
                     <Label>
                         Повний опис
-                        <Box>
+                        <BoxField>
                             <StyledTextField name="description" type="text" component="textarea" />
                             <StyledErrorMessage name="description" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
                      
-                    <input
+                    <Input
                         accept="image/*"
                         type="file"
                         name="image"
@@ -87,11 +95,11 @@ export const AddProduct = ({ category, type }) => {
                         multiple
                     />
                     <Label>
-                        Кількість
-                        <Box>
+                        Кількість в наявності
+                        <BoxField>
                             <StyledField name="quantity" type="text" />
                             <StyledErrorMessage name="quantity" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
                     <FormControl>
                         <FormLabel id="demo-row-radio-buttons-group-label"
@@ -127,30 +135,98 @@ export const AddProduct = ({ category, type }) => {
                                 }} />} label="Ні" />
                         </RadioGroup>
                     </FormControl>
-                  {  sale &&  <Label>
+                    {sale && <Label>
                         Відсоток знижки
-                        <Box>
+                        <BoxField>
                             <StyledField name="discount" type="number" />
                             <StyledErrorMessage name="discount" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>}
                   
                     <Label>
                         Категорія
-                        <Box>
+                        <BoxField>
                             <StyledField name="category" type="text" value={category} />
                             <StyledErrorMessage name="category" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
 
-                    {type !== "null" && <Label>
-                        Тип
-                        <Box>
-                            <StyledField name="type" type="text" value={type} />
-                            <StyledErrorMessage name="type" component="div" />
-                        </Box>
-                    </Label>}
-                     
+                    <FormControl>
+                        <FormLabel id="demo-row-radio-buttons-group-label"
+                            sx={{
+                                color: 'black',
+                                fontSize: '15px',
+                                fontWeight: '600',
+                                '&.Mui-focused': {
+                                    color: 'black',
+                                }
+                            }}
+                        >Наявність холдерів</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                        >
+                            <FormControlLabel
+                                value="yes"
+                                onChange={() => { setHolder(true) }}
+                                control={<Radio sx={{
+                                    '&.Mui-checked': {
+                                        color: yellow[800],
+                                    },
+                                }} />} label="Так" />
+                            <FormControlLabel
+                                value="no"
+                                onChange={() => { setHolder(false) }}
+                                control={<Radio sx={{
+                                    '&.Mui-checked': {
+                                        color: yellow[800],
+                                    },
+                                }} />} label="Ні" />
+                        </RadioGroup>
+                    </FormControl>
+
+                    <Subtitle>Блок характеристик ємності</Subtitle>
+                    
+                    {arr.map((elem, index) => {
+                        return <BoxCapacity key={index}>
+                        <LabelCapacity>
+                            Значення ємності
+                            <BoxField>
+                                <CapacityField name="capacity" type="number" />
+                                <StyledErrorMessage name="capacity" component="div" />
+                            </BoxField>
+                        </LabelCapacity>
+                        <LabelCapacity>
+                            Характеристики
+                            <BoxField>
+                                <CapacityTextField name="description" type="text" component="textarea" />
+                                <StyledErrorMessage name="description" component="div" />
+                            </BoxField>
+                        </LabelCapacity>
+                        <LabelCapacity>
+                            Ціна
+                            <BoxField>
+                                <CapacityField name="price" type="number" />
+                                <StyledErrorMessage name="price" component="div" />
+                            </BoxField>
+                        </LabelCapacity>
+                        { holder && <LabelCapacity>
+                            Кількість холдерів
+                            <BoxField>
+                                <CapacityField name="holder" type="number" />
+                                <StyledErrorMessage name="holder" component="div" />
+                            </BoxField>
+                        </LabelCapacity>}
+                        
+                    </BoxCapacity>
+                  
+                    })}
+
+                    <AddButton type='button'
+                    onClick={addBlock}>
+                        + добавити ємність
+                    </AddButton>
                     <FormControl>
                         <FormLabel id="demo-row-radio-buttons-group-label"
                             sx={{
@@ -187,10 +263,10 @@ export const AddProduct = ({ category, type }) => {
                     </FormControl>
                     <Label>
                         Інформація
-                        <Box>
+                        <BoxField>
                             <StyledTextField name="information" type="text" component="textarea" />
                             <StyledErrorMessage name="information" component="div" />
-                        </Box>
+                        </BoxField>
                     </Label>
                     <SubmitButton
                         type="submit"
