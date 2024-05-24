@@ -90,8 +90,7 @@ export const SubmitButton = styled.button`
   background: ${props => props.theme.colors.secondary};
   margin-left: auto;
 
-  &:hover,
-  &:focus {
+  &:hover {
     background: ${props => props.theme.colors.hoverColor};
   }
 `;
