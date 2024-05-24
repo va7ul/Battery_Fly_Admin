@@ -121,11 +121,11 @@ export const AddProduct = ({ category, type }) => {
                     <FormControl>
                         <FormLabel id="demo-row-radio-buttons-group-label"
                             sx={{
-                                color: 'black',
-                                fontSize: '15px',
+                                color: '#1f1f1f',
+                                fontSize: '16px',
                                 fontWeight: '600',
                                 '&.Mui-focused': {
-                                    color: 'black',
+                                    color: '#1f1f1f',
                                 }
                             }}
                         >Знижка</FormLabel>
@@ -177,11 +177,11 @@ export const AddProduct = ({ category, type }) => {
                     <FormControl>
                         <FormLabel id="demo-row-radio-buttons-group-label"
                             sx={{
-                                color: 'black',
-                                fontSize: '15px',
+                                color: '#1f1f1f',
+                                fontSize: '16px',
                                 fontWeight: '600',
                                 '&.Mui-focused': {
-                                    color: 'black',
+                                    color: '#1f1f1f',
                                 }
                             }}
                         >Популярний</FormLabel>
