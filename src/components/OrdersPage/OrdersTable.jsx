@@ -120,7 +120,7 @@ export const OrdersTable = () => {
     {
       field: 'actions',
       type: 'actions',
-      headerName: 'Actions',
+      headerName: '',
       cellClassName: 'actions',
       getActions: ({ id }) => {
         return [

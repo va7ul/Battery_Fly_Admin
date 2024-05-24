@@ -38,3 +38,45 @@ export const getOneOrder = createAsyncThunk(
     }
   }
 );
+
+export const getPrins3D = createAsyncThunk(
+  'orders/getPrins3D',
+  async (_, thunkApi) => {
+    try {
+      const { data } = await axios.get('adm/orders');
+
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const getQuickOrders = createAsyncThunk(
+  'orders/getQuickOrders',
+  async (_, thunkApi) => {
+    try {
+      const { data } = await axios.get('adm/orders');
+
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const getApplications = createAsyncThunk(
+  'orders/getApplications',
+  async (_, thunkApi) => {
+    try {
+      const { data } = await axios.get('adm/orders');
+
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);

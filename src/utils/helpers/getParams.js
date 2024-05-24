@@ -2,7 +2,7 @@ export const getParams = category => {
   const productCategories = {
     'Готові батареї': ['assembly', 'null', 'zbirka'],
     'Батареї для FPV-дронів': ['fpv', 'null', 'zbirka'],
-    'Батареї для електротранпорту': ['transport', 'null', 'zbirka'],
+    'Батареї для електротранспорту': ['transport', 'null', 'zbirka'],
     'Батареї для іграшок': ['toys', 'null', 'zbirka'],
 
     Прилади: ['devices', 'null', 'product'],
