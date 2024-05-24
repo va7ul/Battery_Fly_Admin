@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/843.da9f7762.chunk.js","mappings":"gJAIA,UAJmB,WACjB,OAAOA,EAAAA,EAAAA,KAAAC,EAAAA,SAAA,CAAAC,SAAE,cACX,C","sources":["pages/OrdersPage.jsx"],"sourcesContent":["const OrdersPage = () => {\n  return <>OrdersPage</>;\n};\n\nexport default OrdersPage;\n"],"names":["_jsx","_Fragment","children"],"sourceRoot":""}
