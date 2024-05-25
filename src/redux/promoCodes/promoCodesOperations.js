@@ -16,14 +16,14 @@ const handleError = error => {
   }
 };
 
-export const getAllOrders = createAsyncThunk(
-  'orders/getAllOrders',
+export const getPromoCodes = createAsyncThunk(
+  'promoCodes/getPromoCodes',
   async (_, thunkApi) => {
     const { token } = thunkApi.getState().user;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get('adm/orders');
+      const { data } = await axios.get('adm/promoCodes');
 
       return data;
     } catch (error) {
@@ -33,14 +33,14 @@ export const getAllOrders = createAsyncThunk(
   }
 );
 
-export const getOneOrder = createAsyncThunk(
-  'orders/getOneOrder',
-  async (orderId, thunkApi) => {
+export const addPromoCode = createAsyncThunk(
+  'promoCodes/addPromoCode',
+  async (promoData, thunkApi) => {
     const { token } = thunkApi.getState().user;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get(`adm/orders/${orderId}`);
+      const { data } = await axios.post('adm/promoCodes', promoData);
 
       return data;
     } catch (error) {
@@ -50,14 +50,16 @@ export const getOneOrder = createAsyncThunk(
   }
 );
 
-export const getPrints3D = createAsyncThunk(
-  'orders/getPrints3D',
-  async (_, thunkApi) => {
+export const updatePromoCode = createAsyncThunk(
+  'promoCodes/updatePromoCode',
+  async ({ id, promoData }, thunkApi) => {
     const { token } = thunkApi.getState().user;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get('adm/prints-3D');
+      const { data } = await axios.put(`adm/promoCodes/${id}`, {
+        ...promoData,
+      });
 
       return data;
     } catch (error) {
@@ -67,31 +69,14 @@ export const getPrints3D = createAsyncThunk(
   }
 );
 
-export const getQuickOrders = createAsyncThunk(
-  'orders/getQuickOrders',
-  async (_, thunkApi) => {
+export const deletePromoCode = createAsyncThunk(
+  'promoCodes/deletePromoCode',
+  async (id, thunkApi) => {
     const { token } = thunkApi.getState().user;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get('adm/quick-orders');
-
-      return data;
-    } catch (error) {
-      const errorMessage = handleError(error);
-      return thunkApi.rejectWithValue(errorMessage);
-    }
-  }
-);
-
-export const getApplications = createAsyncThunk(
-  'orders/getApplications',
-  async (_, thunkApi) => {
-    const { token } = thunkApi.getState().user;
-
-    try {
-      setAuthHeader(token);
-      const { data } = await axios.get('adm/orders');
+      const { data } = await axios.delete(`adm/promoCodes/${id}`);
 
       return data;
     } catch (error) {

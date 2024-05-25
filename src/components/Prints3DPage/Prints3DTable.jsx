@@ -1,13 +1,13 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
-import { selectPrins3D } from '../../redux/orders/ordersSelectors';
+import { selectPrints3D } from '../../redux/orders/ordersSelectors';
 import { Box } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
 
-export const Prins3DTable = () => {
+export const Prints3DTable = () => {
   const apiRef = useGridApiRef();
-  const prins3D = useSelector(selectPrins3D);
+  const prints3D = useSelector(selectPrints3D);
 
   const autosizeOptions = useMemo(
     () => ({
@@ -22,11 +22,11 @@ export const Prins3DTable = () => {
     if (apiRef.current) {
       apiRef.current.autosizeColumns(autosizeOptions);
     }
-  }, [apiRef, autosizeOptions, prins3D]);
+  }, [apiRef, autosizeOptions, prints3D]);
 
   const rows = useMemo(
     () =>
-      prins3D.map(el => ({
+      prints3D.map(el => ({
         id: el._id,
         numberOfOrder: el.numberOfOrder,
         userName: el.userName,
@@ -37,7 +37,7 @@ export const Prins3DTable = () => {
         color: el.color,
         createdAt: el.createdAt,
       })),
-    [prins3D]
+    [prints3D]
   );
 
   const columns = [

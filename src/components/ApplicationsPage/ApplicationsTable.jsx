@@ -28,7 +28,7 @@ export const ApplicationsTable = () => {
     () =>
       applications.map(el => ({
         id: el._id,
-        numberOfApplications: el.numberOfApplications,
+        numberOfApplication: el.numberOfApplication,
         name: el.name,
         tel: el.tel,
         comment: el.comment,
@@ -38,7 +38,7 @@ export const ApplicationsTable = () => {
   );
 
   const columns = [
-    { field: 'numberOfApplications', headerName: 'Номер заявки' },
+    { field: 'numberOfApplication', headerName: 'Номер заявки' },
     { field: 'name', headerName: 'Імя' },
     {
       field: 'tel',

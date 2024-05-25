@@ -1,7 +1,7 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
   getAllOrders,
-  getPrins3D,
+  getPrints3D,
   getQuickOrders,
   getApplications,
 } from './ordersOperations';
@@ -30,7 +30,7 @@ const initialState = {
       createdAt: '2024-04-02T14:02:16.429+00:00',
     },
   ],
-  prins3D: [
+  prints3D: [
     {
       _id: '6648bec7654560bb58fbccc1',
       numberOfOrder: '100121',
@@ -57,7 +57,7 @@ const initialState = {
   applications: [
     {
       _id: '66366fb2df9b1166e5faff64',
-      numberOfApplications: '100060',
+      numberOfApplication: '100060',
       name: 'Дмитро',
       tel: '+380504444444',
       comment: '',
@@ -86,7 +86,7 @@ const handleAllOrderFulfilled = (state, action) => {
 const handlePrins3DFulfilled = (state, action) => {
   state.isLoading = false;
   state.error = null;
-  state.prins3D = action.payload.result;
+  state.prints3D = action.payload.result;
 };
 
 const handleQuickOrdersFulfilled = (state, action) => {
@@ -108,13 +108,13 @@ const ordersListSlice = createSlice({
   extraReducers: builder =>
     builder
       .addCase(getAllOrders.fulfilled, handleAllOrderFulfilled)
-      .addCase(getPrins3D.fulfilled, handlePrins3DFulfilled)
+      .addCase(getPrints3D.fulfilled, handlePrins3DFulfilled)
       .addCase(getQuickOrders.fulfilled, handleQuickOrdersFulfilled)
       .addCase(getApplications.fulfilled, handleApplicationsFulfilled)
       .addMatcher(
         isAnyOf(
           getAllOrders.pending,
-          getPrins3D.pending,
+          getPrints3D.pending,
           getQuickOrders.pending,
           getApplications.pending
         ),
@@ -123,7 +123,7 @@ const ordersListSlice = createSlice({
       .addMatcher(
         isAnyOf(
           getAllOrders.rejected,
-          getPrins3D.rejected,
+          getPrints3D.rejected,
           getQuickOrders.rejected,
           getApplications.rejected
         ),

@@ -13,7 +13,7 @@ const lazyLoadPage = importPath => lazy(() => import(`./pages/${importPath}`));
 const LoginPage = lazyLoadPage('LoginPage');
 const OrdersPage = lazyLoadPage('OrdersPage');
 const OrderDetailsPage = lazyLoadPage('OrderDetailsPage');
-const Prins3DPage = lazyLoadPage('Prins3DPage');
+const Prints3DPage = lazyLoadPage('Prints3DPage');
 const QuickOrdersPage = lazyLoadPage('QuickOrdersPage');
 const ApplicationsPage = lazyLoadPage('ApplicationsPage');
 const Batteries18650Page = lazyLoadPage('Batteries18650Page');
@@ -30,7 +30,6 @@ const MaterialsPage = lazyLoadPage('MaterialsPage');
 const EditProductPage = lazyLoadPage('EditProductPage');
 const AddProductPage = lazyLoadPage('AddProductPage');
 const CustomersPage = lazyLoadPage('CustomersPage');
-const Print3DPage = lazyLoadPage('Print3DPage');
 const BannersPage = lazyLoadPage('BannersPage');
 const PromoCodesPage = lazyLoadPage('PromoCodesPage');
 
@@ -51,7 +50,7 @@ export const App = () => {
           index
           element={
             <RestrictedRoute
-              redirectTo="/admin/orders"
+              redirectTo="/admin/orders/product-orders"
               component={<LoginPage />}
             />
           }
@@ -68,7 +67,7 @@ export const App = () => {
         />
         <Route
           path="admin/orders/prints-3D"
-          element={<PrivateRoute redirectTo="/" component={<Prins3DPage />} />}
+          element={<PrivateRoute redirectTo="/" component={<Prints3DPage />} />}
         />
         <Route
           path="admin/orders/quick-orders"
@@ -164,10 +163,6 @@ export const App = () => {
           element={
             <PrivateRoute redirectTo="/" component={<CustomersPage />} />
           }
-        />
-        <Route
-          path="admin/print-3D"
-          element={<PrivateRoute redirectTo="/" component={<Print3DPage />} />}
         />
         <Route
           path="admin/banners"
