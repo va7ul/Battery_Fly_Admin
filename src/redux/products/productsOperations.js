@@ -206,11 +206,7 @@ export const addProductZbirky = createAsyncThunk(
       },
     };
     try {
-      const { data } = await axios.post(
-        `adm/productZbirky-add`,
-        formData,
-        config
-      );
+      const { data } = await axios.post(`adm/assemblies-add`, formData, config);
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
