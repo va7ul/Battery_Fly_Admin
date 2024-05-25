@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getOneProduct } from '../products/productsOperations';
-import { addProduct } from '../products/productsOperations';
+import { addProduct, addProductZbirky } from '../products/productsOperations';
 
 const initialState = {
   result: {
@@ -77,6 +77,17 @@ const oneProductSlice = createSlice({
         state.error = null;
       })
       .addCase(addProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(addProductZbirky.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(addProductZbirky.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(addProductZbirky.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       }),
