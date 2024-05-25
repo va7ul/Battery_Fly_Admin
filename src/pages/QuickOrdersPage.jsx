@@ -1,29 +1,29 @@
 // import { useEffect } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-// import { getAllOrders } from '../redux/orders/ordersOperations';
+// import { getQuickOrders } from '../redux/orders/ordersOperations';
 // import {
-//   selectAllOrdersIsLoading,
-//   selectAllOrdersError,
+//   selectApplicationsIsLoading,
+//   selectApplicationsError,
 // } from '../redux/orders/ordersSelectors';
 // import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
-import { OrdersTable } from 'components/OrdersPage/OrdersTable';
+import { QuickOrdersTable } from 'components/QuickOrdersPage/QuickOrdersTable';
 
-const OrdersPage = () => {
+const QuickOrdersPage = () => {
   // const dispatch = useDispatch();
   // const isLoading = useSelector(selectAllOrdersIsLoading);
   // const error = useSelector(selectAllOrdersError);
 
   // useEffect(() => {
-  //   dispatch(getAllOrders());
+  //   dispatch(getQuickOrders());
   // }, [dispatch]);
 
   return (
     <>
       {/* {isLoading && <CustomLoader />}
-      {!isLoading && !error && <OrdersTable />} */}
-      <OrdersTable />
+      {!isLoading && !error && <QuickOrdersTable />} */}
+      <QuickOrdersTable />
     </>
   );
 };
 
-export default OrdersPage;
+export default QuickOrdersPage;

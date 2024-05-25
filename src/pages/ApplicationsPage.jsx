@@ -1,29 +1,29 @@
 // import { useEffect } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-// import { getAllOrders } from '../redux/orders/ordersOperations';
+// import { getApplications } from '../redux/orders/ordersOperations';
 // import {
-//   selectAllOrdersIsLoading,
-//   selectAllOrdersError,
+//   selectApplicationsIsLoading,
+//   selectApplicationsError,
 // } from '../redux/orders/ordersSelectors';
 // import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
-import { OrdersTable } from 'components/OrdersPage/OrdersTable';
+import { ApplicationsTable } from 'components/ApplicationsPage/ApplicationsTable';
 
-const OrdersPage = () => {
+const ApplicationsPage = () => {
   // const dispatch = useDispatch();
   // const isLoading = useSelector(selectAllOrdersIsLoading);
   // const error = useSelector(selectAllOrdersError);
 
   // useEffect(() => {
-  //   dispatch(getAllOrders());
+  //   dispatch(getApplications());
   // }, [dispatch]);
 
   return (
     <>
       {/* {isLoading && <CustomLoader />}
-      {!isLoading && !error && <OrdersTable />} */}
-      <OrdersTable />
+      {!isLoading && !error && <ApplicationsTable />} */}
+      <ApplicationsTable />
     </>
   );
 };
 
-export default OrdersPage;
+export default ApplicationsPage;

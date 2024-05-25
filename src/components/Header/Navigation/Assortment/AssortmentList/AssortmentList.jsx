@@ -1,4 +1,4 @@
-import { ListItem } from './ListItem/ListItem';
+import { ListItem } from '../../ListItem/ListItem';
 
 export const AssortmentList = () => {
   return (

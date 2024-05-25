@@ -1,29 +1,29 @@
 // import { useEffect } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-// import { getAllOrders } from '../redux/orders/ordersOperations';
+// import { getPrins3D } from '../redux/orders/ordersOperations';
 // import {
-//   selectAllOrdersIsLoading,
-//   selectAllOrdersError,
+//   selectApplicationsIsLoading,
+//   selectApplicationsError,
 // } from '../redux/orders/ordersSelectors';
 // import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
-import { OrdersTable } from 'components/OrdersPage/OrdersTable';
+import { Prins3DTable } from 'components/Prins3DPage/Prins3DTable';
 
-const OrdersPage = () => {
+const Prins3DPage = () => {
   // const dispatch = useDispatch();
   // const isLoading = useSelector(selectAllOrdersIsLoading);
   // const error = useSelector(selectAllOrdersError);
 
   // useEffect(() => {
-  //   dispatch(getAllOrders());
+  //   dispatch(getPrins3D());
   // }, [dispatch]);
 
   return (
     <>
       {/* {isLoading && <CustomLoader />}
-      {!isLoading && !error && <OrdersTable />} */}
-      <OrdersTable />
+      {!isLoading && !error && <Prins3DTable />} */}
+      <Prins3DTable />
     </>
   );
 };
 
-export default OrdersPage;
+export default Prins3DPage;

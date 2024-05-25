@@ -55,6 +55,7 @@ export const OrderDetailsList = styled.ul`
 
   li {
     display: grid;
+    justify-items: center;
     grid-template-columns: 100px 250px repeat(3, 1fr);
     padding-top: 15px;
     padding-bottom: 15px;
