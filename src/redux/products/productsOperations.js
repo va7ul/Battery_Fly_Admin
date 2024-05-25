@@ -196,3 +196,25 @@ export const addProduct = createAsyncThunk(
     }
   }
 );
+
+export const addProductZbirky = createAsyncThunk(
+  'products/productZbirky-add',
+  async (formData, thunkApi) => {
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    try {
+      const { data } = await axios.post(
+        `adm/productZbirky-add`,
+        formData,
+        config
+      );
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
