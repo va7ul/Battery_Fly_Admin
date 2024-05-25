@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Formik, FieldArray } from 'formik'
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -6,23 +8,33 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
+import { addProductZbirky } from '../../../redux/products/productsOperations';
 import { Container, StyledForm, Title, Subtitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 
 export const AddProductZbirky = ({ category }) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [images, setImages] = useState('');
     const [sale, setSale] = useState(false);
     const [popular, setPopular] = useState(false);
     const [holder, setHolder] = useState(false);
 
-    const attachImages = e => {
+    const capacityObj = {
+        capacity: '',
+        description: '',
+        price: '',
+        holder: ''
+    };
+
+      const attachImages = e => {
         setImages(e.currentTarget.files);
     };
 
-    const capacityObj = {
-        capacity: "",
-        description: "",
-        price: "",
-        holder: ""
+      const AddProductButton = () => {
+        navigate(
+            `/admin/assortment/${category}`
+        );
     };
 
     return (
@@ -34,7 +46,6 @@ export const AddProductZbirky = ({ category }) => {
                     description: '',
                     quantity: '',
                     discount: '',
-                    category: '',
                     information: '',
                     capacity: [capacityObj],
                 }}
@@ -56,7 +67,17 @@ export const AddProductZbirky = ({ category }) => {
                     
                     for (const image of images) {
                         formData.append('files', image)
-                    }
+                    };
+
+                      for (const value of formData.values()) {
+      console.log(value);
+    }
+
+                     dispatch(addProductZbirky(formData)).then(result => {
+                        if (result.meta.requestStatus === 'fulfilled') {
+                            AddProductButton();
+                        }
+                    })
                 }}
             >
                 {({ values }) => (
@@ -81,7 +102,12 @@ export const AddProductZbirky = ({ category }) => {
                         <Label>
                             Повний опис
                             <BoxField>
-                                <StyledTextField name="description" type="text" component="textarea" />
+                                <StyledTextField
+                                    name="description"
+                                    type="text"
+                                    component="textarea"
+                                placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" 
+                                />
                                 <StyledErrorMessage name="description" component="div" />
                             </BoxField>
                         </Label>
@@ -206,7 +232,7 @@ export const AddProductZbirky = ({ category }) => {
                                                 <LabelCapacity>
                                                     Характеристики
                                                     <BoxField>
-                                                        <CapacityTextField name={`capacity[${index}].description`} type="text" component="textarea" />
+                                                        <CapacityTextField name={`capacity[${index}].description`} type="text"  placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
                                                         <StyledErrorMessage name={`capacity[${index}].description`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>
