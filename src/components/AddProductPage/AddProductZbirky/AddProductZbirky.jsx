@@ -8,10 +8,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
+import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema'
 import { addProductZbirky } from '../../../redux/products/productsOperations';
 import { Container, StyledForm, Title, Subtitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 
-export const AddProductZbirky = ({ category }) => {
+export const AddProductZbirky = ({ category, type }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -31,11 +32,11 @@ export const AddProductZbirky = ({ category }) => {
         setImages(e.currentTarget.files);
     };
 
-      const AddProductButton = () => {
-        navigate(
-            `/admin/assortment/${category}`
-        );
-    };
+    //   const AddProductButton = () => {
+    //      navigate(
+    //         `/admin/assortment/batteries-${type}`
+    //     );
+    // };
 
     return (
         <Container>
@@ -49,9 +50,23 @@ export const AddProductZbirky = ({ category }) => {
                     information: '',
                     capacity: [capacityObj],
                 }}
-                // validationSchema={productSchema}
+                // validationSchema={productZbirkySchema}
                 onSubmit={(values) => {
-                    console.log(values)
+                    // console.log(values)
+                    let newCapacity = [];
+                    for (const cap of values.capacity) {
+
+                   
+                        const obj = { [cap["capacity"].toString()] : {
+                description: cap.description,
+                holder: cap.holder,
+                price: cap.price
+                        }
+                        }
+                        newCapacity.push(obj)
+                    }
+                    
+                    
                     const formData = new FormData();
                     formData.append('name', values.name);
                     formData.append('price', values.price);
@@ -60,7 +75,7 @@ export const AddProductZbirky = ({ category }) => {
                     formData.append('sale', sale);
                     formData.append('discount', values.discount || 10);
                     formData.append('category', category);
-                    formData.append('capacity', values.capacity);
+                    formData.append('capacity', JSON.stringify(newCapacity));
                     formData.append('holder', holder);
                     formData.append('popular', popular);
                     formData.append('information', values.information);
@@ -73,11 +88,12 @@ export const AddProductZbirky = ({ category }) => {
       console.log(value);
     }
 
-                     dispatch(addProductZbirky(formData)).then(result => {
-                        if (result.meta.requestStatus === 'fulfilled') {
-                            AddProductButton();
-                        }
-                    })
+                    dispatch(addProductZbirky(formData))
+                    //     .then(result => {
+                    //     if (result.meta.requestStatus === 'fulfilled') {
+                    //         AddProductButton();
+                    //     }
+                    // })
                 }}
             >
                 {({ values }) => (
@@ -94,7 +110,7 @@ export const AddProductZbirky = ({ category }) => {
                         <Label>
                             Ціна за одиницю
                             <BoxField>
-                                <StyledField name="price" type="number" />
+                                <StyledField name="price" type="text"    placeholder='Приклад: 4100-9500' />
                                 <StyledErrorMessage name="price" component="div" />
                             </BoxField>
                         </Label>
@@ -122,7 +138,7 @@ export const AddProductZbirky = ({ category }) => {
                         <Label>
                             Кількість в наявності
                             <BoxField>
-                                <StyledField name="quantity" type="text" />
+                                <StyledField name="quantity" type="number" />
                                 <StyledErrorMessage name="quantity" component="div" />
                             </BoxField>
                         </Label>
