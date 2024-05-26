@@ -11,6 +11,12 @@ export const Subtitle = styled.p`
   color: ${props => props.theme.colors.hoverColor};
 `;
 
+export const SubTitle = styled.p`
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+`;
+
 export const Title = styled.p`
   font-size: 40px;
   font-weight: 600;
@@ -43,7 +49,12 @@ export const LabelCapacity = styled.label`
 export const BoxField = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  margin-top: 5px;
+`;
+
+export const Box = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-top: 5px;
 `;
 
@@ -168,6 +179,7 @@ export const DeleteButton = styled.button`
   font-weight: 500;
   background: ${props => props.theme.colors.secondary};
   margin-right: 20px;
+  margin-left: auto;
 
   &:hover {
     background: ${props => props.theme.colors.hoverColor};
