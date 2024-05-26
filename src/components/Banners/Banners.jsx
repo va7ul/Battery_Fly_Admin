@@ -1,11 +1,4 @@
-// import * as React from 'react';
-import {
-  useEffect,
-  useMemo,
-  // useEffect,
-  // useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import AddIcon from '@mui/icons-material/Add';
@@ -17,7 +10,6 @@ import CancelIcon from '@mui/icons-material/Close';
 import {
   GridRowModes,
   DataGrid,
-  // GridToolbarContainer,
   GridActionsCellItem,
   GridRowEditStopReasons,
   GridToolbarContainer,
@@ -26,10 +18,10 @@ import { Button } from '@mui/material';
 import { randomId } from '@mui/x-data-grid-generator';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  deleteHeroImage,
   getHeroImages,
+  deleteHeroImage,
+  // addHeroImage,
   // editHeroImage,
-  // getHeroImages,
 } from '../../redux/hero/heroOperations';
 import { selectHero } from '../../redux/hero/heroSelectors';
 // import { randomId } from '@mui/x-data-grid-generator';
@@ -116,7 +108,7 @@ const ImageCell = ({ value, onChange }) => {
 
 export const Banners = () => {
   const dispatch = useDispatch();
-
+  const images = useSelector(selectHero);
   // useEffect(() => {
   //   dispatch(getHeroImages());
   // }, [dispatch]);
@@ -126,43 +118,21 @@ export const Banners = () => {
       try {
         dispatch(getHeroImages());
       } catch (error) {
-        console.log('error', error);
+        console.log('error', error.message);
       }
     };
     getHeroImagesSync();
   }, [dispatch]);
 
-  const images = useSelector(selectHero);
-  const rows = useMemo(
-    () =>
-      images.map(item => ({
-        id: item._id,
-        image: item.image,
-        text: item.text,
-      })),
-    [images]
-  );
+  const initialRows = images.map(item => ({
+    id: item._id,
+    text: item.text,
+    image: item.image,
+  }));
 
-  // const [rows, setRows] = useState(initialRows);
+  const [rows, setRows] = useState(initialRows);
 
   const [rowModesModel, setRowModesModel] = useState({});
-
-  // useEffect(() => {
-  //   const getHeroImagesSync = async () => {
-  //     try {
-  //       dispatch(getHeroImages());
-  //     } catch (error) {
-  //       console.log('error', error);
-  //     }
-  //   };
-  //   getHeroImagesSync();
-  // }, [dispatch]);
-
-  // const initialRows = images.map(item => ({
-  //   id: item._id,
-  //   image: item.image,
-  //   text: item.text,
-  // }));
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -182,28 +152,23 @@ export const Banners = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  // const handleDeleteClick = id => () => {
-  //   setRows(rows.filter(row => row.id !== id));
-  //   dispatch(deleteHeroImage(id));
-  // };
+  const handleCancelClick = id => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
 
-  // const handleCancelClick = id => () => {
-  //   setRowModesModel({
-  //     ...rowModesModel,
-  //     [id]: { mode: GridRowModes.View, ignoreModifications: true },
-  //   });
+    const editedRow = rows.find(row => row.id === id);
+    if (editedRow.isNew) {
+      setRows(rows.filter(row => row.id !== id));
+    }
+  };
 
-  //   const editedRow = rows.find(row => row.id === id);
-  //   if (editedRow.isNew) {
-  //     setRows(rows.filter(row => row.id !== id));
-  //   }
-  // };
-
-  // const processRowUpdate = newRow => {
-  //   const updatedRow = { ...newRow, isNew: false };
-  //   setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
-  //   return updatedRow;
-  // };
+  const processRowUpdate = newRow => {
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
+    return updatedRow;
+  };
 
   const handleRowModesModelChange = newRowModesModel => {
     setRowModesModel(newRowModesModel);
@@ -230,24 +195,6 @@ export const Banners = () => {
       headerName: 'Image',
       type: 'image',
       renderCell: params => (
-        // <form>
-        //   <div
-        //     style={{
-        //       display: 'flex',
-        //       alignItems: 'center',
-        //       gap: 5,
-        //       objectFit: 'contain',
-        //       margin: 0,
-        //     }}
-        //   >
-        //     <img
-        //       src={imageURL}
-        //       alt={image.name}
-        //       style={{ maxWidth: '200px', height: 100 }}
-        //     />
-        //     <input type="file" accept="image/*" onChange={handleFileChange} />
-        //   </div>
-        // </form>
         <ImageCell
           value={params.value}
           onChange={newValue => {
@@ -300,7 +247,7 @@ export const Banners = () => {
               icon={<CancelIcon />}
               label="Cancel"
               className="textPrimary"
-              // onClick={handleCancelClick(id)}
+              onClick={handleCancelClick(id)}
               color="inherit"
             />,
           ];
@@ -345,7 +292,7 @@ export const Banners = () => {
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        // processRowUpdate={processRowUpdate}
+        processRowUpdate={processRowUpdate}
         disableColumnMenu={true}
         disableColumnResize={true}
         disableColumnSorting={true}
@@ -354,11 +301,10 @@ export const Banners = () => {
         rowHeight={100}
         slots={{
           toolbar: EditToolbar,
-          // pagination: EditToolbar,
         }}
-        // slotProps={{
-        //   toolbar: { setRows, setRowModesModel },
-        // }}
+        slotProps={{
+          toolbar: { setRows, setRowModesModel },
+        }}
       />
     </Box>
   );
