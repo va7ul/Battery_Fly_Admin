@@ -16,6 +16,7 @@ import { productsListReducer } from './products/productsListSlice';
 import { customersReducer } from './customers/customersSlice';
 import { oneOrderReducer } from './orders/oneOrderSlice';
 import { ordersListReducer } from './orders/ordersListSlice';
+import { promoCodesReducer } from './promoCodes/promoCodesSlice';
 
 const adminPersistConfig = {
   key: 'admin',
@@ -39,6 +40,7 @@ export const store = configureStore({
     products: productsReducer,
     customers: customersReducer,
     orders: ordersReducer,
+    promoCodes: promoCodesReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

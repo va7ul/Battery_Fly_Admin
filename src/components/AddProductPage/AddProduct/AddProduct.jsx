@@ -64,13 +64,12 @@ export const AddProduct = ({ category, type }) => {
 
                     for (const image of images) {
                         formData.append('files', image)
-                    }
+                    };
                     
                     dispatch(addProduct(formData)).then(result => {
                         if (result.meta.requestStatus === 'fulfilled') {
                             AddProductButton();
                         }
-                    
                     })
                 }}
             >

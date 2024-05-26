@@ -1,12 +1,12 @@
 // import { useEffect } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-// import { getPrins3D } from '../redux/orders/ordersOperations';
+// import { getPrints3D } from '../redux/orders/ordersOperations';
 // import {
 //   selectApplicationsIsLoading,
 //   selectApplicationsError,
 // } from '../redux/orders/ordersSelectors';
 // import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
-import { Prins3DTable } from 'components/Prins3DPage/Prins3DTable';
+import { Prints3DTable } from 'components/Prints3DPage/Prints3DTable';
 
 const Prins3DPage = () => {
   // const dispatch = useDispatch();
@@ -14,14 +14,14 @@ const Prins3DPage = () => {
   // const error = useSelector(selectAllOrdersError);
 
   // useEffect(() => {
-  //   dispatch(getPrins3D());
+  //   dispatch(getPrints3D());
   // }, [dispatch]);
 
   return (
     <>
       {/* {isLoading && <CustomLoader />}
-      {!isLoading && !error && <Prins3DTable />} */}
-      <Prins3DTable />
+      {!isLoading && !error && <Prints3DTable />} */}
+      <Prints3DTable />
     </>
   );
 };
