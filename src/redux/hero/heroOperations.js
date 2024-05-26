@@ -5,9 +5,9 @@ import { baseURL } from '../../utils/constants/baseURL';
 
 axios.defaults.baseURL = baseURL;
 
-// const setAuthHeader = token => {
-//   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-// };
+const setAuthHeader = token => {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+};
 
 export const getHeroImages = createAsyncThunk(
   'hero/getHeroImages',
@@ -44,11 +44,20 @@ export const addHeroImage = createAsyncThunk(
 
 export const editHeroImage = createAsyncThunk(
   'hero/editHeroImage',
-  async ({ id, hero }, thunkAPI) => {
-    // const { token } = thunkAPI.getState().user;
+  async ({ id, formData }, thunkAPI) => {
+    const { token } = thunkAPI.getState().user;
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
     try {
-      // setAuthHeader(token);
-      const { data } = await axios.put(`adm/hero/${id}`, { ...hero });
+      setAuthHeader(token);
+      const { data } = await axios.put(
+        `adm/hero/${id}`,
+        { ...formData },
+        config
+      );
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

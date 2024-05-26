@@ -20,32 +20,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getHeroImages,
   deleteHeroImage,
+  editHeroImage,
   // addHeroImage,
-  // editHeroImage,
 } from '../../redux/hero/heroOperations';
 import { selectHero } from '../../redux/hero/heroSelectors';
-// import { randomId } from '@mui/x-data-grid-generator';
-
-// const images = [
-//   {
-//     _id: '662e4b4df04b85608f6b5843',
-//     text: 'Потужність у кожному кілометрі: наші електричні батареї для вашого транспорту!',
-//     image:
-//       'https://res.cloudinary.com/dge7alacy/image/upload/v1714309887/Hero/yx3zqxzkv9bvlygisq2v.png',
-//   },
-//   {
-//     _id: '662e4bc3f04b85608f6b5844',
-//     text: 'Безмежна енергія для захоплюючих польотів: батареї для FPV дронів!',
-//     image:
-//       'https://res.cloudinary.com/dge7alacy/image/upload/v1714309886/Hero/ir8j18htynnf3wnessba.png',
-//   },
-//   {
-//     _id: '662e4c1cf04b85608f6b5845',
-//     text: 'Втілюй ідеї у реальність: 3D друк на кожен день!',
-//     image:
-//       'https://res.cloudinary.com/dge7alacy/image/upload/v1714309886/Hero/a0czcwwqskwdnfqq2f3k.png',
-//   },
-// ];
 
 const EditToolbar = props => {
   const { setRows, setRowModesModel } = props;
@@ -68,50 +46,9 @@ const EditToolbar = props => {
   );
 };
 
-const ImageCell = ({ value, onChange }) => {
-  const [preview, setPreview] = useState(value);
-
-  const handleFileChange = e => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-        onChange(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  return (
-    <form>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 5,
-          objectFit: 'contain',
-          margin: 0,
-        }}
-      >
-        <img
-          src={preview}
-          alt="Preview"
-          style={{ maxWidth: '200px', height: 100 }}
-        />
-        <input type="file" accept="image/*" onChange={handleFileChange} />
-      </div>
-    </form>
-  );
-};
-
 export const Banners = () => {
   const dispatch = useDispatch();
   const images = useSelector(selectHero);
-  // useEffect(() => {
-  //   dispatch(getHeroImages());
-  // }, [dispatch]);
 
   useEffect(() => {
     const getHeroImagesSync = async () => {
@@ -124,13 +61,11 @@ export const Banners = () => {
     getHeroImagesSync();
   }, [dispatch]);
 
-  const initialRows = images.map(item => ({
+  const rows = images.map(item => ({
     id: item._id,
     text: item.text,
     image: item.image,
   }));
-
-  const [rows, setRows] = useState(initialRows);
 
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -144,69 +79,95 @@ export const Banners = () => {
     dispatch(deleteHeroImage(id));
   };
 
-  const handleEditClick = id => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = id => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
   const handleCancelClick = id => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
-
-    const editedRow = rows.find(row => row.id === id);
-    if (editedRow.isNew) {
-      setRows(rows.filter(row => row.id !== id));
-    }
   };
 
-  const processRowUpdate = newRow => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
-    return updatedRow;
+  const handleEditClick = id => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
   const handleRowModesModelChange = newRowModesModel => {
     setRowModesModel(newRowModesModel);
   };
 
-  // const [image, setImage] = useState('');
-  // const [imageURL, setImageURL] = useState('');
-  // const fileReader = new FileReader();
+  const [image, setImage] = useState('');
+  const [text, setText] = useState('');
 
-  // fileReader.onloadend = () => {
-  //   setImageURL(fileReader.result);
-  // };
+  const handleFileChange = id => e => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(prev => ({
+          ...prev,
+          [id]: { url: reader.result, file },
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-  // const handleFileChange = e => {
-  //   e.preventDefault();
-  //   const file = e.target.files[0];
-  //   setImage(file);
-  //   fileReader.readAsDataURL(file);
-  // };
+  const handleSaveClick = id => async () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    const formData = new FormData();
+    if (image[id]?.file) {
+      formData.append('image', image[id].file);
+    }
+    formData.append('text', text[id] || rows.find(row => row.id === id).text);
+    try {
+      await dispatch(editHeroImage(id, formData));
+      console.log(`ura`);
+    } catch (error) {
+      console.error(`jopa`, error.message);
+    }
+  };
+
+  const handleTextChange = id => e => {
+    const newText = e.target.value;
+    setText(prev => ({
+      ...prev,
+      [id]: newText,
+    }));
+  };
 
   const columns = [
     {
       field: 'image',
       headerName: 'Image',
       type: 'image',
-      renderCell: params => (
-        <ImageCell
-          value={params.value}
-          onChange={newValue => {
-            const updatedRows = [...params.api.getRowModels()];
-            updatedRows[params.id] = {
-              ...updatedRows[params.id],
-              image: newValue,
-            };
-            params.api.setRows(updatedRows);
-          }}
-        />
-      ),
+      renderCell: params => {
+        const { id } = params.row;
+        const preview = image[id]?.url || params.value;
+        return (
+          <form>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                objectFit: 'contain',
+                margin: 0,
+              }}
+            >
+              <img
+                src={preview}
+                alt="Preview"
+                style={{ maxWidth: '200px', height: 100 }}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange(id)}
+              />
+            </div>
+          </form>
+        );
+      },
       width: 500,
       align: 'center',
       headerAlign: 'center',
@@ -220,6 +181,20 @@ export const Banners = () => {
       align: 'center',
       headerAlign: 'center',
       editable: true,
+      renderCell: params => {
+        const { id } = params.row;
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+        if (isInEditMode) {
+          return (
+            <input
+              type="text"
+              defaultValue={params.value}
+              onChange={handleTextChange(id)}
+            />
+          );
+        }
+        return params.value;
+      },
     },
     {
       field: 'actions',
@@ -292,7 +267,7 @@ export const Banners = () => {
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
+        // processRowUpdate={processRowUpdate}
         disableColumnMenu={true}
         disableColumnResize={true}
         disableColumnSorting={true}
@@ -302,9 +277,9 @@ export const Banners = () => {
         slots={{
           toolbar: EditToolbar,
         }}
-        slotProps={{
-          toolbar: { setRows, setRowModesModel },
-        }}
+        // slotProps={{
+        //   toolbar: { setRows, setRowModesModel },
+        // }}
       />
     </Box>
   );

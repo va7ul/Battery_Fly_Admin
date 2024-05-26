@@ -30,8 +30,11 @@ const handleAddHeroFulfilled = (state, action) => {
   state.error = null;
 };
 
-const handeEditHeroFulfilled = (state, action) => {
-  state.items = action.payload;
+const handleEditHeroFulfilled = (state, action) => {
+  const index = state.items.findIndex(item => item._id === action.payload._id);
+  if (index !== -1) {
+    state.items[index] = action.payload;
+  }
   state.isLoading = false;
   state.error = null;
 };
@@ -49,7 +52,7 @@ const heroSlice = createSlice({
     builder
       .addCase(getHeroImages.fulfilled, handleGetHeroFulfilled)
       .addCase(addHeroImage.fulfilled, handleAddHeroFulfilled)
-      .addCase(editHeroImage.fulfilled, handeEditHeroFulfilled)
+      .addCase(editHeroImage.fulfilled, handleEditHeroFulfilled)
       .addCase(deleteHeroImage.fulfilled, handleDeleteHeroFulfilled),
 });
 
