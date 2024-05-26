@@ -1,12 +1,22 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { baseURL } from '../../utils/constants/baseURL';
+
+axios.defaults.baseURL = baseURL;
+
+// const setAuthHeader = token => {
+//   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+// };
+
 export const getHeroImages = createAsyncThunk(
-  'hero/getGeroImages',
+  'hero/getHeroImages',
   async (_, thunkAPI) => {
+    // const { token } = thunkAPI.getState().user;
     try {
-      const res = await axios.get('/hero');
-      return res.data;
+      // setAuthHeader(token);
+      const { data } = await axios.get('hero');
+      return data.image;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -15,10 +25,17 @@ export const getHeroImages = createAsyncThunk(
 
 export const addHeroImage = createAsyncThunk(
   'hero/addHeroImage',
-  async (image, thunkAPI) => {
+  async (formData, thunkAPI) => {
+    // const { token } = thunkAPI.getState().user;
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
     try {
-      const res = await axios.post('/hero', image);
-      return res.data;
+      // setAuthHeader(token);
+      const { data } = await axios.post('adm/hero', formData, config);
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -27,10 +44,12 @@ export const addHeroImage = createAsyncThunk(
 
 export const editHeroImage = createAsyncThunk(
   'hero/editHeroImage',
-  async ({ id, image }, thunkAPI) => {
+  async ({ id, hero }, thunkAPI) => {
+    // const { token } = thunkAPI.getState().user;
     try {
-      const res = await axios.put(`/hero/${id}`, { ...image });
-      return res.data;
+      // setAuthHeader(token);
+      const { data } = await axios.put(`adm/hero/${id}`, { ...hero });
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -40,9 +59,11 @@ export const editHeroImage = createAsyncThunk(
 export const deleteHeroImage = createAsyncThunk(
   'hero/deleteHeroImage',
   async (id, thunkAPI) => {
+    // const { token } = thunkAPI.getState().user;
     try {
-      const res = await axios.delete(`/hero/${id}`);
-      return res.data;
+      // setAuthHeader(token);
+      const { data } = await axios.delete(`adm/hero/${id}`);
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
