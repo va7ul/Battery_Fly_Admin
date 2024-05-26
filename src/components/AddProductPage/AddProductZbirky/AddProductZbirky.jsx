@@ -8,9 +8,9 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
-// import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema'
+import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema'
 import { addProductZbirky } from '../../../redux/products/productsOperations';
-import { Container, StyledForm, Title, Subtitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
+import { Container, Box, StyledForm, Title, Subtitle, SubTitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 
 export const AddProductZbirky = ({ category }) => {
     const dispatch = useDispatch();
@@ -59,9 +59,8 @@ export const AddProductZbirky = ({ category }) => {
                     information: '',
                     capacity: [capacityObj],
                 }}
-                // validationSchema={productZbirkySchema}
+                validationSchema={productZbirkySchema}
                 onSubmit={(values) => {
-                    // console.log(values)
                     let newCapacity = [];
                     for (const cap of values.capacity) {
 
@@ -133,14 +132,16 @@ export const AddProductZbirky = ({ category }) => {
                                 <StyledErrorMessage name="description" component="div" />
                             </BoxField>
                         </Label>
-                     
+                     <Box>
+                        <SubTitle>Додати фото</SubTitle>
                         <Input
                             accept="image/*"
                             type="file"
                             name="image"
                             onChange={attachImages}
                             multiple
-                        />
+                            />
+                              </Box>
                         <Label>
                             Кількість в наявності
                             <BoxField>
