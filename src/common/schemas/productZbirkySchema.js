@@ -4,7 +4,11 @@ export const productZbirkySchema = Yup.object().shape({
   name: Yup.string().required('Введіть назву товару'),
   price: Yup.string()
     .trim()
-    .required('Введіть загальну ціну товару в форматі від і до через дефіс'),
+    .matches(
+      /^\d+-\d+$/,
+      'Введіть загальну ціну товару в форматі від і до через дефіс'
+    )
+    .required('Введіть загальну ціну товару'),
   description: Yup.string().required('Введіть загальний опис товару'),
   quantity: Yup.number()
     .required('Введіть кількість товару')
@@ -31,5 +35,5 @@ export const productZbirkySchema = Yup.object().shape({
           .integer(),
       })
     )
-    .required('Заповніть всі поля цього блоку'),
+    .required(),
 });
