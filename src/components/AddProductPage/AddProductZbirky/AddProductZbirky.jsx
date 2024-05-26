@@ -8,11 +8,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
-import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema'
+// import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema'
 import { addProductZbirky } from '../../../redux/products/productsOperations';
 import { Container, StyledForm, Title, Subtitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 
-export const AddProductZbirky = ({ category, type }) => {
+export const AddProductZbirky = ({ category }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -20,6 +20,15 @@ export const AddProductZbirky = ({ category, type }) => {
     const [sale, setSale] = useState(false);
     const [popular, setPopular] = useState(false);
     const [holder, setHolder] = useState(false);
+
+    const categoryMapping = {
+    assembly: 'assembly',
+    fpv: 'batteries-for-fpv',
+    transport: 'batteries-for-transport',
+    toys: 'batteries-for-toys',
+  };
+
+    const categoryForAdd = categoryMapping[category];
 
     const capacityObj = {
         capacity: '',
@@ -32,11 +41,11 @@ export const AddProductZbirky = ({ category, type }) => {
         setImages(e.currentTarget.files);
     };
 
-    //   const AddProductButton = () => {
-    //      navigate(
-    //         `/admin/assortment/batteries-${type}`
-    //     );
-    // };
+      const AddProductButton = () => {
+         navigate(
+            `/admin/assortment/${categoryForAdd}`
+        );
+    };
 
     return (
         <Container>
@@ -56,16 +65,13 @@ export const AddProductZbirky = ({ category, type }) => {
                     let newCapacity = [];
                     for (const cap of values.capacity) {
 
-                   
                         const obj = { [cap["capacity"].toString()] : {
                 description: cap.description,
                 holder: cap.holder,
                 price: cap.price
-                        }
-                        }
+                        }}
                         newCapacity.push(obj)
                     }
-                    
                     
                     const formData = new FormData();
                     formData.append('name', values.name);
@@ -89,11 +95,11 @@ export const AddProductZbirky = ({ category, type }) => {
     }
 
                     dispatch(addProductZbirky(formData))
-                    //     .then(result => {
-                    //     if (result.meta.requestStatus === 'fulfilled') {
-                    //         AddProductButton();
-                    //     }
-                    // })
+                        .then(result => {
+                        if (result.meta.requestStatus === 'fulfilled') {
+                            AddProductButton();
+                        }
+                    })
                 }}
             >
                 {({ values }) => (
