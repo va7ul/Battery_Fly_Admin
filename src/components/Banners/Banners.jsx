@@ -1,5 +1,8 @@
 // import * as React from 'react';
 import {
+  useEffect,
+  useMemo,
+  // useEffect,
   // useEffect,
   useState,
 } from 'react';
@@ -21,32 +24,39 @@ import {
 } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { randomId } from '@mui/x-data-grid-generator';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  deleteHeroImage,
+  getHeroImages,
+  // editHeroImage,
+  // getHeroImages,
+} from '../../redux/hero/heroOperations';
+import { selectHero } from '../../redux/hero/heroSelectors';
 // import { randomId } from '@mui/x-data-grid-generator';
 
-const images = [
-  {
-    _id: '662e4b4df04b85608f6b5843',
-    text: 'Потужність у кожному кілометрі: наші електричні батареї для вашого транспорту!',
-    image:
-      'https://res.cloudinary.com/dge7alacy/image/upload/v1714309887/Hero/yx3zqxzkv9bvlygisq2v.png',
-  },
-  {
-    _id: '662e4bc3f04b85608f6b5844',
-    text: 'Безмежна енергія для захоплюючих політів: батареї для FPV дронів!',
-    image:
-      'https://res.cloudinary.com/dge7alacy/image/upload/v1714309886/Hero/ir8j18htynnf3wnessba.png',
-  },
-  {
-    _id: '662e4c1cf04b85608f6b5845',
-    text: 'Втілюй ідеї у реальність: 3D друк на кожен день!',
-    image:
-      'https://res.cloudinary.com/dge7alacy/image/upload/v1714309886/Hero/a0czcwwqskwdnfqq2f3k.png',
-  },
-];
+// const images = [
+//   {
+//     _id: '662e4b4df04b85608f6b5843',
+//     text: 'Потужність у кожному кілометрі: наші електричні батареї для вашого транспорту!',
+//     image:
+//       'https://res.cloudinary.com/dge7alacy/image/upload/v1714309887/Hero/yx3zqxzkv9bvlygisq2v.png',
+//   },
+//   {
+//     _id: '662e4bc3f04b85608f6b5844',
+//     text: 'Безмежна енергія для захоплюючих польотів: батареї для FPV дронів!',
+//     image:
+//       'https://res.cloudinary.com/dge7alacy/image/upload/v1714309886/Hero/ir8j18htynnf3wnessba.png',
+//   },
+//   {
+//     _id: '662e4c1cf04b85608f6b5845',
+//     text: 'Втілюй ідеї у реальність: 3D друк на кожен день!',
+//     image:
+//       'https://res.cloudinary.com/dge7alacy/image/upload/v1714309886/Hero/a0czcwwqskwdnfqq2f3k.png',
+//   },
+// ];
 
 const EditToolbar = props => {
   const { setRows, setRowModesModel } = props;
-  console.log(props);
 
   const handleClick = () => {
     const id = randomId();
@@ -83,41 +93,85 @@ const ImageCell = ({ value, onChange }) => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 5,
-        objectFit: 'contain',
-        margin: 0,
-      }}
-    >
-      <img
-        src={preview}
-        alt="Preview"
-        style={{ maxWidth: '200px', height: 100 }}
-      />
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-    </div>
+    <form>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 5,
+          objectFit: 'contain',
+          margin: 0,
+        }}
+      >
+        <img
+          src={preview}
+          alt="Preview"
+          style={{ maxWidth: '200px', height: 100 }}
+        />
+        <input type="file" accept="image/*" onChange={handleFileChange} />
+      </div>
+    </form>
   );
 };
 
 export const Banners = () => {
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getHeroImages());
+  // }, [dispatch]);
+
+  useEffect(() => {
+    const getHeroImagesSync = async () => {
+      try {
+        dispatch(getHeroImages());
+      } catch (error) {
+        console.log('error', error);
+      }
+    };
+    getHeroImagesSync();
+  }, [dispatch]);
+
+  const images = useSelector(selectHero);
+  const rows = useMemo(
+    () =>
+      images.map(item => ({
+        id: item._id,
+        image: item.image,
+        text: item.text,
+      })),
+    [images]
+  );
+
+  // const [rows, setRows] = useState(initialRows);
+
   const [rowModesModel, setRowModesModel] = useState({});
 
-  const initialRows = images.map(item => ({
-    id: item._id,
-    image: item.image,
-    fileInput: null,
-    text: item.text,
-  }));
+  // useEffect(() => {
+  //   const getHeroImagesSync = async () => {
+  //     try {
+  //       dispatch(getHeroImages());
+  //     } catch (error) {
+  //       console.log('error', error);
+  //     }
+  //   };
+  //   getHeroImagesSync();
+  // }, [dispatch]);
 
-  const [rows, setRows] = useState(initialRows);
+  // const initialRows = images.map(item => ({
+  //   id: item._id,
+  //   image: item.image,
+  //   text: item.text,
+  // }));
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
     }
+  };
+
+  const handleDelete = id => {
+    dispatch(deleteHeroImage(id));
   };
 
   const handleEditClick = id => () => {
@@ -128,31 +182,47 @@ export const Banners = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = id => () => {
-    setRows(rows.filter(row => row.id !== id));
-  };
+  // const handleDeleteClick = id => () => {
+  //   setRows(rows.filter(row => row.id !== id));
+  //   dispatch(deleteHeroImage(id));
+  // };
 
-  const handleCancelClick = id => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
+  // const handleCancelClick = id => () => {
+  //   setRowModesModel({
+  //     ...rowModesModel,
+  //     [id]: { mode: GridRowModes.View, ignoreModifications: true },
+  //   });
 
-    const editedRow = rows.find(row => row.id === id);
-    if (editedRow.isNew) {
-      setRows(rows.filter(row => row.id !== id));
-    }
-  };
+  //   const editedRow = rows.find(row => row.id === id);
+  //   if (editedRow.isNew) {
+  //     setRows(rows.filter(row => row.id !== id));
+  //   }
+  // };
 
-  const processRowUpdate = newRow => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
-    return updatedRow;
-  };
+  // const processRowUpdate = newRow => {
+  //   const updatedRow = { ...newRow, isNew: false };
+  //   setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
+  //   return updatedRow;
+  // };
 
   const handleRowModesModelChange = newRowModesModel => {
     setRowModesModel(newRowModesModel);
   };
+
+  // const [image, setImage] = useState('');
+  // const [imageURL, setImageURL] = useState('');
+  // const fileReader = new FileReader();
+
+  // fileReader.onloadend = () => {
+  //   setImageURL(fileReader.result);
+  // };
+
+  // const handleFileChange = e => {
+  //   e.preventDefault();
+  //   const file = e.target.files[0];
+  //   setImage(file);
+  //   fileReader.readAsDataURL(file);
+  // };
 
   const columns = [
     {
@@ -160,6 +230,24 @@ export const Banners = () => {
       headerName: 'Image',
       type: 'image',
       renderCell: params => (
+        // <form>
+        //   <div
+        //     style={{
+        //       display: 'flex',
+        //       alignItems: 'center',
+        //       gap: 5,
+        //       objectFit: 'contain',
+        //       margin: 0,
+        //     }}
+        //   >
+        //     <img
+        //       src={imageURL}
+        //       alt={image.name}
+        //       style={{ maxWidth: '200px', height: 100 }}
+        //     />
+        //     <input type="file" accept="image/*" onChange={handleFileChange} />
+        //   </div>
+        // </form>
         <ImageCell
           value={params.value}
           onChange={newValue => {
@@ -173,8 +261,8 @@ export const Banners = () => {
         />
       ),
       width: 500,
-      align: 'start',
-      headerAlign: 'start',
+      align: 'center',
+      headerAlign: 'center',
       editable: false,
     },
     {
@@ -212,7 +300,7 @@ export const Banners = () => {
               icon={<CancelIcon />}
               label="Cancel"
               className="textPrimary"
-              onClick={handleCancelClick(id)}
+              // onClick={handleCancelClick(id)}
               color="inherit"
             />,
           ];
@@ -229,7 +317,7 @@ export const Banners = () => {
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={handleDeleteClick(id)}
+            onClick={() => handleDelete(id)}
             color="inherit"
           />,
         ];
@@ -257,7 +345,7 @@ export const Banners = () => {
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
+        // processRowUpdate={processRowUpdate}
         disableColumnMenu={true}
         disableColumnResize={true}
         disableColumnSorting={true}
@@ -268,9 +356,9 @@ export const Banners = () => {
           toolbar: EditToolbar,
           // pagination: EditToolbar,
         }}
-        slotProps={{
-          toolbar: { setRows, setRowModesModel },
-        }}
+        // slotProps={{
+        //   toolbar: { setRows, setRowModesModel },
+        // }}
       />
     </Box>
   );
