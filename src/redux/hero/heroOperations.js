@@ -45,7 +45,8 @@ export const addHeroImage = createAsyncThunk(
 export const editHeroImage = createAsyncThunk(
   'hero/editHeroImage',
   async ({ id, formData }, thunkAPI) => {
-    const { token } = thunkAPI.getState().user;
+    const { token } = thunkAPI.getState().admin;
+    // console.log(id);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
