@@ -103,10 +103,11 @@ export const Banners = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(prev => ({
-          ...prev,
-          [id]: { url: reader.result, file },
-        }));
+        // setImage(prev => ({
+        //   ...prev,
+        //   [id]: { url: reader.result, file },
+        // }));
+        setImage({ [id]: { url: reader.result, file } });
       };
       reader.readAsDataURL(file);
     }
@@ -116,11 +117,12 @@ export const Banners = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     const formData = new FormData();
     if (image[id]?.file) {
+      console.log(image[id]?.file);
       formData.append('image', image[id].file);
     }
     formData.append('text', text[id] || rows.find(row => row.id === id).text);
     try {
-      await dispatch(editHeroImage(id, formData));
+      await dispatch(editHeroImage({ id, formData }));
       console.log(`ura`);
     } catch (error) {
       console.error(`jopa`, error.message);
