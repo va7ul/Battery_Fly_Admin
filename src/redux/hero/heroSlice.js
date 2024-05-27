@@ -32,7 +32,7 @@ const handleAddHeroFulfilled = (state, action) => {
 
 const handleEditHeroFulfilled = (state, action) => {
   const index = state.items.findIndex(item => item._id === action.payload._id);
-  if (index !== -1) {
+  if (index >= 0) {
     state.items[index] = action.payload;
   }
   state.isLoading = false;
