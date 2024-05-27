@@ -54,11 +54,7 @@ export const editHeroImage = createAsyncThunk(
     };
     try {
       setAuthHeader(token);
-      const { data } = await axios.put(
-        `adm/hero/${id}`,
-        { ...formData },
-        config
-      );
+      const { data } = await axios.put(`adm/hero/${id}`, formData, config);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
