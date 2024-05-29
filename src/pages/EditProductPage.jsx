@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getOneProduct } from '../redux/products/productsOperations';
 import {
@@ -7,17 +7,13 @@ import {
   selectOneProductIsLoading,
 } from '../redux/products/productsSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
+import { EditProduct } from 'components/EditProductPage/EditProduct';
 
 const EditProductPage = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectOneProductIsLoading);
   const error = useSelector(selectOneProductError);
   const { cardId } = useParams();
-  let navigate = useNavigate();
-
-  const getBack = () => {
-    navigate(-1);
-  };
 
   useEffect(() => {
     dispatch(getOneProduct(cardId));
@@ -28,8 +24,8 @@ const EditProductPage = () => {
       {isLoading && <CustomLoader />}
       {!isLoading && !error && (
         <>
-          Твій компонент
-          <button onClick={getBack}>Назад</button>
+          <EditProduct />
+         
         </>
       )}
     </>

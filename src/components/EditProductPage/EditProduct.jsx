@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import Radio from '@mui/material/Radio';
@@ -8,20 +8,24 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
-import { addProduct } from '../../../redux/products/productsOperations';
-import { productSchema } from '../../../common/schemas/productSchema'
-import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
+import { editProduct } from '../../redux/products/productsOperations';
+import { selectOneProduct } from '../../redux/products/productsSelectors';
+import { productSchema } from '../../common/schemas/productSchema'
+import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, StyledErrorMessage } from "../AddProductPage/AddProduct/AddProduct.styled";
+import { SubmitButton, ButtonBox, BackButton } from './EditProduct.styled';
 
-export const AddProduct = ({ category, type }) => {
+export const EditProduct = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, type, information, discount } = useSelector(selectOneProduct)
+    
+    const [imagesLocal, setImagesLocal] = useState(image);
+    const [saleLocal, setSaleLocal] = useState(sale);
+    const [popularLocal, setPopularLocal] = useState(popular);
 
-    const [images, setImages] = useState([]);
-    const [sale, setSale] = useState(false);
-    const [popular, setPopular] = useState(false);
 
     const attachImages = e => {
-        setImages(e.currentTarget.files);
+        setImagesLocal(e.currentTarget.files);
     };
 
     const changeType = () => {
@@ -30,22 +34,32 @@ export const AddProduct = ({ category, type }) => {
         }
     };
 
-    const AddProductButton = () => {
+    const editProductButton = () => {
         navigate(
             `/admin/assortment/batteries-${type}`
         );
+    };
+
+    const getBack = () => {
+        navigate(-1);
     };
 
     return (
         <Container>
             <Formik
                 initialValues={{
-                    name: '',
-                    price: '',
-                    description: '',
-                    quantity: '',
-                    discount: '',
-                    information: '',
+                    name: name,
+                    price: price,
+                    description: description,
+                    quantity: quantity,
+                    sale: sale,
+                    discount: discount,
+                    information: information,
+                    category: category,
+                    type: type,
+                    popular: popular,
+                    image: image,
+
                 }}
                 enctype="multipart/form-data"
                 validationSchema={productSchema}
@@ -55,27 +69,28 @@ export const AddProduct = ({ category, type }) => {
                     formData.append('price', values.price);
                     formData.append('description', values.description);
                     formData.append('quantity', values.quantity);
-                    formData.append('sale', sale);
+                    formData.append('sale', saleLocal);
                     formData.append('discount', values.discount || 10);
-                    formData.append('category', category);
-                    formData.append('type', type = changeType() || type);
-                    formData.append('popular', popular);
+                    formData.append('category', values.category);
+                    formData.append('type', values.type = changeType() || type);
+                    formData.append('popular', popularLocal);
                     formData.append('information', values.information);
 
-                    for (const image of images) {
-                        formData.append('files', image)
-                    };
-                    
-                    dispatch(addProduct(formData)).then(result => {
+                    for (const i of imagesLocal) {
+                        formData.append('files', i)
+                        // for (const i of formData) {
+                        //     console.log(i)
+                        // }
+                    }
+                    dispatch(editProduct({ formData, codeOfGood })).then(result => {
                         if (result.meta.requestStatus === 'fulfilled') {
-                            AddProductButton();
+                            editProductButton();
                         }
                     })
                 }}
             >
-                
                 <StyledForm>
-                    <Title>Додавання товару</Title>
+                    <Title>Редагування товару</Title>
                     <Label>
                         Назва товару
                         <Box>
@@ -129,21 +144,22 @@ export const AddProduct = ({ category, type }) => {
                             }}
                         >Знижка</FormLabel>
                         <RadioGroup
+                            value={saleLocal}
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
                             name="row-radio-buttons-group"
                         >
                             <FormControlLabel
-                                value="yes"
-                                onChange={() => { setSale(true) }}
+                                value={true}
+                                onChange={() => { setSaleLocal(true) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
                                     },
                                 }} />} label="Так" />
                             <FormControlLabel
-                                value="no"
-                                onChange={() => { setSale(false) }}
+                                value={false}
+                                onChange={() => { setSaleLocal(false) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
@@ -151,7 +167,7 @@ export const AddProduct = ({ category, type }) => {
                                 }} />} label="Ні" />
                         </RadioGroup>
                     </FormControl>
-                    {sale && <Label>
+                    {saleLocal && <Label>
                         Відсоток знижки
                         <Box>
                             <StyledField name="discount" type="number" />
@@ -185,21 +201,22 @@ export const AddProduct = ({ category, type }) => {
                             }}
                         >Популярний</FormLabel>
                         <RadioGroup
+                            value={popularLocal}
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
                             name="row-radio-buttons-group"
                         >
                             <FormControlLabel
-                                value="yes"
-                                onChange={() => { setPopular(true) }}
+                                value={true}
+                                onChange={() => { setPopularLocal(true) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
                                     },
                                 }} />} label="Так" />
                             <FormControlLabel
-                                value="no"
-                                onChange={() => { setPopular(false) }}
+                                value={false}
+                                onChange={() => { setPopularLocal(false) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
@@ -214,11 +231,14 @@ export const AddProduct = ({ category, type }) => {
                             <StyledErrorMessage name="information" component="div" />
                         </Box>
                     </Label>
-                    <SubmitButton
-                        type="submit"
-                    >
-                        Додати товар
-                    </SubmitButton>
+                    <ButtonBox>
+                        <BackButton onClick={getBack}>Назад</BackButton>
+                        <SubmitButton
+                            type="submit"
+                        >
+                            Зберегти
+                        </SubmitButton>
+                    </ButtonBox>
                 </StyledForm>
             </Formik>
         </Container>
