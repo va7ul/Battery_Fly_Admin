@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getOneProduct } from '../redux/products/productsOperations';
 import {
@@ -14,11 +14,6 @@ const EditProductPage = () => {
   const isLoading = useSelector(selectOneProductIsLoading);
   const error = useSelector(selectOneProductError);
   const { cardId } = useParams();
-  let navigate = useNavigate();
-
-  const getBack = () => {
-    navigate(-1);
-  };
 
   useEffect(() => {
     dispatch(getOneProduct(cardId));
@@ -30,7 +25,7 @@ const EditProductPage = () => {
       {!isLoading && !error && (
         <>
           <EditProduct />
-          <button onClick={getBack}>Назад</button>
+         
         </>
       )}
     </>
