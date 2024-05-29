@@ -194,7 +194,7 @@ export const AddProductZbirky = ({ category }) => {
                         <Label>
                             Категорія
                             <BoxField>
-                                <StyledField name="category" type="text" value={category} />
+                                <StyledField name="category" type="text" value={category} disabled/>
                                 <StyledErrorMessage name="category" component="div" />
                             </BoxField>
                         </Label>
