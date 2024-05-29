@@ -7,6 +7,7 @@ import {
   selectOneProductIsLoading,
 } from '../redux/products/productsSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
+import { EditProduct } from 'components/EditProductPage/EditProduct';
 
 const EditProductPage = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const EditProductPage = () => {
       {isLoading && <CustomLoader />}
       {!isLoading && !error && (
         <>
-          Твій компонент
+          <EditProduct />
           <button onClick={getBack}>Назад</button>
         </>
       )}
