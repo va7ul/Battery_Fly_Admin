@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/800.e3c502c5.chunk.js","mappings":"gJAIA,UAJoB,WAClB,OAAOA,EAAAA,EAAAA,KAAAC,EAAAA,SAAA,CAAAC,SAAE,eACX,C","sources":["pages/BannersPage.jsx"],"sourcesContent":["const BannersPage = () => {\n  return <>BannersPage</>;\n};\n\nexport default BannersPage;\n"],"names":["_jsx","_Fragment","children"],"sourceRoot":""}
