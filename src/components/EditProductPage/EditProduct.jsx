@@ -8,23 +8,24 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
-import { addProduct } from '../../redux/products/productsOperations';
+import { editProduct } from '../../redux/products/productsOperations';
 import { selectOneProduct } from '../../redux/products/productsSelectors';
 import { productSchema } from '../../common/schemas/productSchema'
-import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, SubmitButton, StyledErrorMessage } from "../AddProductPage/AddProduct/AddProduct.styled";
+import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, StyledErrorMessage } from "../AddProductPage/AddProduct/AddProduct.styled";
+import { SubmitButton, ButtonBox, BackButton } from './EditProduct.styled';
 
 export const EditProduct = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, type, information, discount } = useSelector(selectOneProduct)
+    
+    const [imagesLocal, setImagesLocal] = useState(image);
+    const [saleLocal, setSaleLocal] = useState(sale);
+    const [popularLocal, setPopularLocal] = useState(popular);
 
-    const [images, setImages] = useState([]);
-    // const [sale, setSale] = useState(false);
-    // const [popular, setPopular] = useState(false);
-
-    const {name, description, image, price, quantity, sale, popular, category, type, information, discount} = useSelector(selectOneProduct)
 
     const attachImages = e => {
-        setImages(e.currentTarget.files);
+        setImagesLocal(e.currentTarget.files);
     };
 
     const changeType = () => {
@@ -33,10 +34,14 @@ export const EditProduct = () => {
         }
     };
 
-    const AddProductButton = () => {
+    const editProductButton = () => {
         navigate(
             `/admin/assortment/batteries-${type}`
         );
+    };
+
+    const getBack = () => {
+        navigate(-1);
     };
 
     return (
@@ -64,27 +69,28 @@ export const EditProduct = () => {
                     formData.append('price', values.price);
                     formData.append('description', values.description);
                     formData.append('quantity', values.quantity);
-                    formData.append('sale', values.sale);
+                    formData.append('sale', saleLocal);
                     formData.append('discount', values.discount || 10);
                     formData.append('category', values.category);
                     formData.append('type', values.type = changeType() || type);
-                    formData.append('popular', values.popular);
+                    formData.append('popular', popularLocal);
                     formData.append('information', values.information);
 
-                    for (const image of images) {
-                        formData.append('files', image)
-                    };
-                    
-                    dispatch(addProduct(formData)).then(result => {
+                    for (const i of imagesLocal) {
+                        formData.append('files', i)
+                        // for (const i of formData) {
+                        //     console.log(i)
+                        // }
+                    }
+                    dispatch(editProduct({ formData, codeOfGood })).then(result => {
                         if (result.meta.requestStatus === 'fulfilled') {
-                            AddProductButton();
+                            editProductButton();
                         }
                     })
                 }}
             >
-                
                 <StyledForm>
-                    <Title>Додавання товару</Title>
+                    <Title>Редагування товару</Title>
                     <Label>
                         Назва товару
                         <Box>
@@ -138,21 +144,22 @@ export const EditProduct = () => {
                             }}
                         >Знижка</FormLabel>
                         <RadioGroup
+                            value={saleLocal}
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
                             name="row-radio-buttons-group"
                         >
                             <FormControlLabel
-                                value="yes"
-                                // onChange={() => { setSale(true) }}
+                                value={true}
+                                onChange={() => { setSaleLocal(true) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
                                     },
                                 }} />} label="Так" />
                             <FormControlLabel
-                                value="no"
-                                // onChange={() => { setSale(false) }}
+                                value={false}
+                                onChange={() => { setSaleLocal(false) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
@@ -160,7 +167,7 @@ export const EditProduct = () => {
                                 }} />} label="Ні" />
                         </RadioGroup>
                     </FormControl>
-                    {sale && <Label>
+                    {saleLocal && <Label>
                         Відсоток знижки
                         <Box>
                             <StyledField name="discount" type="number" />
@@ -171,14 +178,14 @@ export const EditProduct = () => {
                     <Label>
                         Категорія
                         <Box>
-                            <StyledField name="category" type="text" value={category} />
+                            <StyledField name="category" type="text" value={category} disabled/>
                         </Box>
                     </Label>
 
                     {type !== "null" && <Label>
                         Тип
                         <Box>
-                            <StyledField name="type" type="text" value={type} />
+                            <StyledField name="type" type="text" value={type} disabled/>
                         </Box>
                     </Label>}
                      
@@ -194,21 +201,22 @@ export const EditProduct = () => {
                             }}
                         >Популярний</FormLabel>
                         <RadioGroup
+                            value={popularLocal}
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
                             name="row-radio-buttons-group"
                         >
                             <FormControlLabel
-                                value="yes"
-                                // onChange={() => { setPopular(true) }}
+                                value={true}
+                                onChange={() => { setPopularLocal(true) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
                                     },
                                 }} />} label="Так" />
                             <FormControlLabel
-                                value="no"
-                                // onChange={() => { setPopular(false) }}
+                                value={false}
+                                onChange={() => { setPopularLocal(false) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
@@ -223,11 +231,14 @@ export const EditProduct = () => {
                             <StyledErrorMessage name="information" component="div" />
                         </Box>
                     </Label>
-                    <SubmitButton
-                        type="submit"
-                    >
-                        Додати товар
-                    </SubmitButton>
+                    <ButtonBox>
+                        <BackButton onClick={getBack}>Назад</BackButton>
+                        <SubmitButton
+                            type="submit"
+                        >
+                            Зберегти
+                        </SubmitButton>
+                    </ButtonBox>
                 </StyledForm>
             </Formik>
         </Container>
