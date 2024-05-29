@@ -162,14 +162,14 @@ export const AddProduct = ({ category, type }) => {
                     <Label>
                         Категорія
                         <Box>
-                            <StyledField name="category" type="text" value={category} />
+                            <StyledField name="category" type="text" value={category} disabled/>
                         </Box>
                     </Label>
 
                     {type !== "null" && <Label>
                         Тип
                         <Box>
-                            <StyledField name="type" type="text" value={type} />
+                            <StyledField name="type" type="text" value={type} disabled/>
                         </Box>
                     </Label>}
                      
