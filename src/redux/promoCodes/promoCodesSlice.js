@@ -7,15 +7,7 @@ import {
 } from '../promoCodes/promoCodesOperations';
 
 const initialState = {
-  promoCodes: [
-    {
-      _id: '662e4d87b7322ab63b9d14cd',
-      discount: 10,
-      valid: true,
-      name: 'HelloWorld',
-      createdAt: '2024-04-02T14:02:16.429+00:00',
-    },
-  ],
+  promoCodes: [],
   isLoading: false,
   error: null,
 };
@@ -29,10 +21,35 @@ const handleRejected = (state, action) => {
   state.error = action.payload;
 };
 
-const handleFulfilled = (state, action) => {
+const handleGetPromoFulfilled = (state, action) => {
   state.isLoading = false;
   state.error = null;
-  state.promoCodes = action.payload.result;
+  state.promoCodes = action.payload.promo;
+};
+
+const handleAdPromoFulfilled = (state, action) => {
+  state.isLoading = false;
+  state.error = null;
+  state.promoCodes.unshift(action.payload.promo);
+};
+
+const handleUpdatePromoFulfilled = (state, action) => {
+  state.isLoading = false;
+  state.error = null;
+  state.promoCodes = state.promoCodes.map(el => {
+    if (el._id === action.payload.promo._id) {
+      return action.payload.promo;
+    }
+    return el;
+  });
+};
+
+const handleDeletePromoFulfilled = (state, action) => {
+  state.isLoading = false;
+  state.error = null;
+  state.promoCodes = state.promoCodes.filter(
+    el => el._id !== action.payload.id
+  );
 };
 
 const promoCodesSlice = createSlice({
@@ -41,10 +58,10 @@ const promoCodesSlice = createSlice({
   reducers: {},
   extraReducers: builder =>
     builder
-      .addCase(getPromoCodes.fulfilled, handleFulfilled)
-      // .addCase(addPromoCode.fulfilled, handleFulfilled)
-      // .addCase(updatePromoCode.fulfilled, handleFulfilled)
-      // .addCase(deletePromoCode.fulfilled, handleFulfilled)
+      .addCase(getPromoCodes.fulfilled, handleGetPromoFulfilled)
+      .addCase(addPromoCode.fulfilled, handleAdPromoFulfilled)
+      .addCase(updatePromoCode.fulfilled, handleUpdatePromoFulfilled)
+      .addCase(deletePromoCode.fulfilled, handleDeletePromoFulfilled)
       .addMatcher(
         isAnyOf(
           getPromoCodes.pending,
