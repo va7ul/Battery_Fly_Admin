@@ -10,7 +10,7 @@ const initialState = {
   isRefreshing: false,
 };
 
-const handlePending = (state, { payload }) => {
+const handlePending = state => {
   state.isLoading = true;
   state.errorStatus = null;
 };
@@ -34,7 +34,7 @@ const handleRejected = (state, { payload }) => {
 
 const handleRefreshRejected = state => {
   state.isRefreshing = false;
-  // state.isLoggedIn = false;
+  state.isLoggedIn = false;
 };
 
 const handleEntranceFulfilled = (state, { payload }) => {
