@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { selectAllOrders } from '../../redux/orders/ordersSelectors';
+import { themeMUI } from 'styles/GlobalStyled';
 import Box from '@mui/material/Box';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
@@ -58,24 +59,54 @@ export const OrdersTable = () => {
     {
       field: 'numberOfOrder',
       headerName: '№ Замовлення',
+      headerClassName: 'super-app-theme--header',
+      type: 'number',
+      align: 'center',
+      headerAlign: 'center',
     },
-    { field: 'name', headerName: 'Прізвище та імя' },
-    { field: 'email', headerName: 'Email' },
-    { field: 'tel', headerName: 'Телефон' },
+    {
+      field: 'name',
+      headerName: 'Прізвище та імя',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'tel',
+      headerName: 'Телефон',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'total',
       headerName: 'Сума',
+      headerClassName: 'super-app-theme--header',
       type: 'number',
-      align: 'left',
-      headerAlign: 'left',
+      align: 'center',
+      headerAlign: 'center',
     },
-    { field: 'promoCode', headerName: 'Промокод' },
+    {
+      field: 'promoCode',
+      headerName: 'Промокод',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'promoCodeDiscount',
       headerName: '% Знижки',
+      headerClassName: 'super-app-theme--header',
       type: 'number',
-      align: 'left',
-      headerAlign: 'left',
+      align: 'center',
+      headerAlign: 'center',
       valueFormatter: value => {
         if (value == null) {
           return '';
@@ -86,24 +117,47 @@ export const OrdersTable = () => {
     {
       field: 'discountValue',
       headerName: 'Знижка',
+      headerClassName: 'super-app-theme--header',
       type: 'number',
-      align: 'left',
-      headerAlign: 'left',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'together',
       headerName: 'Разом',
+      headerClassName: 'super-app-theme--header',
       type: 'number',
-      align: 'left',
-      headerAlign: 'left',
+      align: 'center',
+      headerAlign: 'center',
     },
-    { field: 'delivery', headerName: 'Доставка' },
-    { field: 'payment', headerName: 'Спосіб оплати' },
-    { field: 'comment', headerName: 'Коментар' },
+    {
+      field: 'delivery',
+      headerName: 'Доставка',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'payment',
+      headerName: 'Спосіб оплати',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'comment',
+      headerName: 'Коментар',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'date',
       headerName: 'Дата',
+      headerClassName: 'super-app-theme--header',
       type: 'date',
+      align: 'center',
+      headerAlign: 'center',
       valueFormatter: value => {
         if (value == null) {
           return '';
@@ -114,6 +168,9 @@ export const OrdersTable = () => {
     {
       field: 'status',
       headerName: 'Статус',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
       type: 'singleSelect',
       valueOptions: ['Нове', 'В роботі', 'Скасовано', 'Доставлено'],
     },
@@ -121,6 +178,7 @@ export const OrdersTable = () => {
       field: 'actions',
       type: 'actions',
       headerName: '',
+      headerClassName: 'super-app-theme--header',
       cellClassName: 'actions',
       getActions: ({ id }) => {
         return [
@@ -141,13 +199,20 @@ export const OrdersTable = () => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        '& .super-app-theme--header': {
+          backgroundColor: themeMUI.palette.background.primary,
+        },
+      }}
+    >
       <DataGrid
         rows={rows}
         columns={columns}
         editMode="row"
         apiRef={apiRef}
         autoHeight
+        autosizeOnMount={true}
         autosizeOptions={autosizeOptions}
         pageSizeOptions={[10, 25, 100]}
         hideFooterSelectedRowCount
