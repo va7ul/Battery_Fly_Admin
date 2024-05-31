@@ -1,13 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo, useState } from 'react';
 import { selectPromoCodes } from '../../redux/promoCodes/promoCodesSelectors';
+import {
+  addPromoCode,
+  deletePromoCode,
+  updatePromoCode,
+} from '../../redux/promoCodes/promoCodesOperations';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
-import { Box, Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
+import { themeMUI } from 'styles/GlobalStyled';
+import { Box, Button } from '@mui/material';
 import {
   DataGrid,
   GridToolbar,
@@ -17,12 +23,15 @@ import {
   useGridApiRef,
 } from '@mui/x-data-grid';
 import { randomId } from '@mui/x-data-grid-generator';
+import { DeleteItem } from 'components/Modals/DeleteItem/DeleteItem';
 
 export const PromoCodesTable = () => {
   const [open, setOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState();
   const apiRef = useGridApiRef();
   const dispatch = useDispatch();
   const promoCodes = useSelector(selectPromoCodes);
+  const [rowModesModel, setRowModesModel] = useState({});
 
   const autosizeOptions = useMemo(
     () => ({
@@ -37,7 +46,7 @@ export const PromoCodesTable = () => {
     if (apiRef.current) {
       apiRef.current.autosizeColumns(autosizeOptions);
     }
-  }, [apiRef, autosizeOptions, promoCodes]);
+  }, [apiRef, autosizeOptions, promoCodes, rowModesModel]);
 
   const initialRows = useMemo(
     () =>
@@ -52,29 +61,58 @@ export const PromoCodesTable = () => {
   );
 
   const [rows, setRows] = useState(initialRows);
-  const [rowModesModel, setRowModesModel] = useState({});
+
+  const processRowUpdate = newRow => {
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
+
+    const newPromoData = {
+      name: newRow.promoCode,
+      discount: newRow.discount,
+      valid: newRow.valid,
+    };
+
+    if (rows.find(row => row.id === newRow.id && row.promoCode === '')) {
+      dispatch(addPromoCode(newPromoData));
+    } else {
+      dispatch(updatePromoCode({ id: newRow.id, promoData: newPromoData }));
+    }
+
+    return updatedRow;
+  };
 
   const columns = [
-    { field: 'promoCode', headerName: 'Промокод', editable: true },
+    {
+      field: 'promoCode',
+      headerName: 'Промокод',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+      editable: true,
+    },
     {
       field: 'discount',
       headerName: 'Знижка',
+      headerClassName: 'super-app-theme--header',
       type: 'number',
-      align: 'left',
-      headerAlign: 'left',
+      align: 'center',
+      headerAlign: 'center',
       editable: true,
     },
     {
       field: 'valid',
       headerName: 'Активний',
+      headerClassName: 'super-app-theme--header',
       type: 'boolean',
       editable: true,
     },
     {
       field: 'createdAt',
       headerName: 'Дата додавання',
+      headerClassName: 'super-app-theme--header',
       type: 'date',
-      editable: true,
+      align: 'center',
+      headerAlign: 'center',
       valueFormatter: value => {
         if (value == null) {
           return '';
@@ -86,6 +124,7 @@ export const PromoCodesTable = () => {
       field: 'actions',
       type: 'actions',
       headerName: '',
+      headerClassName: 'super-app-theme--header',
       cellClassName: 'actions',
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -157,14 +196,15 @@ export const PromoCodesTable = () => {
 
   const handleDeleteClick = id => () => {
     setOpen(true);
+    setIdToDelete(id);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const deleteProduct = () => {
-    dispatch();
+  const deleteItem = () => {
+    dispatch(deletePromoCode(idToDelete));
   };
 
   const CustomFooter = props => {
@@ -172,7 +212,6 @@ export const PromoCodesTable = () => {
 
     const handleClick = () => {
       const id = randomId();
-      const date = new Date().toLocaleDateString();
       setRows(oldRows => [
         ...oldRows,
         {
@@ -180,15 +219,16 @@ export const PromoCodesTable = () => {
           promoCode: '',
           discount: '',
           valid: true,
-          createdAt: date,
+          createdAt: '',
           isNew: true,
         },
       ]);
       setRowModesModel(oldModel => ({
         ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'promoCode' },
       }));
     };
+
     return (
       <>
         <Button
@@ -205,56 +245,27 @@ export const PromoCodesTable = () => {
   };
 
   return (
-    <Box>
-      <Dialog
+    <Box
+      sx={{
+        '& .super-app-theme--header': {
+          backgroundColor: themeMUI.palette.background.primary,
+        },
+      }}
+    >
+      <DeleteItem
         open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        slotProps={{
-          backdrop: {
-            sx: {
-              backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            },
-          },
-        }}
-        sx={{
-          '& .MuiDialog-paper': {
-            bgcolor: 'secondary.main',
-            borderRadius: '18px',
-          },
-        }}
-      >
-        <DialogTitle id="alert-dialog-title">
-          Ви впевнені, що хочете видалити товар?
-        </DialogTitle>
-        <DialogActions>
-          <Button
-            onClick={deleteProduct}
-            sx={{
-              color: 'text.primary',
-              '&:hover': { color: 'hoverColor.main' },
-            }}
-          >
-            Підтвердити
-          </Button>
-          <Button
-            onClick={handleClose}
-            sx={{
-              color: 'text.primary',
-              '&:hover': { color: 'hoverColor.main' },
-            }}
-          >
-            Скасувати
-          </Button>
-        </DialogActions>
-      </Dialog>
+        handleClose={handleClose}
+        deleteItem={deleteItem}
+      />
       <DataGrid
         autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
         editMode="row"
+        rowModesModel={rowModesModel}
+        processRowUpdate={processRowUpdate}
+        autosizeOnMount={true}
         autosizeOptions={autosizeOptions}
         pageSizeOptions={[10, 25, 100]}
         hideFooterSelectedRowCount
