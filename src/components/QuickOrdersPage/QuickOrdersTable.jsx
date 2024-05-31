@@ -1,9 +1,11 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { selectQuickOrders } from '../../redux/orders/ordersSelectors';
+import { themeMUI } from 'styles/GlobalStyled';
 import { Box } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
+import { type } from '@testing-library/user-event/dist/type';
 
 export const QuickOrdersTable = () => {
   const apiRef = useGridApiRef();
@@ -39,21 +41,50 @@ export const QuickOrdersTable = () => {
   );
 
   const columns = [
-    { field: 'numberOfOrder', headerName: 'Номер замовлення' },
-    { field: 'codeOfGood', headerName: 'Код товару' },
+    {
+      field: 'numberOfOrder',
+      headerName: 'Номер замовлення',
+      headerClassName: 'super-app-theme--header',
+      type: 'number',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'codeOfGood',
+      headerName: 'Код товару',
+      headerClassName: 'super-app-theme--header',
+      type: 'number',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'name',
       headerName: 'Назва товару',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
-    { field: 'userName', headerName: 'Імя' },
+    {
+      field: 'userName',
+      headerName: 'Імя',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'tel',
       headerName: 'Телефон',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'createdAt',
       headerName: 'Дата',
+      headerClassName: 'super-app-theme--header',
       type: 'date',
+      align: 'center',
+      headerAlign: 'center',
       valueFormatter: value => {
         if (value == null) {
           return '';
@@ -64,12 +95,19 @@ export const QuickOrdersTable = () => {
   ];
 
   return (
-    <Box>
+    <Box
+      sx={{
+        '& .super-app-theme--header': {
+          backgroundColor: themeMUI.palette.background.primary,
+        },
+      }}
+    >
       <DataGrid
         autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
+        autosizeOnMount={true}
         autosizeOptions={autosizeOptions}
         pageSizeOptions={[10, 25, 100]}
         hideFooterSelectedRowCount
