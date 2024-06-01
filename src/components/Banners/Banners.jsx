@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-// import AddIcon from '@mui/icons-material/Add';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
@@ -104,10 +102,6 @@ export const Banners = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        // setImage(prev => ({
-        //   ...prev,
-        //   [id]: { url: reader.result, file },
-        // }));
         setImage({ [id]: { url: reader.result, file } });
       };
       reader.readAsDataURL(file);
@@ -167,7 +161,7 @@ export const Banners = () => {
               type="file"
               accept="image/*"
               onChange={handleFileChange(id)}
-              disabled={isInEditMode ? false : true}
+              style={{ display: isInEditMode ? 'inline-block' : 'none' }}
             />
           </div>
         );
