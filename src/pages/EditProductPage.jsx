@@ -6,26 +6,30 @@ import {
   selectOneProductError,
   selectOneProductIsLoading,
 } from '../redux/products/productsSelectors';
+import { selectOneProduct } from '../redux/products/productsSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
-import { EditProduct } from 'components/EditProductPage/EditProduct';
+import { EditProduct } from 'components/EditProductPage/EditProduct/EditProduct';
+import { EditProductZbirky } from 'components/EditProductPage/EditProductZbirky/EditProductZbirky';
 
 const EditProductPage = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectOneProductIsLoading);
   const error = useSelector(selectOneProductError);
+  const { category } = useSelector(selectOneProduct)
   const { cardId } = useParams();
-
+  
   useEffect(() => {
     dispatch(getOneProduct(cardId));
   }, [dispatch, cardId]);
+
+  const zbirka = ['assembly', 'fpv', 'transport', 'toys']
 
   return (
     <>
       {isLoading && <CustomLoader />}
       {!isLoading && !error && (
         <>
-          <EditProduct />
-         
+          {zbirka.includes(category) ? <EditProductZbirky /> : <EditProduct />}
         </>
       )}
     </>
