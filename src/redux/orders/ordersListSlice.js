@@ -10,16 +10,7 @@ const initialState = {
   allOrders: [],
   prints3D: [],
   quickOrders: [],
-  applications: [
-    {
-      _id: '66366fb2df9b1166e5faff64',
-      numberOfApplication: '100060',
-      name: 'Дмитро',
-      tel: '+380504444444',
-      comment: '',
-      createdAt: '2024-05-04T17:26:10.226+00:00',
-    },
-  ],
+  applications: [],
   isLoading: false,
   error: null,
 };
