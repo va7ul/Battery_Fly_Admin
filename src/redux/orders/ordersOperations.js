@@ -91,7 +91,7 @@ export const getApplications = createAsyncThunk(
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get('adm/orders');
+      const { data } = await axios.get('adm/feedback');
 
       return data;
     } catch (error) {
