@@ -19,7 +19,7 @@ const handleError = error => {
 export const getCustomers = createAsyncThunk(
   'customers/getCustomers',
   async (_, thunkApi) => {
-    const { token } = thunkApi.getState().user;
+    const { token } = thunkApi.getState().admin;
 
     try {
       setAuthHeader(token);

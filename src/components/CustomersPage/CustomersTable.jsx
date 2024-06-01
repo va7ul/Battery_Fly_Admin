@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { selectCustomers } from '../../redux/customers/customersSelectors';
+import { themeMUI } from 'styles/GlobalStyled';
 import { Box } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
@@ -44,31 +45,61 @@ export const CustomersTable = () => {
   );
 
   const columns = [
-    { field: 'lastName', headerName: 'Прізвище' },
-    { field: 'firstName', headerName: 'Імя' },
-    { field: 'patronymic', headerName: 'По батькові' },
+    {
+      field: 'lastName',
+      headerName: 'Прізвище',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'firstName',
+      headerName: 'Імя',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'patronymic',
+      headerName: 'По батькові',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'email',
       headerName: 'Пошта',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'tel',
       headerName: 'Телефон',
-      // align: 'left',
-      // headerAlign: 'left',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
-
     {
       field: 'promoCodes',
       headerName: 'Промокоди',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'delivery',
       headerName: 'Доставка',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'createdAt',
       headerName: 'Дата реєстрації',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
       type: 'date',
       valueFormatter: value => {
         if (value == null) {
@@ -80,17 +111,25 @@ export const CustomersTable = () => {
     {
       field: 'verifiedEmail',
       headerName: 'Верифікований',
+      headerClassName: 'super-app-theme--header',
       type: 'boolean',
     },
   ];
 
   return (
-    <Box>
+    <Box
+      sx={{
+        '& .super-app-theme--header': {
+          backgroundColor: themeMUI.palette.background.primary,
+        },
+      }}
+    >
       <DataGrid
         autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
+        autosizeOnMount={true}
         autosizeOptions={autosizeOptions}
         pageSizeOptions={[10, 25, 100]}
         hideFooterSelectedRowCount
@@ -105,14 +144,13 @@ export const CustomersTable = () => {
         }}
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
-          // columns: {
-          //   columnVisibilityModel: {
-          //     patronymic: false,
-          //     promoCodes: false,
-          //     delivery: false,
-          //     createdAt: false,
-          //   },
-          // },
+          columns: {
+            columnVisibilityModel: {
+              patronymic: false,
+              promoCodes: false,
+              delivery: false,
+            },
+          },
         }}
         sx={{ '--DataGrid-overlayHeight': '300px' }}
       />

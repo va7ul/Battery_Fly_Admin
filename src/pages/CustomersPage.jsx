@@ -22,7 +22,6 @@ const CustomersPage = () => {
     <>
       {isLoading && <CustomLoader />}
       {!isLoading && !error && <CustomersTable />}
-      <CustomersTable />
     </>
   );
 };
