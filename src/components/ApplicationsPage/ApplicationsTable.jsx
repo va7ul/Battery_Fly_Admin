@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { selectApplications } from '../../redux/orders/ordersSelectors';
+import { themeMUI } from 'styles/GlobalStyled';
 import { Box } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
@@ -38,19 +39,41 @@ export const ApplicationsTable = () => {
   );
 
   const columns = [
-    { field: 'numberOfApplication', headerName: 'Номер заявки' },
-    { field: 'name', headerName: 'Імя' },
+    {
+      field: 'numberOfApplication',
+      headerName: 'Номер заявки',
+      headerClassName: 'super-app-theme--header',
+      type: 'number',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'name',
+      headerName: 'Імя',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'tel',
       headerName: 'Телефон',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'comment',
       headerName: 'Коментар',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'createdAt',
       headerName: 'Дата',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
       type: 'date',
       valueFormatter: value => {
         if (value == null) {
@@ -62,12 +85,19 @@ export const ApplicationsTable = () => {
   ];
 
   return (
-    <Box>
+    <Box
+      sx={{
+        '& .super-app-theme--header': {
+          backgroundColor: themeMUI.palette.background.primary,
+        },
+      }}
+    >
       <DataGrid
         autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
+        autosizeOnMount={true}
         autosizeOptions={autosizeOptions}
         pageSizeOptions={[10, 25, 100]}
         hideFooterSelectedRowCount

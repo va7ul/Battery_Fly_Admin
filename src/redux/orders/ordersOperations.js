@@ -19,11 +19,11 @@ const handleError = error => {
 export const getAllOrders = createAsyncThunk(
   'orders/getAllOrders',
   async (_, thunkApi) => {
-    const { token } = thunkApi.getState().user;
+    const { token } = thunkApi.getState().admin;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get('adm/orders');
+      const { data } = await axios.get('adm/get-orders');
 
       return data;
     } catch (error) {
@@ -36,11 +36,11 @@ export const getAllOrders = createAsyncThunk(
 export const getOneOrder = createAsyncThunk(
   'orders/getOneOrder',
   async (orderId, thunkApi) => {
-    const { token } = thunkApi.getState().user;
+    const { token } = thunkApi.getState().admin;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get(`adm/orders/${orderId}`);
+      const { data } = await axios.get(`adm/get-order/${orderId}`);
 
       return data;
     } catch (error) {
@@ -53,11 +53,11 @@ export const getOneOrder = createAsyncThunk(
 export const getPrints3D = createAsyncThunk(
   'orders/getPrints3D',
   async (_, thunkApi) => {
-    const { token } = thunkApi.getState().user;
+    const { token } = thunkApi.getState().admin;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get('adm/prints-3D');
+      const { data } = await axios.get('adm/3dprint-orders');
 
       return data;
     } catch (error) {
@@ -70,7 +70,7 @@ export const getPrints3D = createAsyncThunk(
 export const getQuickOrders = createAsyncThunk(
   'orders/getQuickOrders',
   async (_, thunkApi) => {
-    const { token } = thunkApi.getState().user;
+    const { token } = thunkApi.getState().admin;
 
     try {
       setAuthHeader(token);
@@ -87,7 +87,7 @@ export const getQuickOrders = createAsyncThunk(
 export const getApplications = createAsyncThunk(
   'orders/getApplications',
   async (_, thunkApi) => {
-    const { token } = thunkApi.getState().user;
+    const { token } = thunkApi.getState().admin;
 
     try {
       setAuthHeader(token);

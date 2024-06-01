@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { selectPrints3D } from '../../redux/orders/ordersSelectors';
+import { themeMUI } from 'styles/GlobalStyled';
 import { Box } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
@@ -41,23 +42,63 @@ export const Prints3DTable = () => {
   );
 
   const columns = [
-    { field: 'numberOfOrder', headerName: 'Номер замовлення' },
-    { field: 'userName', headerName: 'Імя' },
+    {
+      field: 'numberOfOrder',
+      headerName: 'Номер замовлення',
+      headerClassName: 'super-app-theme--header',
+      type: 'number',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'userName',
+      headerName: 'Імя',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'tel',
       headerName: 'Телефон',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'text',
       headerName: 'Коментар',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
-    { field: 'accuracy', headerName: 'Точність' },
-    { field: 'plactic', headerName: 'Тип пластику' },
-    { field: 'color', headerName: 'Колір' },
+    {
+      field: 'accuracy',
+      headerName: 'Точність',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'plactic',
+      headerName: 'Тип пластику',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'color',
+      headerName: 'Колір',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'createdAt',
       headerName: 'Дата',
+      headerClassName: 'super-app-theme--header',
       type: 'date',
+      align: 'center',
+      headerAlign: 'center',
       valueFormatter: value => {
         if (value == null) {
           return '';
@@ -68,12 +109,19 @@ export const Prints3DTable = () => {
   ];
 
   return (
-    <Box>
+    <Box
+      sx={{
+        '& .super-app-theme--header': {
+          backgroundColor: themeMUI.palette.background.primary,
+        },
+      }}
+    >
       <DataGrid
         autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
+        autosizeOnMount={true}
         autosizeOptions={autosizeOptions}
         pageSizeOptions={[10, 25, 100]}
         hideFooterSelectedRowCount
