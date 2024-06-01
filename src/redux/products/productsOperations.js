@@ -241,6 +241,28 @@ export const addProductZbirky = createAsyncThunk(
   }
 );
 
+export const editProductZbirky = createAsyncThunk(
+  'products/productZbirky-edit',
+  async ({ formData, codeOfGood }, thunkApi) => {
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    try {
+      const { data } = await axios.put(
+        `adm/assemblies-edit/${codeOfGood}`,
+        formData,
+        config
+      );
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
+
 export const deleteProduct = createAsyncThunk(
   'products/product-delete',
   async (codeOfGood, thunkApi) => {
