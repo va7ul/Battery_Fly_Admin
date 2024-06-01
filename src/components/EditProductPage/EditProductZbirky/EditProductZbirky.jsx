@@ -16,7 +16,7 @@ import { Container, Box, StyledForm, Title, Subtitle, SubTitle, Input, Label, Bo
 export const EditProductZbirky = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, holder, capacity = {description, price, holder }, information, discount } = useSelector(selectOneProduct)
+    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, holder, capacity, information, discount } = useSelector(selectOneProduct)
 
     const [imagesLocal, setImagesLocal] = useState(image);
     const [saleLocal, setSaleLocal] = useState(sale);
@@ -33,11 +33,27 @@ export const EditProductZbirky = () => {
     const categoryForAdd = categoryMapping[category];
 
     const capacityObj = {
-        capacity: capacity,
-        description: capacity.description,
-        price: capacity.price,
-        holder: capacity.holder
+        // capacity: capC,
+        // description: desC,
+        // price: priceC,
+        // holder: holderC
     };
+
+    let newCapacity = [];
+
+    
+    const keys = Object.keys(capacity)
+
+    for (let i = 0; i < keys.length; i++) {
+        
+        const obg = {
+            capacity: keys[i],
+            description: capacity[keys[i]].description,
+            price: capacity[keys[i]].price,
+            holder: capacity[keys[i]].holder
+        }
+        newCapacity.push(obg)
+    }
 
       const attachImages = e => {
         setImagesLocal(e.currentTarget.files);
@@ -63,7 +79,7 @@ export const EditProductZbirky = () => {
                     category: category,
                     popular: popular,
                     image: image,
-                    capacity: [capacityObj],
+                    capacity: capacity,
                 }}
                 enctype="multipart/form-data"
                 validationSchema={productZbirkySchema}
@@ -241,11 +257,10 @@ export const EditProductZbirky = () => {
                         </FormControl>
 
                         <Subtitle>Блок характеристик ємності</Subtitle>
-
                         <FieldArray name="capacity">
                             {({ push, remove }) => (
                                 <>
-                                    {values.capacity.map((cap, index) => {
+                                    {newCapacity.map((cap, index) => {
     
                                         return (
                                             <BoxCapacity key={index}>
@@ -253,6 +268,7 @@ export const EditProductZbirky = () => {
                                                     Значення ємності
                                                     <BoxField>
                                                         <CapacityField name={`capacity[${index}].capacity`}
+                                                            value={cap.capacity}
                                                         
                                                             type="number" />
                                                         <StyledErrorMessage name={`capacity[${index}].capacity`} component="div" />
@@ -261,21 +277,27 @@ export const EditProductZbirky = () => {
                                                 <LabelCapacity>
                                                     Характеристики
                                                     <BoxField>
-                                                        <CapacityTextField name={`capacity[${index}].description`} type="text"  placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
+                                                        <CapacityTextField name={`capacity[${index}].description`} value={cap.description} type="text"  placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
                                                         <StyledErrorMessage name={`capacity[${index}].description`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>
                                                 <LabelCapacity >
                                                     Ціна
                                                     <BoxField>
-                                                        <CapacityField name={`capacity[${index}].price`} type="number" />
+
+                                                        <CapacityField name={`capacity[${index}].price`} type="number"
+                                                            value={cap.price}
+                                                        />
                                                         <StyledErrorMessage name={`capacity[${index}].price`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>
                                                 {holderLocal && <LabelCapacity >
                                                     Кількість холдерів
                                                     <BoxField>
-                                                        <CapacityField name={`capacity[${index}].holder`} type="number" />
+
+                                                        <CapacityField name={`capacity[${index}].holder`} type="number"
+                                                            value={cap.holder}
+                                                        />
                                                         <StyledErrorMessage name={`capacity[${index}].holder`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>}
