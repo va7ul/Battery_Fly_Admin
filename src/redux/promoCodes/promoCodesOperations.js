@@ -19,11 +19,11 @@ const handleError = error => {
 export const getPromoCodes = createAsyncThunk(
   'promoCodes/getPromoCodes',
   async (_, thunkApi) => {
-    const { token } = thunkApi.getState().user;
+    const { token } = thunkApi.getState().admin;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.get('adm/promoCodes');
+      const { data } = await axios.get('adm/promo-codes');
 
       return data;
     } catch (error) {
@@ -36,11 +36,11 @@ export const getPromoCodes = createAsyncThunk(
 export const addPromoCode = createAsyncThunk(
   'promoCodes/addPromoCode',
   async (promoData, thunkApi) => {
-    const { token } = thunkApi.getState().user;
+    const { token } = thunkApi.getState().admin;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.post('adm/promoCodes', promoData);
+      const { data } = await axios.post('adm/promo-code', promoData);
 
       return data;
     } catch (error) {
@@ -53,11 +53,10 @@ export const addPromoCode = createAsyncThunk(
 export const updatePromoCode = createAsyncThunk(
   'promoCodes/updatePromoCode',
   async ({ id, promoData }, thunkApi) => {
-    const { token } = thunkApi.getState().user;
-
+    const { token } = thunkApi.getState().admin;
     try {
       setAuthHeader(token);
-      const { data } = await axios.put(`adm/promoCodes/${id}`, {
+      const { data } = await axios.put(`adm/promo-code/${id}`, {
         ...promoData,
       });
 
@@ -72,11 +71,11 @@ export const updatePromoCode = createAsyncThunk(
 export const deletePromoCode = createAsyncThunk(
   'promoCodes/deletePromoCode',
   async (id, thunkApi) => {
-    const { token } = thunkApi.getState().user;
+    const { token } = thunkApi.getState().admin;
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.delete(`adm/promoCodes/${id}`);
+      const { data } = await axios.delete(`adm/promo-code/${id}`);
 
       return data;
     } catch (error) {
