@@ -3,10 +3,11 @@ import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import AddIcon from '@mui/icons-material/Add';
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { StyledInput } from './Banners.styled';
 import {
   GridRowModes,
   DataGrid,
@@ -145,29 +146,30 @@ export const Banners = () => {
       renderCell: params => {
         const { id } = params.row;
         const preview = image[id]?.url || params.value;
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
         return (
-          <form>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 5,
-                objectFit: 'contain',
-                margin: 0,
-              }}
-            >
-              <img
-                src={preview}
-                alt="Preview"
-                style={{ maxWidth: '200px', height: 100 }}
-              />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange(id)}
-              />
-            </div>
-          </form>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 5,
+              objectFit: 'contain',
+              margin: 0,
+            }}
+          >
+            <img
+              src={preview}
+              alt="Preview"
+              style={{ maxWidth: '200px', height: 100 }}
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange(id)}
+              disabled={isInEditMode ? false : true}
+            />
+          </div>
         );
       },
       width: 500,
@@ -182,13 +184,13 @@ export const Banners = () => {
       width: 670,
       align: 'center',
       headerAlign: 'center',
-      editable: true,
+      editable: false,
       renderCell: params => {
         const { id } = params.row;
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
         if (isInEditMode) {
           return (
-            <input
+            <StyledInput
               type="text"
               defaultValue={params.value}
               onChange={handleTextChange(id)}
@@ -213,7 +215,7 @@ export const Banners = () => {
         if (isInEditMode) {
           return [
             <GridActionsCellItem
-              icon={<SaveIcon />}
+              icon={<SaveOutlinedIcon />}
               label="Save"
               sx={{
                 color: 'primary.main',
@@ -221,7 +223,7 @@ export const Banners = () => {
               onClick={handleSaveClick(id)}
             />,
             <GridActionsCellItem
-              icon={<CancelIcon />}
+              icon={<CloseOutlinedIcon />}
               label="Cancel"
               className="textPrimary"
               onClick={handleCancelClick(id)}
@@ -232,7 +234,7 @@ export const Banners = () => {
 
         return [
           <GridActionsCellItem
-            icon={<EditIcon />}
+            icon={<EditOutlinedIcon />}
             label="Edit"
             className="textPrimary"
             onClick={handleEditClick(id)}
@@ -255,7 +257,7 @@ export const Banners = () => {
         height: 'auto',
         width: '100%',
         '& .actions': {
-          color: 'text.secondary',
+          color: 'text.primary',
         },
         '& .textPrimary': {
           color: 'text.primary',
