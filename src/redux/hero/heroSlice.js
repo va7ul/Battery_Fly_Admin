@@ -31,10 +31,12 @@ const handleAddHeroFulfilled = (state, action) => {
 };
 
 const handleEditHeroFulfilled = (state, action) => {
-  const index = state.items.findIndex(item => item._id === action.payload._id);
-  if (index >= 0) {
-    state.items[index] = action.payload;
-  }
+  state.items = state.items.map(el => {
+    if (el._id === action.payload.hero._id) {
+      return action.payload.hero;
+    }
+    return el;
+  });
   state.isLoading = false;
   state.error = null;
 };
