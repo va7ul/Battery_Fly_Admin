@@ -8,8 +8,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
-import { editProduct } from '../../../redux/products/productsOperations';
 import { selectOneProduct } from '../../../redux/products/productsSelectors';
+import { editProduct } from '../../../redux/products/productsOperations';
 import { productSchema } from '../../../common/schemas/productSchema'
 import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, StyledErrorMessage } from "../../AddProductPage/AddProduct/AddProduct.styled";
 import { SubmitButton, ButtonBox, BackButton } from '../EditProduct/EditProduct.styled';
