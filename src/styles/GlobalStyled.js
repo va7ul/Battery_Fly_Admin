@@ -28,6 +28,9 @@ export const themeMUI = createTheme({
     success: {
       main: 'rgba(20, 211, 16, 1)',
     },
+    primary: {
+      main: 'rgba(244, 170, 0, 1)',
+    },
   },
   typography: {
     fontFamily: 'Inter',

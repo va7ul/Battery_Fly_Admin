@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { selectProducts } from '../../../redux/products/productsSelectors';
+import { deleteProduct } from '../../../redux/products/productsOperations';
 import { getParams } from 'utils/helpers';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import { Box, Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
+import { themeMUI } from 'styles/GlobalStyled';
+import { Box, Button } from '@mui/material';
 import {
   DataGrid,
   GridToolbar,
@@ -16,9 +18,11 @@ import {
   useGridApiRef,
 } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from '../NoRowsOverlay/NoRowsOverlay';
+import { DeleteItem } from 'components/Modals/DeleteItem/DeleteItem';
 
 export const ProductsTable = ({ category }) => {
   const [open, setOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState();
   const dispatch = useDispatch();
   const apiRef = useGridApiRef();
   const navigate = useNavigate();
@@ -80,35 +84,48 @@ export const ProductsTable = ({ category }) => {
     {
       field: 'codeOfGood',
       headerName: 'Код товару',
+      headerClassName: 'super-app-theme--header',
       type: 'number',
-      align: 'left',
-      headerAlign: 'left',
+      align: 'center',
+      headerAlign: 'center',
     },
-    { field: 'name', headerName: 'Назва товару' },
+    {
+      field: 'name',
+      headerName: 'Назва товару',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
     {
       field: 'category',
       headerName: 'Категорія та тип',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'quantity',
       headerName: 'Кількість',
+      headerClassName: 'super-app-theme--header',
       type: 'number',
-      align: 'left',
-      headerAlign: 'left',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'price',
       headerName: 'Ціна',
+      headerClassName: 'super-app-theme--header',
       type: 'number',
-      align: 'left',
-      headerAlign: 'left',
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'discount',
       headerName: 'Знижка',
+      headerClassName: 'super-app-theme--header',
       type: 'number',
-      align: 'left',
-      headerAlign: 'left',
+      align: 'center',
+      headerAlign: 'center',
       valueFormatter: value => {
         if (value == null) {
           return '';
@@ -119,12 +136,14 @@ export const ProductsTable = ({ category }) => {
     {
       field: 'popular',
       headerName: 'Популярний',
+      headerClassName: 'super-app-theme--header',
       type: 'boolean',
     },
     {
       field: 'actions',
       type: 'actions',
       headerName: '',
+      headerClassName: 'super-app-theme--header',
       width: 150,
       cellClassName: 'actions',
       getActions: ({ id }) => {
@@ -153,66 +172,36 @@ export const ProductsTable = ({ category }) => {
 
   const handleDeleteClick = id => () => {
     setOpen(true);
+    setIdToDelete(id);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const deleteProduct = () => {
-    dispatch();
+  const deleteItem = () => {
+    dispatch(deleteProduct(idToDelete));
   };
 
   return (
-    <Box>
-      <Dialog
+    <Box
+      sx={{
+        '& .super-app-theme--header': {
+          backgroundColor: themeMUI.palette.background.primary,
+        },
+      }}
+    >
+      <DeleteItem
         open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        slotProps={{
-          backdrop: {
-            sx: {
-              backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            },
-          },
-        }}
-        sx={{
-          '& .MuiDialog-paper': {
-            bgcolor: 'secondary.main',
-            borderRadius: '18px',
-          },
-        }}
-      >
-        <DialogTitle id="alert-dialog-title">
-          Ви впевнені, що хочете видалити товар?
-        </DialogTitle>
-        <DialogActions>
-          <Button
-            onClick={deleteProduct}
-            sx={{
-              color: 'text.primary',
-              '&:hover': { color: 'hoverColor.main' },
-            }}
-          >
-            Підтвердити
-          </Button>
-          <Button
-            onClick={handleClose}
-            sx={{
-              color: 'text.primary',
-              '&:hover': { color: 'hoverColor.main' },
-            }}
-          >
-            Скасувати
-          </Button>
-        </DialogActions>
-      </Dialog>
+        handleClose={handleClose}
+        deleteItem={deleteItem}
+      />
       <DataGrid
         autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
+        autosizeOnMount={true}
         autosizeOptions={autosizeOptions}
         pageSizeOptions={[10, 25, 100]}
         hideFooterSelectedRowCount

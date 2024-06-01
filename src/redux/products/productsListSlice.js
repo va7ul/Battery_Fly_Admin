@@ -11,6 +11,7 @@ import {
   getBatteriesForToys,
   getDevices,
   getMaterials,
+  deleteProduct,
 } from '../products/productsOperations';
 
 const initialState = {
@@ -34,12 +35,21 @@ const handleFulfilled = (state, action) => {
   state.allProducts = action.payload.result;
 };
 
+const handleDeleteFulfilled = (state, action) => {
+  state.isLoading = false;
+  state.error = null;
+  state.allProducts = state.allProducts.filter(
+    el => el._id !== action.payload.id
+  );
+};
+
 const productsListSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {},
   extraReducers: builder =>
     builder
+      .addCase(deleteProduct.fulfilled, handleDeleteFulfilled)
       .addMatcher(
         isAnyOf(
           getBatteries18650.pending,
@@ -52,7 +62,8 @@ const productsListSlice = createSlice({
           getBatteriesForTransport.pending,
           getBatteriesForToys.pending,
           getDevices.pending,
-          getMaterials.pending
+          getMaterials.pending,
+          deleteProduct.pending
         ),
         handlePending
       )
@@ -68,7 +79,8 @@ const productsListSlice = createSlice({
           getBatteriesForTransport.rejected,
           getBatteriesForToys.rejected,
           getDevices.rejected,
-          getMaterials.rejected
+          getMaterials.rejected,
+          deleteProduct.rejected
         ),
         handleRejected
       )

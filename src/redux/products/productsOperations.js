@@ -4,6 +4,10 @@ import { baseURL } from 'utils/constants/baseURL';
 
 axios.defaults.baseURL = baseURL;
 
+const setAuthHeader = token => {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+};
+
 const handleError = error => {
   if (error.response && error.response.data && error.response.data.message) {
     return `Oops! Something was wrong... ${error.response.data.message}`;
@@ -251,6 +255,23 @@ export const editProductZbirky = createAsyncThunk(
         formData,
         config
       );
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  'products/product-delete',
+  async (codeOfGood, thunkApi) => {
+    const { token } = thunkApi.getState().admin;
+
+    try {
+      setAuthHeader(token);
+      const { data } = await axios.delete(`adm/product-delete/${codeOfGood}`);
+
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
