@@ -5,7 +5,6 @@ import { themeMUI } from 'styles/GlobalStyled';
 import { Box } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
-import { type } from '@testing-library/user-event/dist/type';
 
 export const QuickOrdersTable = () => {
   const apiRef = useGridApiRef();
