@@ -77,10 +77,8 @@ export const EditProduct = () => {
 
                     for (const i of imagesLocal) {
                         formData.append('files', i)
-                        // for (const i of formData) {
-                        //     console.log(i)
-                        // }
                     }
+
                     dispatch(editProduct({ formData, codeOfGood })).then(result => {
                         if (result.meta.requestStatus === 'fulfilled') {
                             editProductButton();
@@ -177,14 +175,14 @@ export const EditProduct = () => {
                     <Label>
                         Категорія
                         <Box>
-                            <StyledField name="category" type="text" value={category} disabled/>
+                            <StyledField name="category" type="text" value={category} disabled />
                         </Box>
                     </Label>
 
                     {type !== "null" && <Label>
                         Тип
                         <Box>
-                            <StyledField name="type" type="text" value={type} disabled/>
+                            <StyledField name="type" type="text" value={type} disabled />
                         </Box>
                     </Label>}
                      
