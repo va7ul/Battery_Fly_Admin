@@ -33,10 +33,10 @@ export const EditProductZbirky = () => {
     const categoryForAdd = categoryMapping[category];
 
     const capacityObj = {
-        // capacity: capC,
-        // description: desC,
-        // price: priceC,
-        // holder: holderC
+        capacity: "",
+        description: "",
+        price: "",
+        holder: ""
     };
 
     let newCapacity = [];
@@ -79,7 +79,7 @@ export const EditProductZbirky = () => {
                     category: category,
                     popular: popular,
                     image: image,
-                    capacity: capacity,
+                    capacity: [...newCapacity],
                 }}
                 enctype="multipart/form-data"
                 validationSchema={productZbirkySchema}
@@ -260,7 +260,7 @@ export const EditProductZbirky = () => {
                         <FieldArray name="capacity">
                             {({ push, remove }) => (
                                 <>
-                                    {newCapacity.map((cap, index) => {
+                                    {values.capacity.map((cap, index) => {
     
                                         return (
                                             <BoxCapacity key={index}>
