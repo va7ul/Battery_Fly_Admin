@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -20,34 +20,15 @@ import {
   getHeroImages,
   deleteHeroImage,
   editHeroImage,
-  // addHeroImage,
+  addHeroImage,
 } from '../../redux/hero/heroOperations';
 import { selectHero } from '../../redux/hero/heroSelectors';
-
-const EditToolbar = props => {
-  const { setRows, setRowModesModel } = props;
-
-  const handleClick = () => {
-    const id = randomId();
-    setRows(oldRows => [...oldRows, { id, image: '', text: '', isNew: true }]);
-    setRowModesModel(oldModel => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
-    }));
-  };
-
-  return (
-    <GridToolbarContainer>
-      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-        Add record
-      </Button>
-    </GridToolbarContainer>
-  );
-};
 
 export const Banners = () => {
   const dispatch = useDispatch();
   const images = useSelector(selectHero);
+  const [rows, setRows] = useState([]);
+  const [rowModesModel, setRowModesModel] = useState({});
 
   useEffect(() => {
     const getHeroImagesSync = async () => {
@@ -58,15 +39,35 @@ export const Banners = () => {
       }
     };
     getHeroImagesSync();
+    dispatch(getHeroImages());
   }, [dispatch]);
 
-  const rows = images.map(item => ({
-    id: item._id,
-    text: item.text,
-    image: item.image,
-  }));
+  useEffect(() => {
+    if (images) {
+      const initialRows = images.map(({ _id, image, text }) => ({
+        id: _id,
+        image,
+        text,
+      }));
+      setRows(initialRows);
+    }
+  }, [images]);
 
-  const [rowModesModel, setRowModesModel] = useState({});
+  // const processRowUpdate = newRow => {
+  //   const updatedRow = { ...newRow, isNew: false };
+  //   setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
+
+  //   const newHero = {
+  //     text: newRow.text,
+  //     image: newRow.image,
+  //   };
+
+  //   if (rows.find(row => row.id === newRow.id && row.promoCode === '')) {
+  //     dispatch(addHeroImage(newHero));
+  //   }
+
+  //   return updatedRow;
+  // };
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -245,6 +246,30 @@ export const Banners = () => {
     },
   ];
 
+  const EditToolbar = props => {
+    const { setRows, setRowModesModel } = props;
+
+    const handleClick = () => {
+      const id = randomId();
+      setRows(oldRows => [
+        ...oldRows,
+        { id, image: '', text: '', isNew: true },
+      ]);
+      setRowModesModel(oldModel => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
+      }));
+    };
+
+    return (
+      <GridToolbarContainer>
+        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+          Add record
+        </Button>
+      </GridToolbarContainer>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -272,12 +297,13 @@ export const Banners = () => {
         hideFooter={true}
         hideFooterPagination={true}
         rowHeight={100}
+        autoHeight
         slots={{
           toolbar: EditToolbar,
         }}
-        // slotProps={{
-        //   toolbar: { setRows, setRowModesModel },
-        // }}
+        slotProps={{
+          toolbar: { setRows, setRowModesModel },
+        }}
       />
     </Box>
   );
