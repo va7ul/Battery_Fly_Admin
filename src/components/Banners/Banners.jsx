@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -17,15 +17,17 @@ import { Button } from '@mui/material';
 import { randomId } from '@mui/x-data-grid-generator';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getHeroImages,
-  deleteHeroImage,
-  editHeroImage,
-  addHeroImage,
+  getHero,
+  deleteHero,
+  editHero,
+  // addHeroImage,
 } from '../../redux/hero/heroOperations';
 import { selectHero } from '../../redux/hero/heroSelectors';
+import { useNavigate } from 'react-router-dom';
 
 export const Banners = () => {
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
   const images = useSelector(selectHero);
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
@@ -33,15 +35,19 @@ export const Banners = () => {
   useEffect(() => {
     const getHeroImagesSync = async () => {
       try {
-        dispatch(getHeroImages());
+        dispatch(getHero());
       } catch (error) {
         console.log('error', error.message);
       }
     };
     getHeroImagesSync();
-    dispatch(getHeroImages());
   }, [dispatch]);
 
+  // const rows = images.map(({ _id, image, text }) => ({
+  //   id: _id,
+  //   image,
+  //   text,
+  // }));
   useEffect(() => {
     if (images) {
       const initialRows = images.map(({ _id, image, text }) => ({
@@ -53,30 +59,19 @@ export const Banners = () => {
     }
   }, [images]);
 
-  // const processRowUpdate = newRow => {
-  //   const updatedRow = { ...newRow, isNew: false };
-  //   setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
-
-  //   const newHero = {
-  //     text: newRow.text,
-  //     image: newRow.image,
-  //   };
-
-  //   if (rows.find(row => row.id === newRow.id && row.promoCode === '')) {
-  //     dispatch(addHeroImage(newHero));
-  //   }
-
-  //   return updatedRow;
-  // };
-
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
     }
   };
 
-  const handleDelete = id => {
-    dispatch(deleteHeroImage(id));
+  const handleDelete = id => () => {
+    dispatch(deleteHero(id));
+    //   .then(result => {
+    //   if (result.meta.requestStatus === 'fulfilled') {
+    //     navigate('/admin/banners');
+    //   }
+    // });
   };
 
   const handleCancelClick = id => () => {
@@ -118,7 +113,7 @@ export const Banners = () => {
     }
     formData.append('text', text[id] || rows.find(row => row.id === id).text);
     try {
-      await dispatch(editHeroImage({ id, formData }));
+      await dispatch(editHero({ id, formData }));
       console.log(`ura`);
     } catch (error) {
       console.error(`jopa`, error.message);
@@ -238,7 +233,7 @@ export const Banners = () => {
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={() => handleDelete(id)}
+            onClick={handleDelete(id)}
             color="inherit"
           />,
         ];

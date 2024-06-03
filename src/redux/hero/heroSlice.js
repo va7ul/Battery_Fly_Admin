@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  addHeroImage,
-  deleteHeroImage,
-  editHeroImage,
-  getHeroImages,
-} from './heroOperations';
+import { addHero, deleteHero, editHero, getHero } from './heroOperations';
 
 const initialState = {
   items: [
@@ -42,7 +37,8 @@ const handleEditHeroFulfilled = (state, action) => {
 };
 
 const handleDeleteHeroFulfilled = (state, action) => {
-  state.items.splice(action.payload, 1);
+  state.items = state.items.filter(item => item._id !== action.payload.id);
+  console.log('id', action.payload.id);
   state.isLoading = false;
   state.error = null;
 };
@@ -52,12 +48,10 @@ const heroSlice = createSlice({
   initialState,
   extraReducers: builder =>
     builder
-      .addCase(getHeroImages.fulfilled, handleGetHeroFulfilled)
-      .addCase(addHeroImage.fulfilled, handleAddHeroFulfilled)
-      .addCase(editHeroImage.fulfilled, handleEditHeroFulfilled)
-      .addCase(deleteHeroImage.fulfilled, handleDeleteHeroFulfilled),
+      .addCase(getHero.fulfilled, handleGetHeroFulfilled)
+      .addCase(addHero.fulfilled, handleAddHeroFulfilled)
+      .addCase(editHero.fulfilled, handleEditHeroFulfilled)
+      .addCase(deleteHero.fulfilled, handleDeleteHeroFulfilled),
 });
 
-export const { setMenuOpen, setSubMenuOpen, setThirdMenuOpen, setCartOpen } =
-  heroSlice.actions;
 export const heroReducer = heroSlice.reducer;
