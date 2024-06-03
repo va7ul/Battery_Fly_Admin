@@ -59,7 +59,7 @@ export const StyledErrorMessage = styled(ErrorMessage)`
 
 export const StyledTextField = styled(Field)`
   width: 1060px;
-  height: 102px;
+  height: 300px;
   padding: 4px 8px;
   color: ${props => props.theme.colors.textPrimary};
   border: transparent;
