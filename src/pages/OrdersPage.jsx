@@ -20,7 +20,7 @@ const OrdersPage = () => {
   return (
     <>
       {isLoading && <CustomLoader />}
-      {!isLoading && !error && <OrdersTable />}
+      {!isLoading  && <OrdersTable />}
     </>
   );
 };
