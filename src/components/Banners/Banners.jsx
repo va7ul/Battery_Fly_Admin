@@ -20,14 +20,12 @@ import {
   getHero,
   deleteHero,
   editHero,
-  // addHeroImage,
+  addHero,
 } from '../../redux/hero/heroOperations';
 import { selectHero } from '../../redux/hero/heroSelectors';
-import { useNavigate } from 'react-router-dom';
 
 export const Banners = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
   const images = useSelector(selectHero);
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
@@ -43,11 +41,6 @@ export const Banners = () => {
     getHeroImagesSync();
   }, [dispatch]);
 
-  // const rows = images.map(({ _id, image, text }) => ({
-  //   id: _id,
-  //   image,
-  //   text,
-  // }));
   useEffect(() => {
     if (images) {
       const initialRows = images.map(({ _id, image, text }) => ({
@@ -59,6 +52,23 @@ export const Banners = () => {
     }
   }, [images]);
 
+  const processRowUpdate = newRow => {
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
+
+    const newPromoData = {
+      name: newRow.promoCode,
+      discount: newRow.discount,
+      valid: newRow.valid,
+    };
+
+    if (rows.find(row => row.id === newRow.id && row.promoCode === '')) {
+      dispatch(addHero(newPromoData));
+    }
+
+    return updatedRow;
+  };
+
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
@@ -67,11 +77,6 @@ export const Banners = () => {
 
   const handleDelete = id => () => {
     dispatch(deleteHero(id));
-    //   .then(result => {
-    //   if (result.meta.requestStatus === 'fulfilled') {
-    //     navigate('/admin/banners');
-    //   }
-    // });
   };
 
   const handleCancelClick = id => () => {
@@ -104,7 +109,7 @@ export const Banners = () => {
     }
   };
 
-  const handleSaveClick = id => async () => {
+  const handleSaveClick = id => async newRow => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     const formData = new FormData();
     if (image[id]?.file) {
@@ -113,7 +118,12 @@ export const Banners = () => {
     }
     formData.append('text', text[id] || rows.find(row => row.id === id).text);
     try {
-      await dispatch(editHero({ id, formData }));
+      if (rows.find(row => row.id === newRow.id && row.text === '')) {
+        dispatch(addHero(formData));
+      } else {
+        dispatch(editHero({ id, formData }));
+      }
+
       console.log(`ura`);
     } catch (error) {
       console.error(`jopa`, error.message);
@@ -285,7 +295,7 @@ export const Banners = () => {
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        // processRowUpdate={processRowUpdate}
+        processRowUpdate={processRowUpdate}
         disableColumnMenu={true}
         disableColumnResize={true}
         disableColumnSorting={true}
