@@ -16,6 +16,20 @@ const handleError = error => {
   }
 };
 
+export const getAssortment = createAsyncThunk(
+  'products/getAssortment',
+  async (_, thunkApi) => {
+    try {
+      const { data } = await axios.get('products');
+
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
+
 export const getBatteries18650 = createAsyncThunk(
   'products/getBatteries18650',
   async (_, thunkApi) => {
@@ -270,7 +284,24 @@ export const deleteProduct = createAsyncThunk(
 
     try {
       setAuthHeader(token);
-      const { data } = await axios.delete(`adm/product-delete/${codeOfGood}`);
+      const { data } = await axios.delete(`adm/product/${codeOfGood}`);
+
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const deleteProductZbirky = createAsyncThunk(
+  'products/product-delete',
+  async (codeOfGood, thunkApi) => {
+    const { token } = thunkApi.getState().admin;
+
+    try {
+      setAuthHeader(token);
+      const { data } = await axios.delete(`adm/assemblies/${codeOfGood}`);
 
       return data;
     } catch (error) {

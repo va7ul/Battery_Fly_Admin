@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 
-export const DeleteItem = ({ open, handleClose, deleteItem }) => {
+export const ModalConfirm = ({ open, handleClose, handleAction, text }) => {
   return (
     <Dialog
       open={open}
@@ -16,17 +16,17 @@ export const DeleteItem = ({ open, handleClose, deleteItem }) => {
       }}
       sx={{
         '& .MuiDialog-paper': {
+          minWidth: '400px',
+          gap: '10px',
           bgcolor: 'secondary.main',
           borderRadius: '18px',
         },
       }}
     >
-      <DialogTitle id="alert-dialog-title">
-        Ви впевнені, що хочете видалити промокод?
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">{text}</DialogTitle>
       <DialogActions>
         <Button
-          onClick={deleteItem}
+          onClick={handleAction}
           sx={{
             color: 'text.primary',
             '&:hover': { color: 'hoverColor.main' },

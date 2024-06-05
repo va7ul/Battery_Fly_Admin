@@ -50,6 +50,25 @@ export const getOneOrder = createAsyncThunk(
   }
 );
 
+export const updateOneOrder = createAsyncThunk(
+  'orders/updateOneOrder',
+  async ({ orderId, orderData }, thunkApi) => {
+    const { token } = thunkApi.getState().admin;
+
+    try {
+      setAuthHeader(token);
+      const { data } = await axios.put(`adm/put-order/${orderId}`, {
+        ...orderData,
+      });
+
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
+
 export const getPrints3D = createAsyncThunk(
   'orders/getPrints3D',
   async (_, thunkApi) => {

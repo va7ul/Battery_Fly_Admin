@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { selectProducts } from '../../../redux/products/productsSelectors';
-import { deleteProduct } from '../../../redux/products/productsOperations';
+import {
+  deleteProduct,
+  deleteProductZbirky,
+} from '../../../redux/products/productsOperations';
 import { getParams } from 'utils/helpers';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -18,7 +21,7 @@ import {
   useGridApiRef,
 } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from '../NoRowsOverlay/NoRowsOverlay';
-import { DeleteItem } from 'components/Modals/DeleteItem/DeleteItem';
+import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
 
 export const ProductsTable = ({ category }) => {
   const [open, setOpen] = useState(false);
@@ -180,7 +183,11 @@ export const ProductsTable = ({ category }) => {
   };
 
   const deleteItem = () => {
-    dispatch(deleteProduct(idToDelete));
+    const { paramsSubType } = getParams(category);
+
+    paramsSubType === 'product'
+      ? dispatch(deleteProduct(idToDelete))
+      : dispatch(deleteProductZbirky(idToDelete));
   };
 
   return (
@@ -191,10 +198,11 @@ export const ProductsTable = ({ category }) => {
         },
       }}
     >
-      <DeleteItem
+      <ModalConfirm
         open={open}
         handleClose={handleClose}
-        deleteItem={deleteItem}
+        handleAction={deleteItem}
+        text="Ви впевнені, що хочете видалити товар?"
       />
       <DataGrid
         autoHeight

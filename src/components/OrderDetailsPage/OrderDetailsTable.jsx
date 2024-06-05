@@ -1,14 +1,14 @@
-import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
-import { selectPrints3D } from '../../redux/orders/ordersSelectors';
+import { useSelector } from 'react-redux';
+import { selectOneOrder } from '../../redux/orders/ordersSelectors';
 import { themeMUI } from 'styles/GlobalStyled';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
 
-export const Prints3DTable = () => {
+export const OrderDetailsTable = () => {
   const apiRef = useGridApiRef();
-  const prints3D = useSelector(selectPrints3D);
+  const order = useSelector(selectOneOrder);
 
   const autosizeOptions = useMemo(
     () => ({
@@ -23,36 +23,42 @@ export const Prints3DTable = () => {
     if (apiRef.current) {
       apiRef.current.autosizeColumns(autosizeOptions);
     }
-  }, [apiRef, autosizeOptions, prints3D]);
+  }, [apiRef, autosizeOptions, order]);
 
-  const rows = useMemo(
-    () =>
-      prints3D.map(el => ({
-        id: el._id,
-        numberOfOrder: el.numberOfOrder,
-        userName: el.userName,
-        tel: el.tel,
-        text: el.text,
-        accuracy: el.accuracy,
-        plactic: el.plactic,
-        color: el.color,
-        createdAt: el.createdAt,
-      })),
-    [prints3D]
-  );
+  const rows = [
+    {
+      id: order.numberOfOrder,
+      numberOfOrder: order.numberOfOrder,
+      name: `${order.lastName} ${order.firstName}`,
+      email: order.email,
+      tel: order.tel,
+      promoCode: order.promoCode,
+      promoCodeDiscount: order.promoCodeDiscount,
+      comment: order.comment,
+      date: order.createdAt,
+      status: order.status,
+    },
+  ];
 
   const columns = [
     {
       field: 'numberOfOrder',
-      headerName: '№ замовлення',
+      headerName: '№ Замовлення',
       headerClassName: 'super-app-theme--header',
       type: 'number',
       align: 'center',
       headerAlign: 'center',
     },
     {
-      field: 'userName',
-      headerName: 'Імя',
+      field: 'name',
+      headerName: 'Прізвище та імя',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
       headerClassName: 'super-app-theme--header',
       align: 'center',
       headerAlign: 'center',
@@ -65,35 +71,35 @@ export const Prints3DTable = () => {
       headerAlign: 'center',
     },
     {
-      field: 'text',
+      field: 'promoCode',
+      headerName: 'Промокод',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'promoCodeDiscount',
+      headerName: '% Знижки',
+      headerClassName: 'super-app-theme--header',
+      type: 'number',
+      align: 'center',
+      headerAlign: 'center',
+      valueFormatter: value => {
+        if (value == null) {
+          return '';
+        }
+        return `${value.toLocaleString()} %`;
+      },
+    },
+    {
+      field: 'comment',
       headerName: 'Коментар',
       headerClassName: 'super-app-theme--header',
       align: 'center',
       headerAlign: 'center',
     },
     {
-      field: 'accuracy',
-      headerName: 'Точність',
-      headerClassName: 'super-app-theme--header',
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      field: 'plactic',
-      headerName: 'Тип пластику',
-      headerClassName: 'super-app-theme--header',
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      field: 'color',
-      headerName: 'Колір',
-      headerClassName: 'super-app-theme--header',
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      field: 'createdAt',
+      field: 'date',
       headerName: 'Дата',
       headerClassName: 'super-app-theme--header',
       type: 'date',
@@ -106,6 +112,15 @@ export const Prints3DTable = () => {
         return `${value.toLocaleString().slice(0, 10)}`;
       },
     },
+    {
+      field: 'status',
+      headerName: 'Статус',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+      type: 'singleSelect',
+      valueOptions: ['Нове', 'В роботі', 'Скасовано', 'Доставлено'],
+    },
   ];
 
   return (
@@ -117,25 +132,26 @@ export const Prints3DTable = () => {
       }}
     >
       <DataGrid
-        autoHeight
-        apiRef={apiRef}
         rows={rows}
         columns={columns}
+        editMode="row"
+        apiRef={apiRef}
+        autoHeight
         autosizeOnMount={true}
         autosizeOptions={autosizeOptions}
-        pageSizeOptions={[10, 25, 100]}
-        hideFooterSelectedRowCount
+        hideFooter
+        hideFooterPagination
         slots={{
           toolbar: GridToolbar,
           noRowsOverlay: CustomNoRowsOverlay,
         }}
-        slotProps={{
-          toolbar: {
-            showQuickFilter: true,
-          },
-        }}
         initialState={{
-          pagination: { paginationModel: { pageSize: 10 } },
+          columns: {
+            columnVisibilityModel: {
+              promoCode: false,
+              promoCodeDiscount: false,
+            },
+          },
         }}
         sx={{ '--DataGrid-overlayHeight': '300px' }}
       />

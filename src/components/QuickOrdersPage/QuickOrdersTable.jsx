@@ -42,7 +42,7 @@ export const QuickOrdersTable = () => {
   const columns = [
     {
       field: 'numberOfOrder',
-      headerName: 'Номер замовлення',
+      headerName: '№ замовлення',
       headerClassName: 'super-app-theme--header',
       type: 'number',
       align: 'center',
