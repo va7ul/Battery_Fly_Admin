@@ -17,7 +17,6 @@ export const StyledName = styled.p`
   grid-row: 1/3;
   height: 54px;
   overflow: hidden;
-  color: ${props => props.theme.colors.hoverColor};
 `;
 
 export const CapacityWrap = styled.div`
