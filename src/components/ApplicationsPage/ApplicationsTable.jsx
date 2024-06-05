@@ -41,7 +41,7 @@ export const ApplicationsTable = () => {
   const columns = [
     {
       field: 'numberOfApplication',
-      headerName: 'Номер заявки',
+      headerName: '№ заявки',
       headerClassName: 'super-app-theme--header',
       type: 'number',
       align: 'center',

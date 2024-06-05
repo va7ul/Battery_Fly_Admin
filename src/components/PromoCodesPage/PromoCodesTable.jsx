@@ -23,7 +23,7 @@ import {
   useGridApiRef,
 } from '@mui/x-data-grid';
 import { randomId } from '@mui/x-data-grid-generator';
-import { DeleteItem } from 'components/Modals/DeleteItem/DeleteItem';
+import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
 
 export const PromoCodesTable = () => {
   const [open, setOpen] = useState(false);
@@ -252,10 +252,11 @@ export const PromoCodesTable = () => {
         },
       }}
     >
-      <DeleteItem
+      <ModalConfirm
         open={open}
         handleClose={handleClose}
-        deleteItem={deleteItem}
+        handleAction={deleteItem}
+        text="Ви впевнені, що хочете видалити промокод?"
       />
       <DataGrid
         autoHeight
