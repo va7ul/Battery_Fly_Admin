@@ -23,14 +23,14 @@ export const getHero = createAsyncThunk('hero/getHero', async (_, thunkAPI) => {
 export const addHero = createAsyncThunk(
   'hero/addHero',
   async (formData, thunkAPI) => {
-    // const { token } = thunkAPI.getState().user;
+    const { token } = thunkAPI.getState().admin;
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     };
     try {
-      // setAuthHeader(token);
+      setAuthHeader(token);
       const { data } = await axios.post('adm/hero', formData, config);
       return data;
     } catch (error) {
