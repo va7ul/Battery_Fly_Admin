@@ -1,5 +1,6 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
+  getAssortment,
   getBatteries18650,
   getBatteries21700,
   getBatteries32650,
@@ -12,6 +13,7 @@ import {
   getDevices,
   getMaterials,
   deleteProduct,
+  deleteProductZbirky,
 } from '../products/productsOperations';
 
 const initialState = {
@@ -39,7 +41,7 @@ const handleDeleteFulfilled = (state, action) => {
   state.isLoading = false;
   state.error = null;
   state.allProducts = state.allProducts.filter(
-    el => el._id !== action.payload.id
+    el => el.codeOfGood !== action.payload.id
   );
 };
 
@@ -49,9 +51,9 @@ const productsListSlice = createSlice({
   reducers: {},
   extraReducers: builder =>
     builder
-      .addCase(deleteProduct.fulfilled, handleDeleteFulfilled)
       .addMatcher(
         isAnyOf(
+          getAssortment.pending,
           getBatteries18650.pending,
           getBatteries21700.pending,
           getBatteries32650.pending,
@@ -63,12 +65,14 @@ const productsListSlice = createSlice({
           getBatteriesForToys.pending,
           getDevices.pending,
           getMaterials.pending,
-          deleteProduct.pending
+          deleteProduct.pending,
+          deleteProductZbirky.pending
         ),
         handlePending
       )
       .addMatcher(
         isAnyOf(
+          getAssortment.rejected,
           getBatteries18650.rejected,
           getBatteries21700.rejected,
           getBatteries32650.rejected,
@@ -80,12 +84,14 @@ const productsListSlice = createSlice({
           getBatteriesForToys.rejected,
           getDevices.rejected,
           getMaterials.rejected,
-          deleteProduct.rejected
+          deleteProduct.rejected,
+          deleteProductZbirky.rejected
         ),
         handleRejected
       )
       .addMatcher(
         isAnyOf(
+          getAssortment.fulfilled,
           getBatteries18650.fulfilled,
           getBatteries21700.fulfilled,
           getBatteries32650.fulfilled,
@@ -99,6 +105,10 @@ const productsListSlice = createSlice({
           getMaterials.fulfilled
         ),
         handleFulfilled
+      )
+      .addMatcher(
+        isAnyOf(deleteProduct.fulfilled, deleteProductZbirky.fulfilled),
+        handleDeleteFulfilled
       ),
 });
 
