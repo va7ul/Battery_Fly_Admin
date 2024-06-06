@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { addHero, deleteHero, editHero, getHero } from './heroOperations';
 
 const initialState = {
@@ -11,6 +11,15 @@ const initialState = {
   ],
   isLoading: false,
   error: null,
+};
+
+const handlePending = state => {
+  state.isLoading = true;
+};
+
+const handleRejected = (state, action) => {
+  state.isLoading = false;
+  state.error = action.payload;
 };
 
 const handleGetHeroFulfilled = (state, action) => {
@@ -51,7 +60,25 @@ const heroSlice = createSlice({
       .addCase(getHero.fulfilled, handleGetHeroFulfilled)
       .addCase(addHero.fulfilled, handleAddHeroFulfilled)
       .addCase(editHero.fulfilled, handleEditHeroFulfilled)
-      .addCase(deleteHero.fulfilled, handleDeleteHeroFulfilled),
+      .addCase(deleteHero.fulfilled, handleDeleteHeroFulfilled)
+      .addMatcher(
+        isAnyOf(
+          getHero.pending,
+          addHero.pending,
+          editHero.pending,
+          deleteHero.pending
+        ),
+        handlePending
+      )
+      .addMatcher(
+        isAnyOf(
+          getHero.rejected,
+          addHero.rejected,
+          editHero.rejected,
+          deleteHero.rejected
+        ),
+        handleRejected
+      ),
 });
 
 export const heroReducer = heroSlice.reducer;
