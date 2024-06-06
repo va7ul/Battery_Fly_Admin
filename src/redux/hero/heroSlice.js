@@ -47,7 +47,6 @@ const handleEditHeroFulfilled = (state, action) => {
 
 const handleDeleteHeroFulfilled = (state, action) => {
   state.items = state.items.filter(item => item._id !== action.payload.id);
-  console.log('id', action.payload.id);
   state.isLoading = false;
   state.error = null;
 };

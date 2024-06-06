@@ -85,7 +85,7 @@ export const Banners = () => {
         dispatch(editHero({ id, formData }));
       }
     } catch (error) {
-      console.error(`jopa`, error.message);
+      console.error(`error`, error.message);
     }
   };
 
