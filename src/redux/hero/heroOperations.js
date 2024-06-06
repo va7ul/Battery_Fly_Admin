@@ -10,9 +10,7 @@ const setAuthHeader = token => {
 };
 
 export const getHero = createAsyncThunk('hero/getHero', async (_, thunkAPI) => {
-  // const { token } = thunkAPI.getState().user;
   try {
-    // setAuthHeader(token);
     const { data } = await axios.get('hero');
     return data.image;
   } catch (error) {
@@ -32,7 +30,6 @@ export const addHero = createAsyncThunk(
     try {
       setAuthHeader(token);
       const { data } = await axios.post('adm/hero', formData, config);
-      console.log('data', data);
       return data.hero;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
