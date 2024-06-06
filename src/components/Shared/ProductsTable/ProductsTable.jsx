@@ -60,7 +60,13 @@ export const ProductsTable = ({ category }) => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleClick}
-          sx={{ marginLeft: '10px', marginRight: 'auto' }}
+          sx={{
+            marginLeft: '10px',
+            marginRight: 'auto',
+            '&:hover': {
+              backgroundColor: 'primary.main',
+            },
+          }}
         >
           Додати товар
         </Button>
