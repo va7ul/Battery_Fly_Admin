@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-// import AddIcon from '@mui/icons-material/Add';
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { StyledInput } from './Banners.styled';
 import {
   GridRowModes,
   DataGrid,
@@ -18,42 +17,23 @@ import { Button } from '@mui/material';
 import { randomId } from '@mui/x-data-grid-generator';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getHeroImages,
-  deleteHeroImage,
-  editHeroImage,
-  // addHeroImage,
+  getHero,
+  deleteHero,
+  editHero,
+  addHero,
 } from '../../redux/hero/heroOperations';
 import { selectHero } from '../../redux/hero/heroSelectors';
-
-const EditToolbar = props => {
-  const { setRows, setRowModesModel } = props;
-
-  const handleClick = () => {
-    const id = randomId();
-    setRows(oldRows => [...oldRows, { id, image: '', text: '', isNew: true }]);
-    setRowModesModel(oldModel => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
-    }));
-  };
-
-  return (
-    <GridToolbarContainer>
-      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-        Add record
-      </Button>
-    </GridToolbarContainer>
-  );
-};
 
 export const Banners = () => {
   const dispatch = useDispatch();
   const images = useSelector(selectHero);
+  const [rows, setRows] = useState([]);
+  const [rowModesModel, setRowModesModel] = useState({});
 
   useEffect(() => {
     const getHeroImagesSync = async () => {
       try {
-        dispatch(getHeroImages());
+        dispatch(getHero());
       } catch (error) {
         console.log('error', error.message);
       }
@@ -61,13 +41,33 @@ export const Banners = () => {
     getHeroImagesSync();
   }, [dispatch]);
 
-  const rows = images.map(item => ({
-    id: item._id,
-    text: item.text,
-    image: item.image,
-  }));
+  useEffect(() => {
+    if (images) {
+      const initialRows = images.map(({ _id, image, text }) => ({
+        id: _id,
+        image,
+        text,
+      }));
+      setRows(initialRows);
+    }
+  }, [images]);
 
-  const [rowModesModel, setRowModesModel] = useState({});
+  // const processRowUpdate = newRow => {
+  //   const updatedRow = { ...newRow, isNew: false };
+  //   setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
+
+  //   const newPromoData = {
+  //     name: newRow.promoCode,
+  //     discount: newRow.discount,
+  //     valid: newRow.valid,
+  //   };
+
+  //   if (rows.find(row => row.id === newRow.id && row.promoCode === '')) {
+  //     dispatch(addHero(newPromoData));
+  //   }
+
+  //   return updatedRow;
+  // };
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -75,8 +75,8 @@ export const Banners = () => {
     }
   };
 
-  const handleDelete = id => {
-    dispatch(deleteHeroImage(id));
+  const handleDelete = id => () => {
+    dispatch(deleteHero(id));
   };
 
   const handleCancelClick = id => () => {
@@ -94,6 +94,30 @@ export const Banners = () => {
     setRowModesModel(newRowModesModel);
   };
 
+  const EditToolbar = props => {
+    const { setRows, setRowModesModel } = props;
+
+    const handleClick = () => {
+      const id = randomId();
+      setRows(oldRows => [
+        ...oldRows,
+        { id, image: '', text: '', isNew: true },
+      ]);
+      setRowModesModel(oldModel => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
+      }));
+    };
+
+    return (
+      <GridToolbarContainer>
+        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+          Add record
+        </Button>
+      </GridToolbarContainer>
+    );
+  };
+
   const [image, setImage] = useState('');
   const [text, setText] = useState('');
 
@@ -103,18 +127,15 @@ export const Banners = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        // setImage(prev => ({
-        //   ...prev,
-        //   [id]: { url: reader.result, file },
-        // }));
         setImage({ [id]: { url: reader.result, file } });
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSaveClick = id => async () => {
+  const handleSaveClick = id => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    const newRow = rows.find(row => row.isNew === true && row.text === '');
     const formData = new FormData();
     if (image[id]?.file) {
       console.log(image[id]?.file);
@@ -122,8 +143,12 @@ export const Banners = () => {
     }
     formData.append('text', text[id] || rows.find(row => row.id === id).text);
     try {
-      await dispatch(editHeroImage({ id, formData }));
-      console.log(`ura`);
+      if (newRow) {
+        console.log('newRow', newRow);
+        dispatch(addHero(formData));
+      } else {
+        dispatch(editHero({ id, formData }));
+      }
     } catch (error) {
       console.error(`jopa`, error.message);
     }
@@ -145,29 +170,30 @@ export const Banners = () => {
       renderCell: params => {
         const { id } = params.row;
         const preview = image[id]?.url || params.value;
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
         return (
-          <form>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 5,
-                objectFit: 'contain',
-                margin: 0,
-              }}
-            >
-              <img
-                src={preview}
-                alt="Preview"
-                style={{ maxWidth: '200px', height: 100 }}
-              />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange(id)}
-              />
-            </div>
-          </form>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 5,
+              objectFit: 'contain',
+              margin: 0,
+            }}
+          >
+            <img
+              src={preview}
+              alt="Preview"
+              style={{ maxWidth: '200px', height: 100 }}
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange(id)}
+              style={{ display: isInEditMode ? 'inline-block' : 'none' }}
+            />
+          </div>
         );
       },
       width: 500,
@@ -182,13 +208,13 @@ export const Banners = () => {
       width: 670,
       align: 'center',
       headerAlign: 'center',
-      editable: true,
+      editable: false,
       renderCell: params => {
         const { id } = params.row;
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
         if (isInEditMode) {
           return (
-            <input
+            <StyledInput
               type="text"
               defaultValue={params.value}
               onChange={handleTextChange(id)}
@@ -213,7 +239,7 @@ export const Banners = () => {
         if (isInEditMode) {
           return [
             <GridActionsCellItem
-              icon={<SaveIcon />}
+              icon={<SaveOutlinedIcon />}
               label="Save"
               sx={{
                 color: 'primary.main',
@@ -221,7 +247,7 @@ export const Banners = () => {
               onClick={handleSaveClick(id)}
             />,
             <GridActionsCellItem
-              icon={<CancelIcon />}
+              icon={<CloseOutlinedIcon />}
               label="Cancel"
               className="textPrimary"
               onClick={handleCancelClick(id)}
@@ -232,7 +258,7 @@ export const Banners = () => {
 
         return [
           <GridActionsCellItem
-            icon={<EditIcon />}
+            icon={<EditOutlinedIcon />}
             label="Edit"
             className="textPrimary"
             onClick={handleEditClick(id)}
@@ -241,7 +267,7 @@ export const Banners = () => {
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={() => handleDelete(id)}
+            onClick={handleDelete(id)}
             color="inherit"
           />,
         ];
@@ -255,7 +281,7 @@ export const Banners = () => {
         height: 'auto',
         width: '100%',
         '& .actions': {
-          color: 'text.secondary',
+          color: 'text.primary',
         },
         '& .textPrimary': {
           color: 'text.primary',
@@ -276,12 +302,13 @@ export const Banners = () => {
         hideFooter={true}
         hideFooterPagination={true}
         rowHeight={100}
+        autoHeight
         slots={{
           toolbar: EditToolbar,
         }}
-        // slotProps={{
-        //   toolbar: { setRows, setRowModesModel },
-        // }}
+        slotProps={{
+          toolbar: { setRows, setRowModesModel },
+        }}
       />
     </Box>
   );
