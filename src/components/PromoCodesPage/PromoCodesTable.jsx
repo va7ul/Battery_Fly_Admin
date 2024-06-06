@@ -12,7 +12,6 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
-import { themeMUI } from 'styles/GlobalStyled';
 import { Box, Button } from '@mui/material';
 import {
   DataGrid,
@@ -255,7 +254,7 @@ export const PromoCodesTable = () => {
     <Box
       sx={{
         '& .super-app-theme--header': {
-          backgroundColor: themeMUI.palette.background.primary,
+          backgroundColor: 'background.primary',
         },
         [`.${gridClasses.cell}.yes`]: {
           '& .MuiSvgIcon-root': {
