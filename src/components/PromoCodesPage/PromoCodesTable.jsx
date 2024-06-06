@@ -21,6 +21,7 @@ import {
   GridRowModes,
   GridActionsCellItem,
   useGridApiRef,
+  gridClasses,
 } from '@mui/x-data-grid';
 import { randomId } from '@mui/x-data-grid-generator';
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
@@ -250,6 +251,16 @@ export const PromoCodesTable = () => {
         '& .super-app-theme--header': {
           backgroundColor: themeMUI.palette.background.primary,
         },
+        [`.${gridClasses.cell}.yes`]: {
+          '& .MuiSvgIcon-root': {
+            color: 'success.main',
+          },
+        },
+        [`.${gridClasses.cell}.no`]: {
+          '& .MuiSvgIcon-root': {
+            color: 'error.main',
+          },
+        },
       }}
     >
       <ModalConfirm
@@ -284,7 +295,22 @@ export const PromoCodesTable = () => {
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
         }}
-        sx={{ '--DataGrid-overlayHeight': '300px' }}
+        getCellClassName={params => {
+          if (params.field === 'valid') {
+            if (params.value === true) {
+              return 'yes';
+            } else {
+              return 'no';
+            }
+          }
+          return '';
+        }}
+        sx={{
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '--DataGrid-overlayHeight': '300px',
+        }}
       />
     </Box>
   );

@@ -19,6 +19,7 @@ import {
   GridPagination,
   GridActionsCellItem,
   useGridApiRef,
+  gridClasses,
 } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from '../NoRowsOverlay/NoRowsOverlay';
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
@@ -196,6 +197,16 @@ export const ProductsTable = ({ category }) => {
         '& .super-app-theme--header': {
           backgroundColor: themeMUI.palette.background.primary,
         },
+        [`.${gridClasses.cell}.yes`]: {
+          '& .MuiSvgIcon-root': {
+            color: 'success.main',
+          },
+        },
+        [`.${gridClasses.cell}.no`]: {
+          '& .MuiSvgIcon-root': {
+            color: 'error.main',
+          },
+        },
       }}
     >
       <ModalConfirm
@@ -226,7 +237,22 @@ export const ProductsTable = ({ category }) => {
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
         }}
-        sx={{ '--DataGrid-overlayHeight': '300px' }}
+        getCellClassName={params => {
+          if (params.field === 'popular') {
+            if (params.value === true) {
+              return 'yes';
+            } else {
+              return 'no';
+            }
+          }
+          return '';
+        }}
+        sx={{
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '--DataGrid-overlayHeight': '300px',
+        }}
       />
     </Box>
   );

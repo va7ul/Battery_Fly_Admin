@@ -137,7 +137,12 @@ export const Prints3DTable = () => {
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
         }}
-        sx={{ '--DataGrid-overlayHeight': '300px' }}
+        sx={{
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '--DataGrid-overlayHeight': '300px',
+        }}
       />
     </Box>
   );

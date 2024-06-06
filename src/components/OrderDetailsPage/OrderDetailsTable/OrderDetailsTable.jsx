@@ -3,7 +3,12 @@ import { useSelector } from 'react-redux';
 import { selectOneOrder } from '../../../redux/orders/ordersSelectors';
 import { themeMUI } from 'styles/GlobalStyled';
 import Box from '@mui/material/Box';
-import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbar,
+  useGridApiRef,
+  gridClasses,
+} from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
 
 export const OrderDetailsTable = () => {
@@ -129,6 +134,18 @@ export const OrderDetailsTable = () => {
         '& .super-app-theme--header': {
           backgroundColor: themeMUI.palette.background.primary,
         },
+        [`.${gridClasses.cell}.new`]: {
+          color: 'warning.main',
+        },
+        [`.${gridClasses.cell}.inWork`]: {
+          color: 'primary.main',
+        },
+        [`.${gridClasses.cell}.delivered`]: {
+          color: 'success.main',
+        },
+        [`.${gridClasses.cell}.canceled`]: {
+          color: 'error.main',
+        },
       }}
     >
       <DataGrid
@@ -153,7 +170,29 @@ export const OrderDetailsTable = () => {
             },
           },
         }}
-        sx={{ '--DataGrid-overlayHeight': '300px' }}
+        getCellClassName={params => {
+          if (params.field === 'status') {
+            switch (params.value) {
+              case 'Нове':
+                return 'new';
+              case 'В роботі':
+                return 'inWork';
+              case 'Доставлено':
+                return 'delivered';
+              case 'Скасовано':
+                return 'canceled';
+
+              default:
+                break;
+            }
+          }
+        }}
+        sx={{
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '--DataGrid-overlayHeight': '300px',
+        }}
       />
     </Box>
   );
