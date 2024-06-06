@@ -10,6 +10,7 @@ import {
   GridToolbar,
   GridActionsCellItem,
   useGridApiRef,
+  gridClasses,
 } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
 
@@ -204,6 +205,18 @@ export const OrdersTable = () => {
         '& .super-app-theme--header': {
           backgroundColor: themeMUI.palette.background.primary,
         },
+        [`.${gridClasses.cell}.new`]: {
+          color: 'warning.main',
+        },
+        [`.${gridClasses.cell}.inWork`]: {
+          color: 'primary.main',
+        },
+        [`.${gridClasses.cell}.delivered`]: {
+          color: 'success.main',
+        },
+        [`.${gridClasses.cell}.canceled`]: {
+          color: 'error.main',
+        },
       }}
     >
       <DataGrid
@@ -242,7 +255,29 @@ export const OrdersTable = () => {
             },
           },
         }}
-        sx={{ '--DataGrid-overlayHeight': '300px' }}
+        getCellClassName={params => {
+          if (params.field === 'status') {
+            switch (params.value) {
+              case 'Нове':
+                return 'new';
+              case 'В роботі':
+                return 'inWork';
+              case 'Доставлено':
+                return 'delivered';
+              case 'Скасовано':
+                return 'canceled';
+
+              default:
+                break;
+            }
+          }
+        }}
+        sx={{
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '--DataGrid-overlayHeight': '300px',
+        }}
       />
     </Box>
   );
