@@ -11,7 +11,6 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridRowEditStopReasons,
-  GridToolbarContainer,
 } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { randomId } from '@mui/x-data-grid-generator';
@@ -56,30 +55,6 @@ export const Banners = () => {
     setRowModesModel(newRowModesModel);
   };
 
-  const EditToolbar = props => {
-    const { setRows, setRowModesModel } = props;
-
-    const handleClick = () => {
-      const id = randomId();
-      setRows(oldRows => [
-        ...oldRows,
-        { id, image: '', text: '', isNew: true },
-      ]);
-      setRowModesModel(oldModel => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
-      }));
-    };
-
-    return (
-      <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-          Add record
-        </Button>
-      </GridToolbarContainer>
-    );
-  };
-
   const [image, setImage] = useState('');
   const [text, setText] = useState('');
 
@@ -100,13 +75,11 @@ export const Banners = () => {
     const newRow = rows.find(row => row.isNew === true && row.text === '');
     const formData = new FormData();
     if (image[id]?.file) {
-      // console.log(image[id]?.file);
       formData.append('image', image[id].file);
     }
     formData.append('text', text[id] || rows.find(row => row.id === id).text);
     try {
       if (newRow) {
-        // console.log('newRow', newRow);
         dispatch(addHero(formData));
       } else {
         dispatch(editHero({ id, formData }));
@@ -127,7 +100,7 @@ export const Banners = () => {
   const columns = [
     {
       field: 'image',
-      headerName: 'Image',
+      headerName: 'Фото',
       type: 'image',
       renderCell: params => {
         const { id } = params.row;
@@ -158,16 +131,16 @@ export const Banners = () => {
           </div>
         );
       },
-      width: 500,
+      width: 450,
       align: 'center',
       headerAlign: 'center',
       editable: false,
     },
     {
       field: 'text',
-      headerName: 'Text',
+      headerName: 'Текст',
       type: 'text',
-      width: 670,
+      width: 725,
       align: 'center',
       headerAlign: 'center',
       editable: false,
@@ -192,7 +165,6 @@ export const Banners = () => {
       width: 100,
       align: 'center',
       headerAlign: 'center',
-      headerName: 'Actions',
       cellClassName: 'actions',
 
       getActions: ({ id }) => {
@@ -237,6 +209,39 @@ export const Banners = () => {
     },
   ];
 
+  const AddBannerButton = props => {
+    const { setRows, setRowModesModel } = props;
+
+    const handleClick = () => {
+      const id = randomId();
+      setRows(oldRows => [
+        ...oldRows,
+        { id, image: '', text: '', isNew: true },
+      ]);
+      setRowModesModel(oldModel => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
+      }));
+    };
+
+    return (
+      <Button
+        variant="contained"
+        startIcon={<AddIcon />}
+        onClick={handleClick}
+        sx={{
+          marginRight: 'auto',
+          marginLeft: '10px',
+          '&:hover': {
+            backgroundColor: 'primary.main',
+          },
+        }}
+      >
+        Додати банер
+      </Button>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -257,19 +262,16 @@ export const Banners = () => {
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        // processRowUpdate={processRowUpdate}
         disableColumnMenu={true}
         disableColumnResize={true}
         disableColumnSorting={true}
-        hideFooter={true}
-        hideFooterPagination={true}
         rowHeight={100}
         autoHeight
         slots={{
-          toolbar: EditToolbar,
+          pagination: AddBannerButton,
         }}
         slotProps={{
-          toolbar: { setRows, setRowModesModel },
+          pagination: { setRows, setRowModesModel },
         }}
       />
     </Box>
