@@ -32,7 +32,8 @@ export const addHero = createAsyncThunk(
     try {
       setAuthHeader(token);
       const { data } = await axios.post('adm/hero', formData, config);
-      return data;
+      console.log('data', data);
+      return data.hero;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
