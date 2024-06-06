@@ -153,6 +153,7 @@ export const Banners = () => {
               type="text"
               defaultValue={params.value}
               onChange={handleTextChange(id)}
+              onKeyDown={e => e.stopPropagation()}
             />
           );
         }
@@ -266,6 +267,7 @@ export const Banners = () => {
         disableColumnResize={true}
         disableColumnSorting={true}
         rowHeight={100}
+        rowSelection={false}
         autoHeight
         slots={{
           pagination: AddBannerButton,
