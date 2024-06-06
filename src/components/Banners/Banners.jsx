@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -11,64 +11,25 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridRowEditStopReasons,
-  GridToolbarContainer,
 } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { randomId } from '@mui/x-data-grid-generator';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getHero,
-  deleteHero,
-  editHero,
-  addHero,
-} from '../../redux/hero/heroOperations';
+import { deleteHero, editHero, addHero } from '../../redux/hero/heroOperations';
 import { selectHero } from '../../redux/hero/heroSelectors';
 
 export const Banners = () => {
   const dispatch = useDispatch();
   const images = useSelector(selectHero);
-  const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
 
-  useEffect(() => {
-    const getHeroImagesSync = async () => {
-      try {
-        dispatch(getHero());
-      } catch (error) {
-        console.log('error', error.message);
-      }
-    };
-    getHeroImagesSync();
-  }, [dispatch]);
+  const initialRows = images.map(({ _id, image, text }) => ({
+    id: _id,
+    image,
+    text,
+  }));
 
-  useEffect(() => {
-    if (images) {
-      const initialRows = images.map(({ _id, image, text }) => ({
-        id: _id,
-        image,
-        text,
-      }));
-      setRows(initialRows);
-    }
-  }, [images]);
-
-  // const processRowUpdate = newRow => {
-  //   const updatedRow = { ...newRow, isNew: false };
-  //   setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
-
-  //   const newPromoData = {
-  //     name: newRow.promoCode,
-  //     discount: newRow.discount,
-  //     valid: newRow.valid,
-  //   };
-
-  //   if (rows.find(row => row.id === newRow.id && row.promoCode === '')) {
-  //     dispatch(addHero(newPromoData));
-  //   }
-
-  //   return updatedRow;
-  // };
-
+  const [rows, setRows] = useState(initialRows);
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
@@ -94,30 +55,6 @@ export const Banners = () => {
     setRowModesModel(newRowModesModel);
   };
 
-  const EditToolbar = props => {
-    const { setRows, setRowModesModel } = props;
-
-    const handleClick = () => {
-      const id = randomId();
-      setRows(oldRows => [
-        ...oldRows,
-        { id, image: '', text: '', isNew: true },
-      ]);
-      setRowModesModel(oldModel => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
-      }));
-    };
-
-    return (
-      <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-          Add record
-        </Button>
-      </GridToolbarContainer>
-    );
-  };
-
   const [image, setImage] = useState('');
   const [text, setText] = useState('');
 
@@ -138,19 +75,17 @@ export const Banners = () => {
     const newRow = rows.find(row => row.isNew === true && row.text === '');
     const formData = new FormData();
     if (image[id]?.file) {
-      console.log(image[id]?.file);
       formData.append('image', image[id].file);
     }
     formData.append('text', text[id] || rows.find(row => row.id === id).text);
     try {
       if (newRow) {
-        console.log('newRow', newRow);
         dispatch(addHero(formData));
       } else {
         dispatch(editHero({ id, formData }));
       }
     } catch (error) {
-      console.error(`jopa`, error.message);
+      console.error(`error`, error.message);
     }
   };
 
@@ -165,7 +100,7 @@ export const Banners = () => {
   const columns = [
     {
       field: 'image',
-      headerName: 'Image',
+      headerName: 'Фото',
       type: 'image',
       renderCell: params => {
         const { id } = params.row;
@@ -196,16 +131,16 @@ export const Banners = () => {
           </div>
         );
       },
-      width: 500,
+      width: 450,
       align: 'center',
       headerAlign: 'center',
       editable: false,
     },
     {
       field: 'text',
-      headerName: 'Text',
+      headerName: 'Текст',
       type: 'text',
-      width: 670,
+      width: 725,
       align: 'center',
       headerAlign: 'center',
       editable: false,
@@ -218,6 +153,7 @@ export const Banners = () => {
               type="text"
               defaultValue={params.value}
               onChange={handleTextChange(id)}
+              onKeyDown={e => e.stopPropagation()}
             />
           );
         }
@@ -230,7 +166,6 @@ export const Banners = () => {
       width: 100,
       align: 'center',
       headerAlign: 'center',
-      headerName: 'Actions',
       cellClassName: 'actions',
 
       getActions: ({ id }) => {
@@ -275,6 +210,39 @@ export const Banners = () => {
     },
   ];
 
+  const AddBannerButton = props => {
+    const { setRows, setRowModesModel } = props;
+
+    const handleClick = () => {
+      const id = randomId();
+      setRows(oldRows => [
+        ...oldRows,
+        { id, image: '', text: '', isNew: true },
+      ]);
+      setRowModesModel(oldModel => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
+      }));
+    };
+
+    return (
+      <Button
+        variant="contained"
+        startIcon={<AddIcon />}
+        onClick={handleClick}
+        sx={{
+          marginRight: 'auto',
+          marginLeft: '10px',
+          '&:hover': {
+            backgroundColor: 'primary.main',
+          },
+        }}
+      >
+        Додати банер
+      </Button>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -295,19 +263,17 @@ export const Banners = () => {
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        // processRowUpdate={processRowUpdate}
         disableColumnMenu={true}
         disableColumnResize={true}
         disableColumnSorting={true}
-        hideFooter={true}
-        hideFooterPagination={true}
         rowHeight={100}
+        rowSelection={false}
         autoHeight
         slots={{
-          toolbar: EditToolbar,
+          pagination: AddBannerButton,
         }}
         slotProps={{
-          toolbar: { setRows, setRowModesModel },
+          pagination: { setRows, setRowModesModel },
         }}
       />
     </Box>
