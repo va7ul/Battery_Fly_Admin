@@ -52,22 +52,22 @@ export const Banners = () => {
     }
   }, [images]);
 
-  const processRowUpdate = newRow => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
+  // const processRowUpdate = newRow => {
+  //   const updatedRow = { ...newRow, isNew: false };
+  //   setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
 
-    const newPromoData = {
-      name: newRow.promoCode,
-      discount: newRow.discount,
-      valid: newRow.valid,
-    };
+  //   const newPromoData = {
+  //     name: newRow.promoCode,
+  //     discount: newRow.discount,
+  //     valid: newRow.valid,
+  //   };
 
-    if (rows.find(row => row.id === newRow.id && row.promoCode === '')) {
-      dispatch(addHero(newPromoData));
-    }
+  //   if (rows.find(row => row.id === newRow.id && row.promoCode === '')) {
+  //     dispatch(addHero(newPromoData));
+  //   }
 
-    return updatedRow;
-  };
+  //   return updatedRow;
+  // };
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -94,6 +94,30 @@ export const Banners = () => {
     setRowModesModel(newRowModesModel);
   };
 
+  const EditToolbar = props => {
+    const { setRows, setRowModesModel } = props;
+
+    const handleClick = () => {
+      const id = randomId();
+      setRows(oldRows => [
+        ...oldRows,
+        { id, image: '', text: '', isNew: true },
+      ]);
+      setRowModesModel(oldModel => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
+      }));
+    };
+
+    return (
+      <GridToolbarContainer>
+        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+          Add record
+        </Button>
+      </GridToolbarContainer>
+    );
+  };
+
   const [image, setImage] = useState('');
   const [text, setText] = useState('');
 
@@ -109,8 +133,9 @@ export const Banners = () => {
     }
   };
 
-  const handleSaveClick = id => async newRow => {
+  const handleSaveClick = id => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    const newRow = rows.find(row => row.isNew === true && row.text === '');
     const formData = new FormData();
     if (image[id]?.file) {
       console.log(image[id]?.file);
@@ -118,13 +143,12 @@ export const Banners = () => {
     }
     formData.append('text', text[id] || rows.find(row => row.id === id).text);
     try {
-      if (rows.find(row => row.id === newRow.id && row.text === '')) {
+      if (newRow) {
+        console.log('newRow', newRow);
         dispatch(addHero(formData));
       } else {
         dispatch(editHero({ id, formData }));
       }
-
-      console.log(`ura`);
     } catch (error) {
       console.error(`jopa`, error.message);
     }
@@ -251,30 +275,6 @@ export const Banners = () => {
     },
   ];
 
-  const EditToolbar = props => {
-    const { setRows, setRowModesModel } = props;
-
-    const handleClick = () => {
-      const id = randomId();
-      setRows(oldRows => [
-        ...oldRows,
-        { id, image: '', text: '', isNew: true },
-      ]);
-      setRowModesModel(oldModel => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
-      }));
-    };
-
-    return (
-      <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-          Add record
-        </Button>
-      </GridToolbarContainer>
-    );
-  };
-
   return (
     <Box
       sx={{
@@ -295,7 +295,7 @@ export const Banners = () => {
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
+        // processRowUpdate={processRowUpdate}
         disableColumnMenu={true}
         disableColumnResize={true}
         disableColumnSorting={true}
