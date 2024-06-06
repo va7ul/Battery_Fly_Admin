@@ -20,6 +20,9 @@ export const OrderActionBtn = ({
             marginLeft: '10px',
             marginRight: 'auto',
             backgroundColor: 'success.main',
+            '&:hover': {
+              backgroundColor: 'success.main',
+            },
           }}
         >
           Підтвердити
@@ -33,6 +36,9 @@ export const OrderActionBtn = ({
             marginLeft: '10px',
             marginRight: 'auto',
             backgroundColor: 'success.main',
+            '&:hover': {
+              backgroundColor: 'success.main',
+            },
           }}
         >
           Виконати
@@ -46,6 +52,9 @@ export const OrderActionBtn = ({
             marginLeft: '10px',
             marginRight: 'auto',
             backgroundColor: 'error.main',
+            '&:hover': {
+              backgroundColor: 'error.main',
+            },
           }}
         >
           Скасувати

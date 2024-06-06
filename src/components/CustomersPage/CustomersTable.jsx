@@ -3,7 +3,12 @@ import { useEffect, useMemo } from 'react';
 import { selectCustomers } from '../../redux/customers/customersSelectors';
 import { themeMUI } from 'styles/GlobalStyled';
 import { Box } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbar,
+  useGridApiRef,
+  gridClasses,
+} from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
 
 export const CustomersTable = () => {
@@ -122,6 +127,16 @@ export const CustomersTable = () => {
         '& .super-app-theme--header': {
           backgroundColor: themeMUI.palette.background.primary,
         },
+        [`.${gridClasses.cell}.yes`]: {
+          '& .MuiSvgIcon-root': {
+            color: 'success.main',
+          },
+        },
+        [`.${gridClasses.cell}.no`]: {
+          '& .MuiSvgIcon-root': {
+            color: 'error.main',
+          },
+        },
       }}
     >
       <DataGrid
@@ -152,7 +167,25 @@ export const CustomersTable = () => {
             },
           },
         }}
-        sx={{ '--DataGrid-overlayHeight': '300px' }}
+        getCellClassName={params => {
+          if (params.field === 'verifiedEmail') {
+            if (params.value === true) {
+              return 'yes';
+            } else {
+              return 'no';
+            }
+          }
+          return '';
+        }}
+        sx={{
+          // '& .MuiDataGrid-cell': {
+          //   color: 'primary.success',
+          // },
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '--DataGrid-overlayHeight': '300px',
+        }}
       />
     </Box>
   );

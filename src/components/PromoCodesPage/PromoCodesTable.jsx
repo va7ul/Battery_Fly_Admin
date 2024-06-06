@@ -12,7 +12,6 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
-import { themeMUI } from 'styles/GlobalStyled';
 import { Box, Button } from '@mui/material';
 import {
   DataGrid,
@@ -21,6 +20,7 @@ import {
   GridRowModes,
   GridActionsCellItem,
   useGridApiRef,
+  gridClasses,
 } from '@mui/x-data-grid';
 import { randomId } from '@mui/x-data-grid-generator';
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
@@ -235,7 +235,13 @@ export const PromoCodesTable = () => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleClick}
-          sx={{ marginLeft: '10px', marginRight: 'auto' }}
+          sx={{
+            marginLeft: '10px',
+            marginRight: 'auto',
+            '&:hover': {
+              backgroundColor: 'primary.main',
+            },
+          }}
         >
           Додати промокод
         </Button>
@@ -248,7 +254,17 @@ export const PromoCodesTable = () => {
     <Box
       sx={{
         '& .super-app-theme--header': {
-          backgroundColor: themeMUI.palette.background.primary,
+          backgroundColor: 'background.primary',
+        },
+        [`.${gridClasses.cell}.yes`]: {
+          '& .MuiSvgIcon-root': {
+            color: 'success.main',
+          },
+        },
+        [`.${gridClasses.cell}.no`]: {
+          '& .MuiSvgIcon-root': {
+            color: 'error.main',
+          },
         },
       }}
     >
@@ -284,7 +300,22 @@ export const PromoCodesTable = () => {
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
         }}
-        sx={{ '--DataGrid-overlayHeight': '300px' }}
+        getCellClassName={params => {
+          if (params.field === 'valid') {
+            if (params.value === true) {
+              return 'yes';
+            } else {
+              return 'no';
+            }
+          }
+          return '';
+        }}
+        sx={{
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '--DataGrid-overlayHeight': '300px',
+        }}
       />
     </Box>
   );
