@@ -15,8 +15,9 @@ const BatteriesForFPVPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && (
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
         <ProductsTable category={'Батареї для FPV-дронів'} />
       )}
     </>

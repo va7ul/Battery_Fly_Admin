@@ -15,8 +15,9 @@ const MaterialsPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && (
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
         <ProductsTable category={'Розхідні матеріали'} />
       )}
     </>

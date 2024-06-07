@@ -15,8 +15,9 @@ const TypeLifepo4Page = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && (
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
         <ProductsTable category={'Акумулятори LiFePo4'} />
       )}
     </>

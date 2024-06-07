@@ -19,8 +19,11 @@ const ApplicationsPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && <ApplicationsTable />}
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
+        <ApplicationsTable />
+      )}
     </>
   );
 };

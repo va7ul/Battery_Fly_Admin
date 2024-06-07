@@ -15,8 +15,11 @@ const Type32650Page = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && <ProductsTable category={'Акумулятори 32650'} />}
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
+        <ProductsTable category={'Акумулятори 32650'} />
+      )}
     </>
   );
 };

@@ -15,8 +15,11 @@ const TypeLiPoPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && <ProductsTable category={'Акумулятори Li-Po'} />}
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
+        <ProductsTable category={'Акумулятори Li-Po'} />
+      )}
     </>
   );
 };

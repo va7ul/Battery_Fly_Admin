@@ -19,8 +19,7 @@ const PromoCodesPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && <PromoCodesTable />}
+      {isLoading ? <CustomLoader isLoading={isLoading} /> : <PromoCodesTable />}
     </>
   );
 };

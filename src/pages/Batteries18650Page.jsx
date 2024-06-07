@@ -15,8 +15,11 @@ const Type18650Page = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && <ProductsTable category={'Акумулятори 18650'} />}
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
+        <ProductsTable category={'Акумулятори 18650'} />
+      )}
     </>
   );
 };

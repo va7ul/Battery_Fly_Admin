@@ -19,8 +19,11 @@ const QuickOrdersPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading  && <QuickOrdersTable />}
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
+        <QuickOrdersTable />
+      )}
     </>
   );
 };
