@@ -19,8 +19,7 @@ const Prins3DPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && <Prints3DTable />}
+      {isLoading ? <CustomLoader isLoading={isLoading} /> : <Prints3DTable />}
     </>
   );
 };

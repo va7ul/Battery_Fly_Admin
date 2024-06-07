@@ -20,8 +20,7 @@ const CustomersPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && <CustomersTable />}
+      {isLoading ? <CustomLoader isLoading={isLoading} /> : <CustomersTable />}
     </>
   );
 };

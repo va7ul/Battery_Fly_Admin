@@ -13,7 +13,9 @@ const BannersPage = () => {
     dispatch(getHero());
   }, [dispatch]);
 
-  return <>{isLoading ? <CustomLoader /> : <Banners />}</>;
+  return (
+    <>{isLoading ? <CustomLoader isLoading={isLoading} /> : <Banners />}</>
+  );
 };
 
 export default BannersPage;

@@ -15,22 +15,23 @@ const EditProductPage = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectOneProductIsLoading);
   const error = useSelector(selectOneProductError);
-  const { category } = useSelector(selectOneProduct)
+  const { category } = useSelector(selectOneProduct);
   const { cardId } = useParams();
-  
+
   useEffect(() => {
     dispatch(getOneProduct(cardId));
   }, [dispatch, cardId]);
 
-  const zbirka = ['assembly', 'fpv', 'transport', 'toys']
+  const zbirka = ['assembly', 'fpv', 'transport', 'toys'];
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && (
-        <>
-          {zbirka.includes(category) ? <EditProductZbirky /> : <EditProduct />}
-        </>
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : zbirka.includes(category) ? (
+        <EditProductZbirky />
+      ) : (
+        <EditProduct />
       )}
     </>
   );

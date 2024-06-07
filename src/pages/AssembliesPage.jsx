@@ -15,8 +15,11 @@ const AssembliesPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && <ProductsTable category={'Готові батареї'} />}
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
+        <ProductsTable category={'Готові батареї'} />
+      )}
     </>
   );
 };

@@ -15,8 +15,11 @@ const Type21700Page = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && <ProductsTable category={'Акумулятори 21700'} />}
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
+        <ProductsTable category={'Акумулятори 21700'} />
+      )}
     </>
   );
 };

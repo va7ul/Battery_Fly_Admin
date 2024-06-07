@@ -22,10 +22,7 @@ const OrderDetailsPage = () => {
   }, [dispatch, orderId]);
 
   return (
-    <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && <OrderDetails />}
-    </>
+    <>{isLoading ? <CustomLoader isLoading={isLoading} /> : <OrderDetails />}</>
   );
 };
 

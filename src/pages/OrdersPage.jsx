@@ -18,10 +18,7 @@ const OrdersPage = () => {
   }, [dispatch]);
 
   return (
-    <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && <OrdersTable />}
-    </>
+    <>{isLoading ? <CustomLoader isLoading={isLoading} /> : <OrdersTable />}</>
   );
 };
 

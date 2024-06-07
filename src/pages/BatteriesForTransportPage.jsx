@@ -15,8 +15,9 @@ const BatteriesForTransportPage = () => {
 
   return (
     <>
-      {isLoading && <CustomLoader />}
-      {!isLoading && !error && (
+      {isLoading ? (
+        <CustomLoader isLoading={isLoading} />
+      ) : (
         <ProductsTable category={'Батареї для електротранспорту'} />
       )}
     </>
