@@ -178,9 +178,6 @@ export const CustomersTable = () => {
           return '';
         }}
         sx={{
-          // '& .MuiDataGrid-cell': {
-          //   color: 'primary.success',
-          // },
           '& .MuiDataGrid-cell:hover': {
             color: 'primary.main',
           },
