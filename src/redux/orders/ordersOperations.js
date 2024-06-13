@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseURL } from 'utils/constants/baseURL';
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = baseURL;
 
@@ -28,6 +29,9 @@ export const getAllOrders = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -45,6 +49,9 @@ export const getOneOrder = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -60,10 +67,14 @@ export const updateOneOrder = createAsyncThunk(
       const { data } = await axios.put(`adm/put-order/${orderId}`, {
         ...orderData,
       });
+      toast.success('Дані змінено!');
 
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -81,6 +92,9 @@ export const getPrints3D = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -98,6 +112,9 @@ export const getQuickOrders = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -115,6 +132,9 @@ export const getApplications = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }

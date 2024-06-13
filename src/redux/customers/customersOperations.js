@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseURL } from 'utils/constants/baseURL';
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = baseURL;
 
@@ -28,6 +29,8 @@ export const getCustomers = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
       return thunkApi.rejectWithValue(errorMessage);
     }
   }

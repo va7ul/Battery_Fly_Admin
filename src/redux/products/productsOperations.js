@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseURL } from 'utils/constants/baseURL';
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = baseURL;
 
@@ -25,6 +26,9 @@ export const getAssortment = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -39,6 +43,9 @@ export const getBatteries18650 = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -53,6 +60,9 @@ export const getBatteries21700 = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -67,6 +77,9 @@ export const getBatteries32650 = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -81,6 +94,9 @@ export const getBatterieslipo = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -95,6 +111,9 @@ export const getBatterieslifepo4 = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -109,6 +128,9 @@ export const getAssemblies = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -123,6 +145,9 @@ export const getBatteriesForFPV = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -137,6 +162,9 @@ export const getBatteriesForTransport = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -151,6 +179,9 @@ export const getBatteriesForToys = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -165,6 +196,9 @@ export const getDevices = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -179,6 +213,9 @@ export const getMaterials = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -192,6 +229,9 @@ export const getOneProduct = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -207,9 +247,14 @@ export const addProduct = createAsyncThunk(
     };
     try {
       const { data } = await axios.post(`adm/product-add`, formData, config);
+      toast.success('Товар додано!');
+
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -229,9 +274,14 @@ export const editProduct = createAsyncThunk(
         formData,
         config
       );
+      toast.success('Дані змінено!');
+
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -247,9 +297,14 @@ export const addProductZbirky = createAsyncThunk(
     };
     try {
       const { data } = await axios.post(`adm/assemblies-add`, formData, config);
+      toast.success('Товар додано!');
+
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -269,9 +324,14 @@ export const editProductZbirky = createAsyncThunk(
         formData,
         config
       );
+      toast.success('Дані змінено!');
+
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -285,10 +345,14 @@ export const deleteProduct = createAsyncThunk(
     try {
       setAuthHeader(token);
       const { data } = await axios.delete(`adm/product/${codeOfGood}`);
+      toast.success('Товар видалено!');
 
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -302,10 +366,14 @@ export const deleteProductZbirky = createAsyncThunk(
     try {
       setAuthHeader(token);
       const { data } = await axios.delete(`adm/assemblies/${codeOfGood}`);
+      toast.success('Товар видалено!');
 
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }

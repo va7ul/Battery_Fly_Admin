@@ -13,6 +13,7 @@ import { OrderDetailsTable } from './OrderDetailsTable/OrderDetailsTable';
 import { OrderMainInfo } from './OrderMainInfo/OrderMainInfo';
 import { OrderActionBtn } from './OrderActionBtn/OrderActionBtn';
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
+import toast from 'react-hot-toast';
 
 export const OrderDetails = () => {
   const orderData = useSelector(selectOneOrder);
@@ -35,7 +36,8 @@ export const OrderDetails = () => {
       const product = products.find(el => el.codeOfGood === item.codeOfGood);
 
       if (product.quantity < item.quantityOrdered) {
-        window.alert('Товару немає в наявності!');
+        toast.remove();
+        toast.error('Товару немає в наявності!');
         isOutOfStock = true;
         return;
       }
