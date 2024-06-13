@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/Battery_Fly_Admin/static/css/main.cd2e038f.css",
-    "main.js": "/Battery_Fly_Admin/static/js/main.7e22f7f5.js",
+    "main.js": "/Battery_Fly_Admin/static/js/main.86a191dd.js",
     "static/js/599.36d7c64b.chunk.js": "/Battery_Fly_Admin/static/js/599.36d7c64b.chunk.js",
     "static/js/729.cc6d71cf.chunk.js": "/Battery_Fly_Admin/static/js/729.cc6d71cf.chunk.js",
     "static/js/152.505d18e2.chunk.js": "/Battery_Fly_Admin/static/js/152.505d18e2.chunk.js",
-    "static/js/630.e77b2df3.chunk.js": "/Battery_Fly_Admin/static/js/630.e77b2df3.chunk.js",
+    "static/js/630.bbdde5f0.chunk.js": "/Battery_Fly_Admin/static/js/630.bbdde5f0.chunk.js",
     "static/js/336.a75adbbc.chunk.js": "/Battery_Fly_Admin/static/js/336.a75adbbc.chunk.js",
     "static/js/561.06bef40c.chunk.js": "/Battery_Fly_Admin/static/js/561.06bef40c.chunk.js",
     "static/js/102.b82a2f0b.chunk.js": "/Battery_Fly_Admin/static/js/102.b82a2f0b.chunk.js",
@@ -38,11 +38,11 @@
     "static/media/no-image-available.webp": "/Battery_Fly_Admin/static/media/no-image-available.3ab3b1116add9155d3ef.webp",
     "index.html": "/Battery_Fly_Admin/index.html",
     "main.cd2e038f.css.map": "/Battery_Fly_Admin/static/css/main.cd2e038f.css.map",
-    "main.7e22f7f5.js.map": "/Battery_Fly_Admin/static/js/main.7e22f7f5.js.map",
+    "main.86a191dd.js.map": "/Battery_Fly_Admin/static/js/main.86a191dd.js.map",
     "599.36d7c64b.chunk.js.map": "/Battery_Fly_Admin/static/js/599.36d7c64b.chunk.js.map",
     "729.cc6d71cf.chunk.js.map": "/Battery_Fly_Admin/static/js/729.cc6d71cf.chunk.js.map",
     "152.505d18e2.chunk.js.map": "/Battery_Fly_Admin/static/js/152.505d18e2.chunk.js.map",
-    "630.e77b2df3.chunk.js.map": "/Battery_Fly_Admin/static/js/630.e77b2df3.chunk.js.map",
+    "630.bbdde5f0.chunk.js.map": "/Battery_Fly_Admin/static/js/630.bbdde5f0.chunk.js.map",
     "336.a75adbbc.chunk.js.map": "/Battery_Fly_Admin/static/js/336.a75adbbc.chunk.js.map",
     "561.06bef40c.chunk.js.map": "/Battery_Fly_Admin/static/js/561.06bef40c.chunk.js.map",
     "102.b82a2f0b.chunk.js.map": "/Battery_Fly_Admin/static/js/102.b82a2f0b.chunk.js.map",
@@ -74,6 +74,6 @@
   },
   "entrypoints": [
     "static/css/main.cd2e038f.css",
-    "static/js/main.7e22f7f5.js"
+    "static/js/main.86a191dd.js"
   ]
 }
