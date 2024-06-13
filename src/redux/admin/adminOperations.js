@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseURL } from 'utils/constants/baseURL';
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = baseURL;
 
@@ -29,6 +30,7 @@ export const login = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
       if (error.request.status === 401) {
         return thunkApi.rejectWithValue(error.request.status);
       }
@@ -44,6 +46,10 @@ export const logOut = createAsyncThunk('adm/signout', async (_, thunkAPI) => {
   } catch (error) {
     const errorMessage = handleError(error);
     return thunkAPI.rejectWithValue(errorMessage);
+  } finally {
+    toast.success('Вихід з профілю виконано успішно!', {
+      duration: 3000,
+    });
   }
 });
 
@@ -62,6 +68,8 @@ export const refreshAdmin = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
       return thunkAPI.rejectWithValue(errorMessage);
     }
   }

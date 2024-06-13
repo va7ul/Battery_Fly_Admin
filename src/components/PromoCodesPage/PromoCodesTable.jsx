@@ -24,6 +24,7 @@ import {
 } from '@mui/x-data-grid';
 import { randomId } from '@mui/x-data-grid-generator';
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
+import toast from 'react-hot-toast';
 
 export const PromoCodesTable = () => {
   const [open, setOpen] = useState(false);
@@ -63,6 +64,14 @@ export const PromoCodesTable = () => {
   const [rows, setRows] = useState(initialRows);
 
   const processRowUpdate = newRow => {
+    if (newRow.discount > 100) {
+      return toast.error('Знижка повинна бути менше 100%');
+    }
+
+    if (newRow.discount < 1) {
+      return toast.error('Знижка повинна бути більшою за 0');
+    }
+
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
 
@@ -92,7 +101,7 @@ export const PromoCodesTable = () => {
     },
     {
       field: 'discount',
-      headerName: 'Знижка',
+      headerName: 'Знижка, %',
       headerClassName: 'super-app-theme--header',
       type: 'number',
       align: 'center',
@@ -213,7 +222,6 @@ export const PromoCodesTable = () => {
     const handleClick = () => {
       const id = randomId();
       setRows(oldRows => [
-        ...oldRows,
         {
           id,
           promoCode: '',
@@ -222,6 +230,7 @@ export const PromoCodesTable = () => {
           createdAt: '',
           isNew: true,
         },
+        ...oldRows,
       ]);
       setRowModesModel(oldModel => ({
         ...oldModel,

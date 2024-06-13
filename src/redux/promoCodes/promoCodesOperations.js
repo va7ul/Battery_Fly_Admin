@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseURL } from 'utils/constants/baseURL';
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = baseURL;
 
@@ -28,6 +29,9 @@ export const getPromoCodes = createAsyncThunk(
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -41,10 +45,14 @@ export const addPromoCode = createAsyncThunk(
     try {
       setAuthHeader(token);
       const { data } = await axios.post('adm/promo-code', promoData);
+      toast.success('Промокод додано!');
 
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -59,10 +67,14 @@ export const updatePromoCode = createAsyncThunk(
       const { data } = await axios.put(`adm/promo-code/${id}`, {
         ...promoData,
       });
+      toast.success('Дані змінено!');
 
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
@@ -76,10 +88,14 @@ export const deletePromoCode = createAsyncThunk(
     try {
       setAuthHeader(token);
       const { data } = await axios.delete(`adm/promo-code/${id}`);
+      toast.success('Промокод видалено!');
 
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
       return thunkApi.rejectWithValue(errorMessage);
     }
   }
