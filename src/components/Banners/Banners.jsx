@@ -17,11 +17,15 @@ import { randomId } from '@mui/x-data-grid-generator';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteHero, editHero, addHero } from '../../redux/hero/heroOperations';
 import { selectHero } from '../../redux/hero/heroSelectors';
+import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
+import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
 
 export const Banners = () => {
   const dispatch = useDispatch();
   const images = useSelector(selectHero);
   const [rowModesModel, setRowModesModel] = useState({});
+  const [open, setOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState();
 
   const initialRows = images.map(({ _id, image, text }) => ({
     id: _id,
@@ -36,8 +40,17 @@ export const Banners = () => {
     }
   };
 
-  const handleDelete = id => () => {
-    dispatch(deleteHero(id));
+  const openModalConfirm = id => () => {
+    setOpen(true);
+    setIdToDelete(id);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteHero(idToDelete));
   };
 
   const handleCancelClick = id => () => {
@@ -202,7 +215,7 @@ export const Banners = () => {
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={handleDelete(id)}
+            onClick={openModalConfirm(id)}
             color="inherit"
           />,
         ];
@@ -256,6 +269,12 @@ export const Banners = () => {
         },
       }}
     >
+      <ModalConfirm
+        open={open}
+        handleClose={handleClose}
+        handleAction={handleDelete}
+        text={'Ви впевнені, що хочете видалити банер?'}
+      />
       <DataGrid
         rows={rows}
         columns={columns}
@@ -271,9 +290,16 @@ export const Banners = () => {
         autoHeight
         slots={{
           pagination: AddBannerButton,
+          noRowsOverlay: CustomNoRowsOverlay,
         }}
         slotProps={{
           pagination: { setRows, setRowModesModel },
+        }}
+        sx={{
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '--DataGrid-overlayHeight': '300px',
         }}
       />
     </Box>
