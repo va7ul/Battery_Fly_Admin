@@ -89,10 +89,6 @@ export const AddProductZbirky = ({ category }) => {
                         formData.append('files', image)
                     };
 
-                      for (const value of formData.values()) {
-      console.log(value);
-    }
-
                     dispatch(addProductZbirky(formData))
                         .then(result => {
                         if (result.meta.requestStatus === 'fulfilled') {
