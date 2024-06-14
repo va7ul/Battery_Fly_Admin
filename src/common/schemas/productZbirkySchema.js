@@ -11,8 +11,8 @@ export const productZbirkySchema = Yup.object().shape({
     .required('Введіть загальну ціну товару'),
   description: Yup.string().required('Введіть загальний опис товару'),
   quantity: Yup.number()
+    .min(0, 'Число повинно бути більшим або дорівнювати 0')
     .required('Введіть кількість товару')
-    .positive('Число повинно бути позитивним')
     .integer(),
   discount: Yup.number().positive('Число повинно бути позитивним').integer(),
   information: Yup.string().required('Введіть загальну інформацію про товар'),
