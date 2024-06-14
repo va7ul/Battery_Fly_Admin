@@ -34,6 +34,23 @@ export const getAssortment = createAsyncThunk(
   }
 );
 
+export const getProducts = createAsyncThunk(
+  'products/getProducts',
+  async (products, thunkApi) => {
+    try {
+      const { data } = await axios.post('products', { products });
+
+      return data;
+    } catch (error) {
+      const errorMessage = handleError(error);
+      console.error(errorMessage);
+      toast.error('Сталася помилка, спробуйте ще раз!');
+
+      return thunkApi.rejectWithValue(errorMessage);
+    }
+  }
+);
+
 export const getBatteries18650 = createAsyncThunk(
   'products/getBatteries18650',
   async (_, thunkApi) => {
