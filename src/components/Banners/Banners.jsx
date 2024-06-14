@@ -261,12 +261,6 @@ export const Banners = () => {
       sx={{
         height: 'auto',
         width: '100%',
-        '& .actions': {
-          color: 'text.primary',
-        },
-        '& .textPrimary': {
-          color: 'text.primary',
-        },
       }}
     >
       <ModalConfirm
