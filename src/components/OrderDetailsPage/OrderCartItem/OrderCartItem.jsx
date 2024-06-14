@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import noImage from '../../../assets/images/no-image-available.webp';
 import Battery0BarIcon from '@mui/icons-material/Battery0Bar';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -16,30 +16,26 @@ import {
   PriceWrap,
   QuantityInStock,
   DeleteBtn,
-} from './OrderCart.styled';
+} from './OrderCartItem.styled';
 import {
   decreaseQuantity,
   deleteItem,
   increaseQuantity,
 } from '../../../redux/orders/oneOrderSlice';
-import { selectProducts } from '../../../redux/products/productsSelectors';
 
-export const OrderCart = ({ item, status }) => {
+export const OrderCartItem = ({ item, status }) => {
   const {
     codeOfGood,
     name,
     image,
     price,
+    quantity,
     quantityOrdered,
     totalPrice,
     capacityKey,
     selectedSealing,
     selectedHolder,
   } = item;
-
-  const products = useSelector(selectProducts);
-  const product = products.find(el => el.codeOfGood === codeOfGood);
-  const guantityInStock = product?.quantity;
 
   const dispatch = useDispatch();
 
@@ -54,7 +50,7 @@ export const OrderCart = ({ item, status }) => {
   };
 
   const increase = () => {
-    if (quantityOrdered < guantityInStock) {
+    if (quantityOrdered < quantity) {
       dispatch(increaseQuantity(item));
     }
   };
@@ -87,10 +83,7 @@ export const OrderCart = ({ item, status }) => {
             <Button type="button" onClick={decrease}>
               <FaMinus />
             </Button>
-            <QuantityOrdered
-              ordered={quantityOrdered}
-              inStock={guantityInStock}
-            >
+            <QuantityOrdered ordered={quantityOrdered} inStock={quantity}>
               {quantityOrdered} шт
             </QuantityOrdered>
             <Button type="button" onClick={increase}>
@@ -103,8 +96,8 @@ export const OrderCart = ({ item, status }) => {
               <AiOutlineClose />
             </DeleteBtn>
           </PriceWrap>
-          <QuantityInStock ordered={quantityOrdered} inStock={guantityInStock}>
-            В наявності: {guantityInStock} шт
+          <QuantityInStock ordered={quantityOrdered} inStock={quantity}>
+            В наявності: {quantity} шт
           </QuantityInStock>
         </>
       ) : (
