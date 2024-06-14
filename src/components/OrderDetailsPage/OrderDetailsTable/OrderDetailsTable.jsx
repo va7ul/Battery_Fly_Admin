@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectOneOrder } from '../../../redux/orders/ordersSelectors';
+import { selectProducts } from '../../../redux/products/productsSelectors';
 import { themeMUI } from 'styles/GlobalStyled';
 import Box from '@mui/material/Box';
 import {
@@ -14,6 +15,7 @@ import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverl
 export const OrderDetailsTable = () => {
   const apiRef = useGridApiRef();
   const order = useSelector(selectOneOrder);
+  const products = useSelector(selectProducts);
 
   const autosizeOptions = useMemo(
     () => ({
@@ -28,7 +30,7 @@ export const OrderDetailsTable = () => {
     if (apiRef.current) {
       apiRef.current.autosizeColumns(autosizeOptions);
     }
-  }, [apiRef, autosizeOptions, order]);
+  }, [apiRef, autosizeOptions, order, products]);
 
   const rows = [
     {
