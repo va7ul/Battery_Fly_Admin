@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/Battery_Fly_Admin/static/css/main.cd2e038f.css",
-    "main.js": "/Battery_Fly_Admin/static/js/main.c744e176.js",
+    "main.js": "/Battery_Fly_Admin/static/js/main.20e8ec06.js",
     "static/js/599.2969f52b.chunk.js": "/Battery_Fly_Admin/static/js/599.2969f52b.chunk.js",
     "static/js/729.cc6d71cf.chunk.js": "/Battery_Fly_Admin/static/js/729.cc6d71cf.chunk.js",
     "static/js/152.505d18e2.chunk.js": "/Battery_Fly_Admin/static/js/152.505d18e2.chunk.js",
-    "static/js/630.bbdde5f0.chunk.js": "/Battery_Fly_Admin/static/js/630.bbdde5f0.chunk.js",
+    "static/js/630.cce335c6.chunk.js": "/Battery_Fly_Admin/static/js/630.cce335c6.chunk.js",
     "static/js/336.a75adbbc.chunk.js": "/Battery_Fly_Admin/static/js/336.a75adbbc.chunk.js",
     "static/js/561.06bef40c.chunk.js": "/Battery_Fly_Admin/static/js/561.06bef40c.chunk.js",
     "static/js/102.b82a2f0b.chunk.js": "/Battery_Fly_Admin/static/js/102.b82a2f0b.chunk.js",
@@ -19,8 +19,8 @@
     "static/js/364.41b8cb59.chunk.js": "/Battery_Fly_Admin/static/js/364.41b8cb59.chunk.js",
     "static/js/452.f9a43a04.chunk.js": "/Battery_Fly_Admin/static/js/452.f9a43a04.chunk.js",
     "static/js/432.3fb13742.chunk.js": "/Battery_Fly_Admin/static/js/432.3fb13742.chunk.js",
-    "static/js/918.e78fe3a2.chunk.js": "/Battery_Fly_Admin/static/js/918.e78fe3a2.chunk.js",
-    "static/js/971.2f5e4551.chunk.js": "/Battery_Fly_Admin/static/js/971.2f5e4551.chunk.js",
+    "static/js/805.2bb6b77a.chunk.js": "/Battery_Fly_Admin/static/js/805.2bb6b77a.chunk.js",
+    "static/js/971.8021ec75.chunk.js": "/Battery_Fly_Admin/static/js/971.8021ec75.chunk.js",
     "static/js/133.26d88b8f.chunk.js": "/Battery_Fly_Admin/static/js/133.26d88b8f.chunk.js",
     "static/js/974.c8af2959.chunk.js": "/Battery_Fly_Admin/static/js/974.c8af2959.chunk.js",
     "static/js/586.f62f4fd0.chunk.js": "/Battery_Fly_Admin/static/js/586.f62f4fd0.chunk.js",
@@ -38,11 +38,11 @@
     "static/media/no-image-available.webp": "/Battery_Fly_Admin/static/media/no-image-available.3ab3b1116add9155d3ef.webp",
     "index.html": "/Battery_Fly_Admin/index.html",
     "main.cd2e038f.css.map": "/Battery_Fly_Admin/static/css/main.cd2e038f.css.map",
-    "main.c744e176.js.map": "/Battery_Fly_Admin/static/js/main.c744e176.js.map",
+    "main.20e8ec06.js.map": "/Battery_Fly_Admin/static/js/main.20e8ec06.js.map",
     "599.2969f52b.chunk.js.map": "/Battery_Fly_Admin/static/js/599.2969f52b.chunk.js.map",
     "729.cc6d71cf.chunk.js.map": "/Battery_Fly_Admin/static/js/729.cc6d71cf.chunk.js.map",
     "152.505d18e2.chunk.js.map": "/Battery_Fly_Admin/static/js/152.505d18e2.chunk.js.map",
-    "630.bbdde5f0.chunk.js.map": "/Battery_Fly_Admin/static/js/630.bbdde5f0.chunk.js.map",
+    "630.cce335c6.chunk.js.map": "/Battery_Fly_Admin/static/js/630.cce335c6.chunk.js.map",
     "336.a75adbbc.chunk.js.map": "/Battery_Fly_Admin/static/js/336.a75adbbc.chunk.js.map",
     "561.06bef40c.chunk.js.map": "/Battery_Fly_Admin/static/js/561.06bef40c.chunk.js.map",
     "102.b82a2f0b.chunk.js.map": "/Battery_Fly_Admin/static/js/102.b82a2f0b.chunk.js.map",
@@ -56,8 +56,8 @@
     "364.41b8cb59.chunk.js.map": "/Battery_Fly_Admin/static/js/364.41b8cb59.chunk.js.map",
     "452.f9a43a04.chunk.js.map": "/Battery_Fly_Admin/static/js/452.f9a43a04.chunk.js.map",
     "432.3fb13742.chunk.js.map": "/Battery_Fly_Admin/static/js/432.3fb13742.chunk.js.map",
-    "918.e78fe3a2.chunk.js.map": "/Battery_Fly_Admin/static/js/918.e78fe3a2.chunk.js.map",
-    "971.2f5e4551.chunk.js.map": "/Battery_Fly_Admin/static/js/971.2f5e4551.chunk.js.map",
+    "805.2bb6b77a.chunk.js.map": "/Battery_Fly_Admin/static/js/805.2bb6b77a.chunk.js.map",
+    "971.8021ec75.chunk.js.map": "/Battery_Fly_Admin/static/js/971.8021ec75.chunk.js.map",
     "133.26d88b8f.chunk.js.map": "/Battery_Fly_Admin/static/js/133.26d88b8f.chunk.js.map",
     "974.c8af2959.chunk.js.map": "/Battery_Fly_Admin/static/js/974.c8af2959.chunk.js.map",
     "586.f62f4fd0.chunk.js.map": "/Battery_Fly_Admin/static/js/586.f62f4fd0.chunk.js.map",
@@ -74,6 +74,6 @@
   },
   "entrypoints": [
     "static/css/main.cd2e038f.css",
-    "static/js/main.c744e176.js"
+    "static/js/main.20e8ec06.js"
   ]
 }
