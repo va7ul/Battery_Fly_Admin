@@ -1,29 +1,50 @@
-import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectOneOrder } from '../../redux/orders/ordersSelectors';
 import { selectProducts } from '../../redux/products/productsSelectors';
+import { getProducts } from '../../redux/products/productsOperations';
+import { selectOneOrder } from '../../redux/orders/ordersSelectors';
 import { updateOneOrder } from '../../redux/orders/ordersOperations';
-import { OrderCart } from './OrderCart/OrderCart';
+import { OrderCartItem } from './OrderCartItem/OrderCartItem';
+import { OrderDetailsTable } from './OrderDetailsTable/OrderDetailsTable';
+import { OrderMainInfo } from './OrderMainInfo/OrderMainInfo';
+import { OrderActionBtn } from './OrderActionBtn/OrderActionBtn';
+import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
 import {
   ContentWrapper,
   OrderDetailsContainer,
   OrderDetailsList,
 } from './OrderDetails.styled';
-import { OrderDetailsTable } from './OrderDetailsTable/OrderDetailsTable';
-import { OrderMainInfo } from './OrderMainInfo/OrderMainInfo';
-import { OrderActionBtn } from './OrderActionBtn/OrderActionBtn';
-import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
-import toast from 'react-hot-toast';
 
 export const OrderDetails = () => {
   const orderData = useSelector(selectOneOrder);
-  const products = useSelector(selectProducts);
   const { _id, cartItems, status } = orderData;
 
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const [text, setText] = useState('');
   const dispatch = useDispatch();
+  const products = useSelector(selectProducts);
+
+  useEffect(() => {
+    if (status === 'Нове') {
+      const codeOfGoods = cartItems.map(item => {
+        return item.codeOfGood;
+      });
+      dispatch(getProducts(codeOfGoods));
+    }
+  }, [dispatch, cartItems, status]);
+
+  const newCartItems = cartItems.map(item => {
+    if (!products || products.length === 0) {
+      return item;
+    }
+    const product = products.find(el => el.codeOfGood === item.codeOfGood);
+    if (product && product.quantity !== item.quantity) {
+      return { ...item, quantity: product.quantity };
+    }
+    return item;
+  });
 
   const handleClose = () => {
     setOpen(false);
@@ -32,10 +53,8 @@ export const OrderDetails = () => {
   const handleApproveClick = () => {
     let isOutOfStock = false;
 
-    cartItems.forEach(item => {
-      const product = products.find(el => el.codeOfGood === item.codeOfGood);
-
-      if (product.quantity < item.quantityOrdered) {
+    newCartItems.forEach(item => {
+      if (item.quantity < item.quantityOrdered) {
         toast.remove();
         toast.error('Товару немає в наявності!');
         isOutOfStock = true;
@@ -73,9 +92,9 @@ export const OrderDetails = () => {
         <OrderDetailsTable />
         <OrderDetailsContainer>
           <OrderDetailsList>
-            {cartItems?.map((item, index) => (
+            {newCartItems.map((item, index) => (
               <li key={item.codeOfGood + index}>
-                <OrderCart item={item} status={status} />
+                <OrderCartItem item={item} status={status} />
               </li>
             ))}
           </OrderDetailsList>

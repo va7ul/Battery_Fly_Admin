@@ -1,6 +1,7 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
   getAssortment,
+  getProducts,
   getBatteries18650,
   getBatteries21700,
   getBatteries32650,
@@ -54,6 +55,7 @@ const productsListSlice = createSlice({
       .addMatcher(
         isAnyOf(
           getAssortment.pending,
+          getProducts.pending,
           getBatteries18650.pending,
           getBatteries21700.pending,
           getBatteries32650.pending,
@@ -73,6 +75,7 @@ const productsListSlice = createSlice({
       .addMatcher(
         isAnyOf(
           getAssortment.rejected,
+          getProducts.rejected,
           getBatteries18650.rejected,
           getBatteries21700.rejected,
           getBatteries32650.rejected,
@@ -92,6 +95,7 @@ const productsListSlice = createSlice({
       .addMatcher(
         isAnyOf(
           getAssortment.fulfilled,
+          getProducts.fulfilled,
           getBatteries18650.fulfilled,
           getBatteries21700.fulfilled,
           getBatteries32650.fulfilled,

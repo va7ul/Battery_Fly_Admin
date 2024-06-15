@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getAssortment } from '../redux/products/productsOperations';
 import { getOneOrder } from '../redux/orders/ordersOperations';
 import { selectOneOrderIsLoading } from '../redux/orders/ordersSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
@@ -13,7 +12,6 @@ const OrderDetailsPage = () => {
   const { orderId } = useParams();
 
   useEffect(() => {
-    dispatch(getAssortment());
     dispatch(getOneOrder(orderId));
   }, [dispatch, orderId]);
 

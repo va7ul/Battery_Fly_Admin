@@ -207,15 +207,27 @@ export const OrdersTable = () => {
         },
         [`.${gridClasses.cell}.new`]: {
           color: 'warning.main',
+          '&:hover': {
+            color: 'warning.main',
+          },
         },
         [`.${gridClasses.cell}.inWork`]: {
           color: 'primary.main',
+          '&:hover': {
+            color: 'primary.main',
+          },
         },
         [`.${gridClasses.cell}.delivered`]: {
           color: 'success.main',
+          '&:hover': {
+            color: 'success.main',
+          },
         },
         [`.${gridClasses.cell}.canceled`]: {
           color: 'error.main',
+          '&:hover': {
+            color: 'error.main',
+          },
         },
       }}
     >
