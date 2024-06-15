@@ -114,6 +114,7 @@ export const Banners = () => {
     {
       field: 'image',
       headerName: 'Фото',
+      headerClassName: 'super-app-theme--header',
       type: 'image',
       renderCell: params => {
         const { id } = params.row;
@@ -152,6 +153,7 @@ export const Banners = () => {
     {
       field: 'text',
       headerName: 'Текст',
+      headerClassName: 'super-app-theme--header',
       type: 'text',
       width: 725,
       align: 'center',
@@ -175,6 +177,7 @@ export const Banners = () => {
     },
     {
       field: 'actions',
+      headerClassName: 'super-app-theme--header',
       type: 'actions',
       width: 100,
       align: 'center',
@@ -261,6 +264,9 @@ export const Banners = () => {
       sx={{
         height: 'auto',
         width: '100%',
+        '& .super-app-theme--header': {
+          backgroundColor: 'background.primary',
+        },
       }}
     >
       <ModalConfirm

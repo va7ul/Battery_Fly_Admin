@@ -1,4 +1,4 @@
-import { Banners } from 'components/Banners/Banners';
+import { Banners } from 'components/BannersPage/Banners';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHero } from '../redux/hero/heroOperations';

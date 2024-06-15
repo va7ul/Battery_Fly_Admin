@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { selectIsLoading } from '../redux/admin/adminSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
-import { LoginForm } from 'components/LoginForm/LoginForm';
+import { LoginForm } from 'components/LoginPage/LoginForm';
 
 const LoginPage = () => {
   const isLoading = useSelector(selectIsLoading);
