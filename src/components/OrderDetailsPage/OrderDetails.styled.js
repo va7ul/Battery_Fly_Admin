@@ -8,7 +8,7 @@ export const ContentWrapper = styled.div`
 
 export const OrderDetailsContainer = styled.div`
   grid-column: 1/6;
-  background: rgba(244, 170, 0, 0.1);
+  background: rgba(225, 225, 225, 0.7);
   padding: 5px 10px;
 `;
 
@@ -28,4 +28,3 @@ export const OrderDetailsList = styled.ul`
     }
   }
 `;
-
