@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Battery_Fly_Admin/static/css/main.cd2e038f.css",
-    "main.js": "/Battery_Fly_Admin/static/js/main.ab22789f.js",
+    "main.js": "/Battery_Fly_Admin/static/js/main.a9390ced.js",
     "static/js/599.2969f52b.chunk.js": "/Battery_Fly_Admin/static/js/599.2969f52b.chunk.js",
     "static/js/729.cc6d71cf.chunk.js": "/Battery_Fly_Admin/static/js/729.cc6d71cf.chunk.js",
     "static/js/152.d523b878.chunk.js": "/Battery_Fly_Admin/static/js/152.d523b878.chunk.js",
@@ -38,7 +38,7 @@
     "static/media/no-image-available.webp": "/Battery_Fly_Admin/static/media/no-image-available.3ab3b1116add9155d3ef.webp",
     "index.html": "/Battery_Fly_Admin/index.html",
     "main.cd2e038f.css.map": "/Battery_Fly_Admin/static/css/main.cd2e038f.css.map",
-    "main.ab22789f.js.map": "/Battery_Fly_Admin/static/js/main.ab22789f.js.map",
+    "main.a9390ced.js.map": "/Battery_Fly_Admin/static/js/main.a9390ced.js.map",
     "599.2969f52b.chunk.js.map": "/Battery_Fly_Admin/static/js/599.2969f52b.chunk.js.map",
     "729.cc6d71cf.chunk.js.map": "/Battery_Fly_Admin/static/js/729.cc6d71cf.chunk.js.map",
     "152.d523b878.chunk.js.map": "/Battery_Fly_Admin/static/js/152.d523b878.chunk.js.map",
@@ -74,6 +74,6 @@
   },
   "entrypoints": [
     "static/css/main.cd2e038f.css",
-    "static/js/main.ab22789f.js"
+    "static/js/main.a9390ced.js"
   ]
 }
