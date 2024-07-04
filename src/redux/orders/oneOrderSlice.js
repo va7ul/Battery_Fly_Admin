@@ -126,11 +126,11 @@ const oneOrderSlice = createSlice({
     },
 
     changeDiscount(state, { payload }) {
-      state.discountValue = payload;
+      state.result.discountValue = payload;
     },
 
     changeTogether(state, { payload }) {
-      state.together = payload;
+      state.result.together = payload;
     },
   },
   extraReducers: builder =>
