@@ -272,7 +272,7 @@ export const AddProductZbirky = ({ category }) => {
                                                 <BoxField>
                                                 <DeleteButton type='button'
                                                     onClick={() => {
-                                                        if (values.capacity.length === 1) return window.alert('Ти шо, дурний? Єдиний блок він видаляє.. Нахєр я його малювала тоді');
+                                                        if (values.capacity.length === 1) return window.alert('Єдиний блок видаляти не можна');
                                                         remove(index)
                                                     }}>
                                                     - видалити блок
@@ -326,7 +326,7 @@ export const AddProductZbirky = ({ category }) => {
                         <Label>
                             Інформація
                             <BoxField>
-                                <StyledTextField name="information" type="text" component="textarea" />
+                                <StyledTextField name="information" type="text" placeholder="Наприкінці кожного абзацу ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
                                 <StyledErrorMessage name="information" component="div" />
                             </BoxField>
                         </Label>

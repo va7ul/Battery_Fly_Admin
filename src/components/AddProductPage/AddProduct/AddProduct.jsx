@@ -210,7 +210,7 @@ export const AddProduct = ({ category, type }) => {
                     <Label>
                         Інформація
                         <Box>
-                            <StyledTextField name="information" type="text" component="textarea" />
+                            <StyledTextField name="information" type="text" placeholder="Наприкінці кожного абзацу ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
                             <StyledErrorMessage name="information" component="div" />
                         </Box>
                     </Label>
