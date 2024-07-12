@@ -1,6 +1,6 @@
 import { lazy, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useTypedDispatch } from './redux/hooks';
 import { PrivateRoute } from 'routes/PrivateRoute';
 import { RestrictedRoute } from 'routes/RestrictedRoute';
 import { Layout } from './components/Layout/Layout';
@@ -8,7 +8,8 @@ import { useAuth } from './utils/hooks';
 import { refreshAdmin } from './redux/admin/adminOperations';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
 
-const lazyLoadPage = importPath => lazy(() => import(`./pages/${importPath}`));
+const lazyLoadPage = (importPath: string) =>
+  lazy(() => import(`./pages/${importPath}`));
 
 const LoginPage = lazyLoadPage('LoginPage');
 const OrdersPage = lazyLoadPage('OrdersPage');
@@ -34,7 +35,7 @@ const BannersPage = lazyLoadPage('BannersPage');
 const PromoCodesPage = lazyLoadPage('PromoCodesPage');
 
 export const App = () => {
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
   const { isRefreshing } = useAuth();
 
   useEffect(() => {
