@@ -1,39 +1,58 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import {
   getPromoCodes,
   addPromoCode,
   updatePromoCode,
   deletePromoCode,
-} from '../promoCodes/promoCodesOperations';
+} from './promoCodesOperations';
+import { PromoCode } from 'components/PromoCodesPage/PromoCodesTable.types';
 
-const initialState = {
+type InitialState = {
+  promoCodes: PromoCode[];
+  isLoading: boolean;
+  error: string | null;
+};
+
+const initialState: InitialState = {
   promoCodes: [],
   isLoading: false,
   error: null,
 };
 
-const handlePending = state => {
+const handlePending = (state: InitialState) => {
   state.isLoading = true;
 };
 
-const handleRejected = (state, action) => {
+const handleRejected = (
+  state: InitialState,
+  action: PayloadAction<string | undefined>
+) => {
   state.isLoading = false;
-  state.error = action.payload;
+  state.error = action.payload ?? 'Unknown error';
 };
 
-const handleGetPromoFulfilled = (state, action) => {
+const handleGetPromoFulfilled = (
+  state: InitialState,
+  action: PayloadAction<{ promo: PromoCode[] }>
+) => {
   state.isLoading = false;
   state.error = null;
   state.promoCodes = action.payload.promo;
 };
 
-const handleAdPromoFulfilled = (state, action) => {
+const handleAddPromoFulfilled = (
+  state: InitialState,
+  action: PayloadAction<{ promo: PromoCode }>
+) => {
   state.isLoading = false;
   state.error = null;
   state.promoCodes.unshift(action.payload.promo);
 };
 
-const handleUpdatePromoFulfilled = (state, action) => {
+const handleUpdatePromoFulfilled = (
+  state: InitialState,
+  action: PayloadAction<{ promo: PromoCode }>
+) => {
   state.isLoading = false;
   state.error = null;
   state.promoCodes = state.promoCodes.map(el => {
@@ -44,7 +63,10 @@ const handleUpdatePromoFulfilled = (state, action) => {
   });
 };
 
-const handleDeletePromoFulfilled = (state, action) => {
+const handleDeletePromoFulfilled = (
+  state: InitialState,
+  action: PayloadAction<{ id: string }>
+) => {
   state.isLoading = false;
   state.error = null;
   state.promoCodes = state.promoCodes.filter(
@@ -59,7 +81,7 @@ const promoCodesSlice = createSlice({
   extraReducers: builder =>
     builder
       .addCase(getPromoCodes.fulfilled, handleGetPromoFulfilled)
-      .addCase(addPromoCode.fulfilled, handleAdPromoFulfilled)
+      .addCase(addPromoCode.fulfilled, handleAddPromoFulfilled)
       .addCase(updatePromoCode.fulfilled, handleUpdatePromoFulfilled)
       .addCase(deletePromoCode.fulfilled, handleDeletePromoFulfilled)
       .addMatcher(

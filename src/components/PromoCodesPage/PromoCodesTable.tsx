@@ -1,38 +1,43 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo, useState } from 'react';
+import { useTypedDispatch, useTypedSelector } from '../../redux/hooks';
 import { selectPromoCodes } from '../../redux/promoCodes/promoCodesSelectors';
 import {
   addPromoCode,
   deletePromoCode,
   updatePromoCode,
 } from '../../redux/promoCodes/promoCodesOperations';
-import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   DataGrid,
   GridToolbar,
-  GridPagination,
+  GridRowsProp,
   GridRowModes,
+  GridRowModesModel,
+  GridCellParams,
   GridActionsCellItem,
   useGridApiRef,
   gridClasses,
+  GridColDef,
+  GridRowModel,
+  GridRowId,
 } from '@mui/x-data-grid';
-import { randomId } from '@mui/x-data-grid-generator';
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
 import toast from 'react-hot-toast';
+import { PromoData } from './PromoCodesTable.types';
+import { CustomFooter } from './CustomFooter';
 
 export const PromoCodesTable = () => {
   const [open, setOpen] = useState(false);
-  const [idToDelete, setIdToDelete] = useState();
+  const [idToDelete, setIdToDelete] = useState<GridRowId>('');
   const apiRef = useGridApiRef();
-  const dispatch = useDispatch();
-  const promoCodes = useSelector(selectPromoCodes);
-  const [rowModesModel, setRowModesModel] = useState({});
+  const dispatch = useTypedDispatch();
+  const promoCodes = useTypedSelector(selectPromoCodes);
+  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
   const autosizeOptions = useMemo(
     () => ({
@@ -61,21 +66,23 @@ export const PromoCodesTable = () => {
     [promoCodes]
   );
 
-  const [rows, setRows] = useState(initialRows);
+  const [rows, setRows] = useState<GridRowsProp>(initialRows);
 
-  const processRowUpdate = newRow => {
+  const processRowUpdate = (newRow: GridRowModel): GridRowModel | undefined => {
     if (newRow.discount > 100) {
-      return toast.error('Знижка повинна бути менше 100%');
+      toast.error('Знижка повинна бути менше 100%');
+      return undefined;
     }
 
     if (newRow.discount < 1) {
-      return toast.error('Знижка повинна бути більшою за 0');
+      toast.error('Знижка повинна бути більшою за 0');
+      return undefined;
     }
 
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)));
 
-    const newPromoData = {
+    const newPromoData: PromoData = {
       name: newRow.promoCode,
       discount: newRow.discount,
       valid: newRow.valid,
@@ -90,7 +97,7 @@ export const PromoCodesTable = () => {
     return updatedRow;
   };
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: 'promoCode',
       headerName: 'Промокод',
@@ -122,7 +129,7 @@ export const PromoCodesTable = () => {
       type: 'date',
       align: 'center',
       headerAlign: 'center',
-      valueFormatter: value => {
+      valueFormatter: (value: any): string => {
         if (value == null) {
           return '';
         }
@@ -177,33 +184,33 @@ export const PromoCodesTable = () => {
     },
   ];
 
-  const handleEditClick = id => () => {
+  const handleEditClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.Edit },
     });
   };
 
-  const handleSaveClick = id => () => {
+  const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.View },
     });
   };
 
-  const handleCancelClick = id => () => {
+  const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
 
     const editedRow = rows.find(row => row.id === id);
-    if (editedRow.isNew) {
+    if (editedRow?.isNew) {
       setRows(rows.filter(row => row.id !== id));
     }
   };
 
-  const handleDeleteClick = id => () => {
+  const handleDeleteClick = (id: GridRowId) => () => {
     setOpen(true);
     setIdToDelete(id);
   };
@@ -213,50 +220,7 @@ export const PromoCodesTable = () => {
   };
 
   const deleteItem = () => {
-    dispatch(deletePromoCode(idToDelete));
-  };
-
-  const CustomFooter = props => {
-    const { setRows, setRowModesModel } = props;
-
-    const handleClick = () => {
-      const id = randomId();
-      setRows(oldRows => [
-        {
-          id,
-          promoCode: '',
-          discount: '',
-          valid: true,
-          createdAt: '',
-          isNew: true,
-        },
-        ...oldRows,
-      ]);
-      setRowModesModel(oldModel => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'promoCode' },
-      }));
-    };
-
-    return (
-      <>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={handleClick}
-          sx={{
-            marginLeft: '10px',
-            marginRight: 'auto',
-            '&:hover': {
-              backgroundColor: 'primary.main',
-            },
-          }}
-        >
-          Додати промокод
-        </Button>
-        <GridPagination />
-      </>
-    );
+    dispatch(deletePromoCode(idToDelete as string));
   };
 
   return (
@@ -297,19 +261,23 @@ export const PromoCodesTable = () => {
         hideFooterSelectedRowCount
         slots={{
           toolbar: GridToolbar,
-          pagination: CustomFooter,
+          pagination: () => (
+            <CustomFooter
+              setRows={setRows}
+              setRowModesModel={setRowModesModel}
+            />
+          ),
           noRowsOverlay: CustomNoRowsOverlay,
         }}
         slotProps={{
           toolbar: {
             showQuickFilter: true,
           },
-          pagination: { setRows, setRowModesModel },
         }}
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
         }}
-        getCellClassName={params => {
+        getCellClassName={(params: GridCellParams) => {
           if (params.field === 'valid') {
             if (params.value === true) {
               return 'yes';
