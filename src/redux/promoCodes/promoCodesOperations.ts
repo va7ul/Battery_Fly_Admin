@@ -3,10 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 import { baseURL } from 'utils/constants/baseURL';
 import toast from 'react-hot-toast';
-import {
-  PromoCode,
-  PromoData,
-} from 'components/PromoCodesPage/PromoCodesTable.types';
+import { PromoCode, PromoData } from '../../@types/promoCodes.types';
 
 axios.defaults.baseURL = baseURL;
 

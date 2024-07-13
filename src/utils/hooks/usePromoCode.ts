@@ -1,4 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useTypedSelector, useTypedDispatch } from '../../redux/hooks';
+
 import { useEffect } from 'react';
 import {
   changeDiscount,
@@ -7,7 +8,8 @@ import {
 import { selectOneOrder } from '../../redux/orders/ordersSelectors';
 
 export const usePromoCode = () => {
-  const { cartItems, promoCodeDiscount, total } = useSelector(selectOneOrder);
+  const { cartItems, promoCodeDiscount, total } =
+    useTypedSelector(selectOneOrder);
 
   const discountValue = Math.round(
     (cartItems
@@ -21,7 +23,7 @@ export const usePromoCode = () => {
 
   const together = total - discountValue;
 
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
 
   useEffect(() => {
     dispatch(changeDiscount(discountValue));

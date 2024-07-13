@@ -1,19 +1,21 @@
-import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
+import { useTypedSelector } from '../../redux/hooks';
 import { selectCustomers } from '../../redux/customers/customersSelectors';
-import { themeMUI } from 'styles/GlobalStyled';
 import { Box } from '@mui/material';
 import {
   DataGrid,
   GridToolbar,
   useGridApiRef,
   gridClasses,
+  GridColDef,
+  GridCellParams,
 } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
+import { CustomNoResultsOverlay } from 'components/Shared/NoResultsOverlay/NoResultsOverlay';
 
 export const CustomersTable = () => {
   const apiRef = useGridApiRef();
-  const customers = useSelector(selectCustomers);
+  const customers = useTypedSelector(selectCustomers);
 
   const autosizeOptions = useMemo(
     () => ({
@@ -49,7 +51,7 @@ export const CustomersTable = () => {
     [customers]
   );
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: 'lastName',
       headerName: 'Прізвище',
@@ -106,7 +108,7 @@ export const CustomersTable = () => {
       align: 'center',
       headerAlign: 'center',
       type: 'date',
-      valueFormatter: value => {
+      valueFormatter: (value: any): string => {
         if (value == null) {
           return '';
         }
@@ -125,7 +127,7 @@ export const CustomersTable = () => {
     <Box
       sx={{
         '& .super-app-theme--header': {
-          backgroundColor: themeMUI.palette.background.primary,
+          backgroundColor: 'background.primary',
         },
         [`.${gridClasses.cell}.yes`]: {
           '& .MuiSvgIcon-root': {
@@ -151,6 +153,7 @@ export const CustomersTable = () => {
         slots={{
           toolbar: GridToolbar,
           noRowsOverlay: CustomNoRowsOverlay,
+          noResultsOverlay: CustomNoResultsOverlay,
         }}
         slotProps={{
           toolbar: {
@@ -167,7 +170,7 @@ export const CustomersTable = () => {
             },
           },
         }}
-        getCellClassName={params => {
+        getCellClassName={(params: GridCellParams) => {
           if (params.field === 'verifiedEmail') {
             if (params.value === true) {
               return 'yes';

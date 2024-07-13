@@ -28,8 +28,9 @@ import {
 } from '@mui/x-data-grid';
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
 import toast from 'react-hot-toast';
-import { PromoData } from './PromoCodesTable.types';
+import { PromoData } from '../../@types/promoCodes.types';
 import { CustomFooter } from './CustomFooter';
+import { CustomNoResultsOverlay } from 'components/Shared/NoResultsOverlay/NoResultsOverlay';
 
 export const PromoCodesTable = () => {
   const [open, setOpen] = useState(false);
@@ -268,6 +269,7 @@ export const PromoCodesTable = () => {
             />
           ),
           noRowsOverlay: CustomNoRowsOverlay,
+          noResultsOverlay: CustomNoResultsOverlay,
         }}
         slotProps={{
           toolbar: {

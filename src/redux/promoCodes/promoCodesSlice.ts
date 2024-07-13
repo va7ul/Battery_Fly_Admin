@@ -5,7 +5,7 @@ import {
   updatePromoCode,
   deletePromoCode,
 } from './promoCodesOperations';
-import { PromoCode } from 'components/PromoCodesPage/PromoCodesTable.types';
+import { PromoCode } from '../../@types/promoCodes.types';
 
 type InitialState = {
   promoCodes: PromoCode[];
