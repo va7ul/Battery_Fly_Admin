@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { getRotation } from 'styles/GlobalStyled';
 
-export const ArrowButton = styled.button`
+export const ArrowButton = styled.button<{ handleOpen: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;

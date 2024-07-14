@@ -25,39 +25,39 @@ const handlePending = (state: InitialState) => {
 
 const handleRejected = (
   state: InitialState,
-  action: PayloadAction<string | undefined>
+  { payload }: PayloadAction<string | undefined>
 ) => {
   state.isLoading = false;
-  state.error = action.payload ?? 'Unknown error';
+  state.error = payload ?? 'Unknown error';
 };
 
 const handleGetPromoFulfilled = (
   state: InitialState,
-  action: PayloadAction<{ promo: PromoCode[] }>
+  { payload }: PayloadAction<{ promo: PromoCode[] }>
 ) => {
   state.isLoading = false;
   state.error = null;
-  state.promoCodes = action.payload.promo;
+  state.promoCodes = payload.promo;
 };
 
 const handleAddPromoFulfilled = (
   state: InitialState,
-  action: PayloadAction<{ promo: PromoCode }>
+  { payload }: PayloadAction<{ promo: PromoCode }>
 ) => {
   state.isLoading = false;
   state.error = null;
-  state.promoCodes.unshift(action.payload.promo);
+  state.promoCodes.unshift(payload.promo);
 };
 
 const handleUpdatePromoFulfilled = (
   state: InitialState,
-  action: PayloadAction<{ promo: PromoCode }>
+  { payload }: PayloadAction<{ promo: PromoCode }>
 ) => {
   state.isLoading = false;
   state.error = null;
   state.promoCodes = state.promoCodes.map(el => {
-    if (el._id === action.payload.promo._id) {
-      return action.payload.promo;
+    if (el._id === payload.promo._id) {
+      return payload.promo;
     }
     return el;
   });
@@ -65,13 +65,11 @@ const handleUpdatePromoFulfilled = (
 
 const handleDeletePromoFulfilled = (
   state: InitialState,
-  action: PayloadAction<{ id: string }>
+  { payload }: PayloadAction<{ id: string }>
 ) => {
   state.isLoading = false;
   state.error = null;
-  state.promoCodes = state.promoCodes.filter(
-    el => el._id !== action.payload.id
-  );
+  state.promoCodes = state.promoCodes.filter(el => el._id !== payload.id);
 };
 
 const promoCodesSlice = createSlice({

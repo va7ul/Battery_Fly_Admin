@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useTypedDispatch } from '../../redux/hooks';
 import { useFormik } from 'formik';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -10,11 +10,13 @@ import { ModalAgree } from 'components/Modals/ModalAgree/ModalAgree';
 import { TextAgree } from 'components/Modals/Text/Text';
 import { Field } from 'components/Modals/TextField/TextField';
 import { Btn, StyledForm } from './LoginForm.styled';
+import { DataUser } from '../../@types/admin.types';
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isModalAgreeOpen, setIsModalAgreeOpen] = useState(false);
 
+  const dispatch = useTypedDispatch();
   const { errorStatus } = useAuth();
 
   useEffect(() => {
@@ -22,8 +24,6 @@ export const LoginForm = () => {
       handleOpenAgreeModal();
     }
   }, [errorStatus]);
-
-  const dispatch = useDispatch();
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
 
@@ -37,7 +37,7 @@ export const LoginForm = () => {
     document.body.style.overflow = 'unset';
   };
 
-  const formik = useFormik({
+  const formik = useFormik<DataUser>({
     initialValues: {
       login: '',
       password: '',
@@ -74,7 +74,7 @@ export const LoginForm = () => {
           helperText={formik.touched.password && formik.errors.password}
           InputProps={{
             endAdornment: (
-              <InputAdornment name="password" position="end">
+              <InputAdornment position="end">
                 <IconButton
                   sx={{
                     width: '20px',

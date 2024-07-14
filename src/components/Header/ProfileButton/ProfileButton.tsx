@@ -1,5 +1,5 @@
-import { Fragment, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useTypedDispatch, useTypedSelector } from '../../../redux/hooks';
 import { selectLogin } from '../../../redux/admin/adminSelectors';
 import { logOut } from '../../../redux/admin/adminOperations';
 import { StyledButton } from './ProfileButton.styled';
@@ -16,8 +16,8 @@ import {
 
 export const ProfileButton = () => {
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
-  const login = useSelector(selectLogin);
+  const dispatch = useTypedDispatch();
+  const login = useTypedSelector(selectLogin);
 
   const handleClickOpen = () => {
     setOpen(true);

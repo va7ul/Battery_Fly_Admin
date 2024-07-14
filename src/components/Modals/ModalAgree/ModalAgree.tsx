@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import ReactModal from 'react-modal';
 import { theme } from '../../../styles/GlobalStyled';
 import { Box, Btn } from './ModalAgree.styled';
@@ -23,7 +24,13 @@ const customStyles = {
 
 ReactModal.setAppElement('#modal-root');
 
-export const ModalAgree = ({
+type ModalAgreeProps = {
+  children: ReactNode;
+  isModalAgreeOpen: boolean;
+  handleCloseAgreeModal: () => void;
+};
+
+export const ModalAgree: React.FC<ModalAgreeProps> = ({
   children,
   isModalAgreeOpen,
   handleCloseAgreeModal,

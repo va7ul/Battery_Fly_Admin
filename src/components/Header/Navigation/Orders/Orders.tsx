@@ -1,16 +1,15 @@
-import { StyledTitle } from '../NavItem/NavItem.styled';
-import sprite from '../../../../assets/images/sprite.svg';
-import { Item } from '../NavItem/NavItem.styled';
-import { ArrowButton } from './Orders.styled';
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import { Menu } from '@mui/material';
+import sprite from '../../../../assets/images/sprite.svg';
 import { OrdersList } from './OrdersList/OrdersList';
+import { ArrowButton } from './Orders.styled';
+import { Item, StyledTitle } from '../NavItem/NavItem.styled';
 
 export const Orders = () => {
-  const [anchorEl, setAnchorEl] = useState();
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = e => {
+  const handleClick = (e: MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
   };
 
@@ -24,7 +23,7 @@ export const Orders = () => {
         Замовлення та заявки
         <ArrowButton
           type="button"
-          handleopen={anchorEl}
+          handleOpen={open}
           onClick={handleClick}
           aria-owns={open ? 'desktop-menu' : undefined}
           aria-haspopup="true"

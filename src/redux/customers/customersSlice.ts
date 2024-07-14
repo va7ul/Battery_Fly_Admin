@@ -20,19 +20,19 @@ const handlePending = (state: InitialState) => {
 
 const handleRejected = (
   state: InitialState,
-  action: PayloadAction<string | undefined>
+  { payload }: PayloadAction<string | undefined>
 ) => {
   state.isLoading = false;
-  state.error = action.payload ?? 'Unknown error';
+  state.error = payload ?? 'Unknown error';
 };
 
 const handleFulfilled = (
   state: InitialState,
-  action: PayloadAction<{ users: Customer[] }>
+  { payload }: PayloadAction<{ users: Customer[] }>
 ) => {
   state.isLoading = false;
   state.error = null;
-  state.customers = action.payload.users;
+  state.customers = payload.users;
 };
 
 const customersSlice = createSlice({

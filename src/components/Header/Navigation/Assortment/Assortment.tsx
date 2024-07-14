@@ -1,16 +1,15 @@
-import { StyledTitle } from '../NavItem/NavItem.styled';
-import sprite from '../../../../assets/images/sprite.svg';
-import { Item } from '../NavItem/NavItem.styled';
-import { ArrowButton } from './Assortment.styled';
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import { Menu } from '@mui/material';
+import sprite from '../../../../assets/images/sprite.svg';
 import { AssortmentList } from './AssortmentList/AssortmentList';
+import { ArrowButton } from './Assortment.styled';
+import { Item, StyledTitle } from '../NavItem/NavItem.styled';
 
 export const Assortment = () => {
-  const [anchorEl, setAnchorEl] = useState();
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = e => {
+  const handleClick = (e: MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
   };
 
@@ -24,7 +23,7 @@ export const Assortment = () => {
         Товари
         <ArrowButton
           type="button"
-          handleopen={anchorEl}
+          handleOpen={open}
           onClick={handleClick}
           aria-owns={open ? 'desktop-menu' : undefined}
           aria-haspopup="true"

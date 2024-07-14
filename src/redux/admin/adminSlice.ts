@@ -1,7 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { login, logOut, refreshAdmin } from './adminOperations';
+import { AuthData } from '../../@types/admin.types';
 
-const initialState = {
+type InitialState = AuthData & {
+  errorStatus: string | number | null;
+  isLoading: boolean;
+  isLoggedIn: boolean;
+  isRefreshing: boolean;
+};
+
+const initialState: InitialState = {
   login: '',
   token: '',
   errorStatus: null,
@@ -10,34 +18,40 @@ const initialState = {
   isRefreshing: false,
 };
 
-const handlePending = state => {
+const handlePending = (state: InitialState) => {
   state.isLoading = true;
   state.errorStatus = null;
 };
 
-const handleRefreshPending = state => {
+const handleRefreshPending = (state: InitialState) => {
   state.isRefreshing = true;
   state.errorStatus = null;
 };
 
-const handleLogoutPending = state => {
+const handleLogoutPending = (state: InitialState) => {
   state.login = '';
   state.token = '';
   state.errorStatus = null;
   state.isLoggedIn = false;
 };
 
-const handleRejected = (state, { payload }) => {
+const handleRejected = (
+  state: InitialState,
+  { payload }: PayloadAction<string | number | undefined>
+) => {
   state.isLoading = false;
-  state.errorStatus = payload;
+  state.errorStatus = payload ?? 'Unknown error';
 };
 
-const handleRefreshRejected = state => {
+const handleRefreshRejected = (state: InitialState) => {
   state.isRefreshing = false;
   state.isLoggedIn = false;
 };
 
-const handleEntranceFulfilled = (state, { payload }) => {
+const handleEntranceFulfilled = (
+  state: InitialState,
+  { payload }: PayloadAction<AuthData>
+) => {
   state.login = payload.login;
   state.token = payload.token;
   state.errorStatus = null;
@@ -45,7 +59,10 @@ const handleEntranceFulfilled = (state, { payload }) => {
   state.isLoggedIn = true;
 };
 
-const handleRefreshFulfilled = (state, { payload }) => {
+const handleRefreshFulfilled = (
+  state: InitialState,
+  { payload }: PayloadAction<AuthData>
+) => {
   state.login = payload.login;
   state.isLoggedIn = true;
   state.isRefreshing = false;
@@ -54,6 +71,7 @@ const handleRefreshFulfilled = (state, { payload }) => {
 const adminSlice = createSlice({
   name: 'admin',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(login.pending, handlePending)
