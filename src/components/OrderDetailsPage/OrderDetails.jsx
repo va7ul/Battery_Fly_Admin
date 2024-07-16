@@ -67,7 +67,10 @@ export const OrderDetails = () => {
     }
 
     setOpen(true);
-    setData({ orderId: _id, orderData: { ...orderData, status: 'В роботі' } });
+    setData({
+      orderId: _id,
+      orderData: { ...orderData, cartItems: newCartItems, status: 'В роботі' },
+    });
     setText('Підтвердити замовлення?');
   };
 
