@@ -86,7 +86,7 @@ export const OrderDetails = () => {
     setText('Закрити замовлення?');
   };
 
-  const handleCancelClick = (id: string) => {
+  const handleCancelClick = () => {
     setOpen(true);
     setData({ orderId: _id, orderData: { ...orderData, status: 'Скасовано' } });
     setText('Скасувати замовлення?');

@@ -11,7 +11,6 @@ import { getParams } from 'utils/helpers';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import { themeMUI } from 'styles/GlobalStyled';
 import { Box, Button } from '@mui/material';
 import {
   DataGrid,
@@ -201,7 +200,7 @@ export const ProductsTable = ({ category }) => {
     <Box
       sx={{
         '& .super-app-theme--header': {
-          backgroundColor: themeMUI.palette.background.primary,
+          backgroundColor: 'background.primary',
         },
         [`.${gridClasses.cell}.yes`]: {
           '& .MuiSvgIcon-root': {

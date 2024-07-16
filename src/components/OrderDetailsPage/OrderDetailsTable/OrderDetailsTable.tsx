@@ -1,21 +1,22 @@
 import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useTypedSelector } from '../../../redux/hooks';
 import { selectOneOrder } from '../../../redux/orders/ordersSelectors';
 import { selectProducts } from '../../../redux/products/productsSelectors';
-import { themeMUI } from 'styles/GlobalStyled';
 import Box from '@mui/material/Box';
 import {
   DataGrid,
   GridToolbar,
   useGridApiRef,
   gridClasses,
+  GridColDef,
+  GridCellParams,
 } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
 
 export const OrderDetailsTable = () => {
   const apiRef = useGridApiRef();
-  const order = useSelector(selectOneOrder);
-  const products = useSelector(selectProducts);
+  const order = useTypedSelector(selectOneOrder);
+  const products = useTypedSelector(selectProducts);
 
   const autosizeOptions = useMemo(
     () => ({
@@ -47,7 +48,7 @@ export const OrderDetailsTable = () => {
     },
   ];
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: 'numberOfOrder',
       headerName: '№ Замовлення',
@@ -91,7 +92,7 @@ export const OrderDetailsTable = () => {
       type: 'number',
       align: 'center',
       headerAlign: 'center',
-      valueFormatter: value => {
+      valueFormatter: (value: string) => {
         if (value == null) {
           return '';
         }
@@ -112,7 +113,7 @@ export const OrderDetailsTable = () => {
       type: 'date',
       align: 'center',
       headerAlign: 'center',
-      valueFormatter: value => {
+      valueFormatter: (value: string) => {
         if (value == null) {
           return '';
         }
@@ -134,7 +135,7 @@ export const OrderDetailsTable = () => {
     <Box
       sx={{
         '& .super-app-theme--header': {
-          backgroundColor: themeMUI.palette.background.primary,
+          backgroundColor: 'background.primary',
         },
         [`.${gridClasses.cell}.new`]: {
           color: 'warning.main',
@@ -172,7 +173,7 @@ export const OrderDetailsTable = () => {
             },
           },
         }}
-        getCellClassName={params => {
+        getCellClassName={(params: GridCellParams) => {
           if (params.field === 'status') {
             switch (params.value) {
               case 'Нове':
@@ -185,9 +186,10 @@ export const OrderDetailsTable = () => {
                 return 'canceled';
 
               default:
-                break;
+                return '';
             }
           }
+          return '';
         }}
         sx={{
           '& .MuiDataGrid-cell:hover': {

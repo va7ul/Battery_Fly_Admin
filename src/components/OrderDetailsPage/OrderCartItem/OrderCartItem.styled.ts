@@ -1,9 +1,16 @@
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
 
-export const getColor = props => {
+type Props = {
+  ordered: number;
+  inStock: number;
+  theme: DefaultTheme;
+};
+
+export const getColor = (props: Props): string => {
   if (props.inStock < props.ordered) {
     return props.theme.colors.error;
   }
+  return '';
 };
 
 export const StyledImage = styled.img`
@@ -58,7 +65,7 @@ export const QuantityWrap = styled.div`
   gap: 5px;
 `;
 
-export const QuantityOrdered = styled.p`
+export const QuantityOrdered = styled.p<{ ordered: number; inStock: number }>`
   color: ${getColor};
 `;
 
@@ -85,7 +92,7 @@ export const PriceWrap = styled.div`
   gap: 5px;
 `;
 
-export const QuantityInStock = styled.p`
+export const QuantityInStock = styled.p<{ ordered: number; inStock: number }>`
   grid-column: 4/5;
   color: ${getColor};
 `;

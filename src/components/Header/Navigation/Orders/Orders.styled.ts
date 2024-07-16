@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { getRotation } from 'styles/GlobalStyled';
+import { getRotation } from 'styles/globalStyles';
 
 export const ArrowButton = styled.button<{ handleOpen: boolean }>`
   display: flex;

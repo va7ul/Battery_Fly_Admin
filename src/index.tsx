@@ -6,7 +6,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { persistor, store } from './redux/store.ts';
 import { ThemeProvider } from 'styled-components';
-import { GlobalStyle, theme } from './styles/GlobalStyled.js';
+import { GlobalStyle } from './styles/globalStyles.ts';
+import { theme } from 'styles/theme.ts';
 import { App } from 'App.tsx';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

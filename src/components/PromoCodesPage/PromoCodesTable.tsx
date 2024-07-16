@@ -228,7 +228,7 @@ export const PromoCodesTable = () => {
     <Box
       sx={{
         '& .super-app-theme--header': {
-          backgroundColor: 'background.primary',
+          backgroundColor: 'tableHeader.main',
         },
         [`.${gridClasses.cell}.yes`]: {
           '& .MuiSvgIcon-root': {

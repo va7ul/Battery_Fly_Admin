@@ -1,4 +1,5 @@
-import { useDispatch } from 'react-redux';
+import { useTypedDispatch } from '../../../redux/hooks';
+import { CartItem } from '../../../@types/orders.types';
 import noImage from '../../../assets/images/no-image-available.webp';
 import Battery0BarIcon from '@mui/icons-material/Battery0Bar';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -23,7 +24,15 @@ import {
   increaseQuantity,
 } from '../../../redux/orders/oneOrderSlice';
 
-export const OrderCartItem = ({ item, status }) => {
+type OrderCartItemProps = {
+  item: CartItem;
+  status: string;
+};
+
+export const OrderCartItem: React.FC<OrderCartItemProps> = ({
+  item,
+  status,
+}) => {
   const {
     codeOfGood,
     name,
@@ -37,10 +46,12 @@ export const OrderCartItem = ({ item, status }) => {
     selectedHolder,
   } = item;
 
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
 
-  const addDefaultImg = e => {
-    e.currentTarget.src = `${noImage}`;
+  const addDefaultImg = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ): void => {
+    e.currentTarget.src = noImage;
   };
 
   const decrease = () => {
@@ -102,7 +113,9 @@ export const OrderCartItem = ({ item, status }) => {
         </>
       ) : (
         <>
-          <QuantityOrdered>{quantityOrdered} шт</QuantityOrdered>
+          <QuantityOrdered ordered={quantityOrdered} inStock={quantity}>
+            {quantityOrdered} шт
+          </QuantityOrdered>
           <p>{totalPrice} грн</p>
         </>
       )}

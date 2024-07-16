@@ -1,8 +1,7 @@
-import { useSelector } from 'react-redux';
+import { useTypedSelector } from '../../../redux/hooks';
 import { usePromoCode } from 'utils/hooks';
 import { getPrettyValue } from 'utils/helpers';
 import { selectOneOrder } from '../../../redux/orders/ordersSelectors';
-
 import {
   Discount,
   PriceContainer,
@@ -13,7 +12,7 @@ import {
 } from './OrderMainInfo.styled';
 
 export const OrderMainInfo = () => {
-  const orderData = useSelector(selectOneOrder);
+  const orderData = useTypedSelector(selectOneOrder);
   const { promoCodeDiscount, deliveryType, city, warehouse, payment } =
     orderData;
 

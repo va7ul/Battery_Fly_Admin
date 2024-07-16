@@ -1,6 +1,13 @@
 import { Box, Button } from '@mui/material';
 
-export const OrderActionBtn = ({
+type OrderActionBtnProps = {
+  status: string;
+  handleApproveClick: () => void;
+  handleFinishClick: () => void;
+  handleCancelClick: () => void;
+};
+
+export const OrderActionBtn: React.FC<OrderActionBtnProps> = ({
   status,
   handleApproveClick,
   handleFinishClick,

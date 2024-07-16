@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import ReactModal from 'react-modal';
-import { theme } from '../../../styles/GlobalStyled';
+import { theme } from '../../../styles/theme';
 import { Box, Btn } from './ModalAgree.styled';
 
 const customStyles = {

@@ -1,4 +1,4 @@
-export const getPrettyValue = value => {
+export const getPrettyValue = (value: number) => {
   const prettyPriceArr = value.toString().split('');
   const firstLength = prettyPriceArr.length;
 
