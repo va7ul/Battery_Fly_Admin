@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useTypedSelector, useTypedDispatch } from '../../redux/hooks';
 import { selectProducts } from '../../redux/products/productsSelectors';
 import { getProducts } from '../../redux/products/productsOperations';
 import { selectOneOrder } from '../../redux/orders/ordersSelectors';
@@ -15,16 +15,22 @@ import {
   OrderDetailsContainer,
   OrderDetailsList,
 } from './OrderDetails.styled';
+import { Order } from '../../@types/orders.types';
+
+type Data = {
+  orderId: string;
+  orderData: Order;
+};
 
 export const OrderDetails = () => {
-  const orderData = useSelector(selectOneOrder);
+  const orderData = useTypedSelector(selectOneOrder);
   const { _id, cartItems, status } = orderData;
 
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Data | null>(null);
   const [text, setText] = useState('');
-  const dispatch = useDispatch();
-  const products = useSelector(selectProducts);
+  const dispatch = useTypedDispatch();
+  const products = useTypedSelector(selectProducts);
 
   useEffect(() => {
     if (status === 'Нове') {
@@ -80,7 +86,7 @@ export const OrderDetails = () => {
     setText('Закрити замовлення?');
   };
 
-  const handleCancelClick = id => {
+  const handleCancelClick = (id: string) => {
     setOpen(true);
     setData({ orderId: _id, orderData: { ...orderData, status: 'Скасовано' } });
     setText('Скасувати замовлення?');
@@ -106,12 +112,14 @@ export const OrderDetails = () => {
           handleFinishClick={handleFinishClick}
           handleCancelClick={handleCancelClick}
         />
-        <ModalConfirm
-          open={open}
-          handleClose={handleClose}
-          handleAction={() => dispatch(updateOneOrder(data))}
-          text={text}
-        />
+        {data && (
+          <ModalConfirm
+            open={open}
+            handleClose={handleClose}
+            handleAction={() => dispatch(updateOneOrder(data))}
+            text={text}
+          />
+        )}
       </ContentWrapper>
     </>
   );

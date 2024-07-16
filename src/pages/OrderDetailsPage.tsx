@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useTypedDispatch, useTypedSelector } from '../redux/hooks';
 import { useParams } from 'react-router-dom';
 import { getOneOrder } from '../redux/orders/ordersOperations';
 import { selectOneOrderIsLoading } from '../redux/orders/ordersSelectors';
@@ -7,8 +7,8 @@ import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
 import { OrderDetails } from 'components/OrderDetailsPage/OrderDetails';
 
 const OrderDetailsPage = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectOneOrderIsLoading);
+  const dispatch = useTypedDispatch();
+  const isLoading = useTypedSelector(selectOneOrderIsLoading);
   const { orderId } = useParams();
 
   useEffect(() => {

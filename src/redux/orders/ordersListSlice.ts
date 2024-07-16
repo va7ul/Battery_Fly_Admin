@@ -1,4 +1,10 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
+import {
+  Order,
+  Print3D,
+  QuickOrder,
+  Aplication,
+} from '../../@types/orders.types';
 import {
   getAllOrders,
   getPrints3D,
@@ -6,7 +12,16 @@ import {
   getApplications,
 } from './ordersOperations';
 
-const initialState = {
+type InitialState = {
+  allOrders: Order[];
+  prints3D: Print3D[];
+  quickOrders: QuickOrder[];
+  applications: Aplication[];
+  isLoading: boolean;
+  error: string | null;
+};
+
+const initialState: InitialState = {
   allOrders: [],
   prints3D: [],
   quickOrders: [],
@@ -15,37 +30,52 @@ const initialState = {
   error: null,
 };
 
-const handlePending = state => {
+const handlePending = (state: InitialState) => {
   state.isLoading = true;
 };
 
-const handleRejected = (state, action) => {
+const handleRejected = (
+  state: InitialState,
+  { payload }: PayloadAction<string | undefined>
+) => {
   state.isLoading = false;
-  state.error = action.payload;
+  state.error = payload ?? 'Unknown error';
 };
 
-const handleAllOrderFulfilled = (state, action) => {
+const handleAllOrderFulfilled = (
+  state: InitialState,
+  { payload }: PayloadAction<{ result: Order[] }>
+) => {
   state.isLoading = false;
   state.error = null;
-  state.allOrders = action.payload.result;
+  state.allOrders = payload.result;
 };
 
-const handlePrins3DFulfilled = (state, action) => {
+const handlePrins3DFulfilled = (
+  state: InitialState,
+  { payload }: PayloadAction<{ result: Print3D[] }>
+) => {
   state.isLoading = false;
   state.error = null;
-  state.prints3D = action.payload.result;
+  state.prints3D = payload.result;
 };
 
-const handleQuickOrdersFulfilled = (state, action) => {
+const handleQuickOrdersFulfilled = (
+  state: InitialState,
+  { payload }: PayloadAction<{ result: QuickOrder[] }>
+) => {
   state.isLoading = false;
   state.error = null;
-  state.quickOrders = action.payload.result;
+  state.quickOrders = payload.result;
 };
 
-const handleApplicationsFulfilled = (state, action) => {
+const handleApplicationsFulfilled = (
+  state: InitialState,
+  { payload }: PayloadAction<{ result: Aplication[] }>
+) => {
   state.isLoading = false;
   state.error = null;
-  state.applications = action.payload.result;
+  state.applications = payload.result;
 };
 
 const ordersListSlice = createSlice({

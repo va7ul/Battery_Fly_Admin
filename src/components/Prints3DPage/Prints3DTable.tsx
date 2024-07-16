@@ -1,14 +1,19 @@
-import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
+import { useTypedSelector } from '../../redux/hooks';
 import { selectPrints3D } from '../../redux/orders/ordersSelectors';
-import { themeMUI } from 'styles/GlobalStyled';
 import { Box } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbar,
+  useGridApiRef,
+  GridColDef,
+} from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
+import { CustomNoResultsOverlay } from 'components/Shared/NoResultsOverlay/NoResultsOverlay';
 
 export const Prints3DTable = () => {
   const apiRef = useGridApiRef();
-  const prints3D = useSelector(selectPrints3D);
+  const prints3D = useTypedSelector(selectPrints3D);
 
   const autosizeOptions = useMemo(
     () => ({
@@ -41,7 +46,7 @@ export const Prints3DTable = () => {
     [prints3D]
   );
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: 'numberOfOrder',
       headerName: '№ замовлення',
@@ -99,7 +104,7 @@ export const Prints3DTable = () => {
       type: 'date',
       align: 'center',
       headerAlign: 'center',
-      valueFormatter: value => {
+      valueFormatter: (value: any): string => {
         if (value == null) {
           return '';
         }
@@ -112,7 +117,7 @@ export const Prints3DTable = () => {
     <Box
       sx={{
         '& .super-app-theme--header': {
-          backgroundColor: themeMUI.palette.background.primary,
+          backgroundColor: 'background.primary',
         },
       }}
     >
@@ -128,6 +133,7 @@ export const Prints3DTable = () => {
         slots={{
           toolbar: GridToolbar,
           noRowsOverlay: CustomNoRowsOverlay,
+          noResultsOverlay: CustomNoResultsOverlay,
         }}
         slotProps={{
           toolbar: {

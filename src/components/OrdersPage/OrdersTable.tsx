@@ -1,8 +1,7 @@
 import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTypedSelector } from '../../redux/hooks';
 import { selectAllOrders } from '../../redux/orders/ordersSelectors';
-import { themeMUI } from 'styles/GlobalStyled';
 import Box from '@mui/material/Box';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
@@ -11,13 +10,17 @@ import {
   GridActionsCellItem,
   useGridApiRef,
   gridClasses,
+  GridColDef,
+  GridRowId,
+  GridCellParams,
 } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
+import { CustomNoResultsOverlay } from 'components/Shared/NoResultsOverlay/NoResultsOverlay';
 
 export const OrdersTable = () => {
   const apiRef = useGridApiRef();
   const navigate = useNavigate();
-  const orders = useSelector(selectAllOrders);
+  const orders = useTypedSelector(selectAllOrders);
 
   const autosizeOptions = useMemo(
     () => ({
@@ -48,7 +51,7 @@ export const OrdersTable = () => {
         promoCodeDiscount: el.promoCodeDiscount,
         discountValue: el.discountValue,
         together: el.together,
-        delivery: el.delivery,
+        delivery: el.deliveryType,
         payment: el.payment,
         comment: el.comment,
         date: el.createdAt,
@@ -56,7 +59,7 @@ export const OrdersTable = () => {
     [orders]
   );
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: 'numberOfOrder',
       headerName: '№ Замовлення',
@@ -108,7 +111,7 @@ export const OrdersTable = () => {
       type: 'number',
       align: 'center',
       headerAlign: 'center',
-      valueFormatter: value => {
+      valueFormatter: (value: any): string => {
         if (value == null) {
           return '';
         }
@@ -159,7 +162,7 @@ export const OrdersTable = () => {
       type: 'date',
       align: 'center',
       headerAlign: 'center',
-      valueFormatter: value => {
+      valueFormatter: (value: any): string => {
         if (value == null) {
           return '';
         }
@@ -195,7 +198,7 @@ export const OrdersTable = () => {
     },
   ];
 
-  const handleEditClick = id => () => {
+  const handleEditClick = (id: GridRowId) => () => {
     navigate(`/admin/orders/${id}`);
   };
 
@@ -203,7 +206,7 @@ export const OrdersTable = () => {
     <Box
       sx={{
         '& .super-app-theme--header': {
-          backgroundColor: themeMUI.palette.background.primary,
+          backgroundColor: 'background.primary',
         },
         [`.${gridClasses.cell}.new`]: {
           color: 'warning.main',
@@ -244,6 +247,7 @@ export const OrdersTable = () => {
         slots={{
           toolbar: GridToolbar,
           noRowsOverlay: CustomNoRowsOverlay,
+          noResultsOverlay: CustomNoResultsOverlay,
         }}
         slotProps={{
           toolbar: {
@@ -267,7 +271,7 @@ export const OrdersTable = () => {
             },
           },
         }}
-        getCellClassName={params => {
+        getCellClassName={(params: GridCellParams) => {
           if (params.field === 'status') {
             switch (params.value) {
               case 'Нове':
@@ -280,9 +284,10 @@ export const OrdersTable = () => {
                 return 'canceled';
 
               default:
-                break;
+                return '';
             }
           }
+          return '';
         }}
         sx={{
           '& .MuiDataGrid-cell:hover': {

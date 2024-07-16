@@ -1,14 +1,19 @@
-import { useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
-import { selectQuickOrders } from '../../redux/orders/ordersSelectors';
-import { themeMUI } from 'styles/GlobalStyled';
+import { useTypedSelector } from '../../redux/hooks';
+import { selectApplications } from '../../redux/orders/ordersSelectors';
 import { Box } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbar,
+  useGridApiRef,
+  GridColDef,
+} from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
+import { CustomNoResultsOverlay } from 'components/Shared/NoResultsOverlay/NoResultsOverlay';
 
-export const QuickOrdersTable = () => {
+export const ApplicationsTable = () => {
   const apiRef = useGridApiRef();
-  const quickOrders = useSelector(selectQuickOrders);
+  const applications = useTypedSelector(selectApplications);
 
   const autosizeOptions = useMemo(
     () => ({
@@ -23,34 +28,25 @@ export const QuickOrdersTable = () => {
     if (apiRef.current) {
       apiRef.current.autosizeColumns(autosizeOptions);
     }
-  }, [apiRef, autosizeOptions, quickOrders]);
+  }, [apiRef, autosizeOptions, applications]);
 
   const rows = useMemo(
     () =>
-      quickOrders.map(el => ({
+      applications.map(el => ({
         id: el._id,
-        numberOfOrder: el.numberOfOrder,
-        codeOfGood: el.codeOfGood,
-        tel: el.tel,
+        numberOfApplication: el.numberOfApplication,
         name: el.name,
-        userName: el.userName,
+        tel: el.tel,
+        comment: el.comment,
         createdAt: el.createdAt,
       })),
-    [quickOrders]
+    [applications]
   );
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
-      field: 'numberOfOrder',
-      headerName: '№ замовлення',
-      headerClassName: 'super-app-theme--header',
-      type: 'number',
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      field: 'codeOfGood',
-      headerName: 'Код товару',
+      field: 'numberOfApplication',
+      headerName: '№ заявки',
       headerClassName: 'super-app-theme--header',
       type: 'number',
       align: 'center',
@@ -58,13 +54,6 @@ export const QuickOrdersTable = () => {
     },
     {
       field: 'name',
-      headerName: 'Назва товару',
-      headerClassName: 'super-app-theme--header',
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      field: 'userName',
       headerName: 'Імя',
       headerClassName: 'super-app-theme--header',
       align: 'center',
@@ -78,13 +67,20 @@ export const QuickOrdersTable = () => {
       headerAlign: 'center',
     },
     {
+      field: 'comment',
+      headerName: 'Коментар',
+      headerClassName: 'super-app-theme--header',
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
       field: 'createdAt',
       headerName: 'Дата',
       headerClassName: 'super-app-theme--header',
-      type: 'date',
       align: 'center',
       headerAlign: 'center',
-      valueFormatter: value => {
+      type: 'date',
+      valueFormatter: (value: any): string => {
         if (value == null) {
           return '';
         }
@@ -97,7 +93,7 @@ export const QuickOrdersTable = () => {
     <Box
       sx={{
         '& .super-app-theme--header': {
-          backgroundColor: themeMUI.palette.background.primary,
+          backgroundColor: 'background.primary',
         },
       }}
     >
@@ -113,6 +109,7 @@ export const QuickOrdersTable = () => {
         slots={{
           toolbar: GridToolbar,
           noRowsOverlay: CustomNoRowsOverlay,
+          noResultsOverlay: CustomNoResultsOverlay,
         }}
         slotProps={{
           toolbar: {

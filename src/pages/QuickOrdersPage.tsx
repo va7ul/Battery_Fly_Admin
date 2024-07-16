@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useTypedDispatch, useTypedSelector } from '../redux/hooks';
 import { getQuickOrders } from '../redux/orders/ordersOperations';
 import { selectAllOrdersIsLoading } from '../redux/orders/ordersSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
 import { QuickOrdersTable } from 'components/QuickOrdersPage/QuickOrdersTable';
 
 const QuickOrdersPage = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectAllOrdersIsLoading);
+  const dispatch = useTypedDispatch();
+  const isLoading = useTypedSelector(selectAllOrdersIsLoading);
 
   useEffect(() => {
     dispatch(getQuickOrders());

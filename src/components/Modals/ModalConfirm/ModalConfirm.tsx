@@ -1,6 +1,18 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 
-export const ModalConfirm = ({ open, handleClose, handleAction, text }) => {
+type ModalConfirmProps = {
+  open: boolean;
+  handleClose: () => void;
+  handleAction: () => void;
+  text: string;
+};
+
+export const ModalConfirm: React.FC<ModalConfirmProps> = ({
+  open,
+  handleClose,
+  handleAction,
+  text,
+}) => {
   return (
     <Dialog
       open={open}
