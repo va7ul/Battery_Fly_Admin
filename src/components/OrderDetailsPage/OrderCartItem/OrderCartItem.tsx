@@ -113,7 +113,7 @@ export const OrderCartItem: React.FC<OrderCartItemProps> = ({
         </>
       ) : (
         <>
-          <QuantityOrdered ordered={quantityOrdered} inStock={quantity}>
+          <QuantityOrdered ordered={null} inStock={null}>
             {quantityOrdered} шт
           </QuantityOrdered>
           <p>{totalPrice} грн</p>

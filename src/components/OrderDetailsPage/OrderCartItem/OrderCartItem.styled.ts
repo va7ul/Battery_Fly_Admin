@@ -65,8 +65,11 @@ export const QuantityWrap = styled.div`
   gap: 5px;
 `;
 
-export const QuantityOrdered = styled.p<{ ordered: number; inStock: number }>`
-  color: ${getColor};
+export const QuantityOrdered = styled.p<{
+  ordered: number | null;
+  inStock: number | null;
+}>`
+  color: ${props => (props.ordered || props.inStock ? `${getColor}` : '')};
 `;
 
 export const Button = styled.button`
