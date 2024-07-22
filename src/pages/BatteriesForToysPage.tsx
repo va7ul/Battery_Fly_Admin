@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getMaterials } from '../redux/products/productsOperations';
+import { useTypedDispatch, useTypedSelector } from '../redux/hooks';
+import { getBatteriesForToys } from '../redux/products/productsOperations';
 import { selectAllProductsIsLoading } from '../redux/products/productsSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
 import { ProductsTable } from 'components/Shared/ProductsTable/ProductsTable';
 
-const MaterialsPage = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectAllProductsIsLoading);
+const BatteriesForToysPage = () => {
+  const dispatch = useTypedDispatch();
+  const isLoading = useTypedSelector(selectAllProductsIsLoading);
 
   useEffect(() => {
-    dispatch(getMaterials());
+    dispatch(getBatteriesForToys());
   }, [dispatch]);
 
   return (
@@ -18,10 +18,10 @@ const MaterialsPage = () => {
       {isLoading ? (
         <CustomLoader isLoading={isLoading} />
       ) : (
-        <ProductsTable category={'Розхідні матеріали'} />
+        <ProductsTable category={'Батареї для іграшок'} />
       )}
     </>
   );
 };
 
-export default MaterialsPage;
+export default BatteriesForToysPage;

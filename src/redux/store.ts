@@ -25,6 +25,8 @@ const adminPersistConfig = {
   whitelist: ['token', 'isLoggedIn'],
 };
 
+const persistedAdminReducer = persistReducer(adminPersistConfig, adminReducer);
+
 const productsReducer = combineReducers({
   oneProduct: oneProductReducer,
   productsList: productsListReducer,
@@ -37,7 +39,7 @@ const ordersReducer = combineReducers({
 
 export const store = configureStore({
   reducer: {
-    admin: persistReducer(adminPersistConfig, adminReducer),
+    admin: persistedAdminReducer,
     products: productsReducer,
     customers: customersReducer,
     orders: ordersReducer,

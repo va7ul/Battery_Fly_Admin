@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getAssemblies } from '../redux/products/productsOperations';
+import { useTypedDispatch, useTypedSelector } from '../redux/hooks';
+import { getBatterieslifepo4 } from '../redux/products/productsOperations';
 import { selectAllProductsIsLoading } from '../redux/products/productsSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
 import { ProductsTable } from 'components/Shared/ProductsTable/ProductsTable';
 
-const AssembliesPage = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectAllProductsIsLoading);
+const TypeLifepo4Page = () => {
+  const dispatch = useTypedDispatch();
+  const isLoading = useTypedSelector(selectAllProductsIsLoading);
 
   useEffect(() => {
-    dispatch(getAssemblies());
+    dispatch(getBatterieslifepo4());
   }, [dispatch]);
 
   return (
@@ -18,10 +18,10 @@ const AssembliesPage = () => {
       {isLoading ? (
         <CustomLoader isLoading={isLoading} />
       ) : (
-        <ProductsTable category={'Готові батареї'} />
+        <ProductsTable category={'Акумулятори LiFePo4'} />
       )}
     </>
   );
 };
 
-export default AssembliesPage;
+export default TypeLifepo4Page;

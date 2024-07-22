@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getBatteriesForToys } from '../redux/products/productsOperations';
+import { useTypedDispatch, useTypedSelector } from '../redux/hooks';
+import { getBatteriesForFPV } from '../redux/products/productsOperations';
 import { selectAllProductsIsLoading } from '../redux/products/productsSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
 import { ProductsTable } from 'components/Shared/ProductsTable/ProductsTable';
 
-const BatteriesForToysPage = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectAllProductsIsLoading);
+const BatteriesForFPVPage = () => {
+  const dispatch = useTypedDispatch();
+  const isLoading = useTypedSelector(selectAllProductsIsLoading);
 
   useEffect(() => {
-    dispatch(getBatteriesForToys());
+    dispatch(getBatteriesForFPV());
   }, [dispatch]);
 
   return (
@@ -18,10 +18,10 @@ const BatteriesForToysPage = () => {
       {isLoading ? (
         <CustomLoader isLoading={isLoading} />
       ) : (
-        <ProductsTable category={'Батареї для іграшок'} />
+        <ProductsTable category={'Батареї для FPV-дронів'} />
       )}
     </>
   );
 };
 
-export default BatteriesForToysPage;
+export default BatteriesForFPVPage;

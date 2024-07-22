@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
+import { useTypedDispatch, useTypedSelector } from '../../../redux/hooks';
 import { selectProducts } from '../../../redux/products/productsSelectors';
 import {
   deleteProduct,
@@ -19,17 +19,24 @@ import {
   GridActionsCellItem,
   useGridApiRef,
   gridClasses,
+  GridRowId,
+  GridColDef,
+  GridCellParams,
 } from '@mui/x-data-grid';
 import { CustomNoRowsOverlay } from '../NoRowsOverlay/NoRowsOverlay';
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
 
-export const ProductsTable = ({ category }) => {
+type ProductsTableProps = {
+  category: string;
+};
+
+export const ProductsTable: React.FC<ProductsTableProps> = ({ category }) => {
   const [open, setOpen] = useState(false);
-  const [idToDelete, setIdToDelete] = useState();
-  const dispatch = useDispatch();
+  const [idToDelete, setIdToDelete] = useState<GridRowId>('');
+  const dispatch = useTypedDispatch();
   const apiRef = useGridApiRef();
   const navigate = useNavigate();
-  const products = useSelector(selectProducts);
+  const products = useTypedSelector(selectProducts);
   const { paramsCategory, paramsType, paramsSubType } = getParams(category);
 
   const autosizeOptions = useMemo(
@@ -47,7 +54,7 @@ export const ProductsTable = ({ category }) => {
     }
   }, [apiRef, autosizeOptions, products, open]);
 
-  const CustomFooter = props => {
+  const CustomFooter = (props: any) => {
     const handleClick = () => {
       navigate(
         `/admin/assortment/${paramsCategory}/${paramsType}/${paramsSubType}`
@@ -89,7 +96,7 @@ export const ProductsTable = ({ category }) => {
     [products]
   );
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: 'codeOfGood',
       headerName: 'Код товару',
@@ -135,7 +142,7 @@ export const ProductsTable = ({ category }) => {
       type: 'number',
       align: 'center',
       headerAlign: 'center',
-      valueFormatter: value => {
+      valueFormatter: (value: any): string => {
         if (value == null) {
           return '';
         }
@@ -175,11 +182,11 @@ export const ProductsTable = ({ category }) => {
     },
   ];
 
-  const handleEditClick = id => () => {
+  const handleEditClick = (id: GridRowId) => () => {
     navigate(`/admin/assortment/${id}`);
   };
 
-  const handleDeleteClick = id => () => {
+  const handleDeleteClick = (id: GridRowId) => () => {
     setOpen(true);
     setIdToDelete(id);
   };
@@ -192,8 +199,8 @@ export const ProductsTable = ({ category }) => {
     const { paramsSubType } = getParams(category);
 
     paramsSubType === 'product'
-      ? dispatch(deleteProduct(idToDelete))
-      : dispatch(deleteProductZbirky(idToDelete));
+      ? dispatch(deleteProduct(idToDelete as string))
+      : dispatch(deleteProductZbirky(idToDelete as string));
   };
 
   return (
@@ -242,7 +249,7 @@ export const ProductsTable = ({ category }) => {
         initialState={{
           pagination: { paginationModel: { pageSize: 10 } },
         }}
-        getCellClassName={params => {
+        getCellClassName={(params: GridCellParams) => {
           if (params.field === 'popular') {
             if (params.value === true) {
               return 'yes';

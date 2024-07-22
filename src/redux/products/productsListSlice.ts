@@ -1,4 +1,4 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import {
   getAssortment,
   getProducts,
@@ -15,34 +15,50 @@ import {
   getMaterials,
   deleteProduct,
   deleteProductZbirky,
-} from '../products/productsOperations';
+} from './productsOperations';
+import { Product, ProductZbirky } from '../../@types/products.types';
 
-const initialState = {
+type InitialState = {
+  allProducts: (Product | ProductZbirky)[];
+  isLoading: boolean;
+  error: string | null;
+};
+
+const initialState: InitialState = {
   allProducts: [],
   isLoading: false,
   error: null,
 };
 
-const handlePending = state => {
+const handlePending = (state: InitialState) => {
   state.isLoading = true;
 };
 
-const handleRejected = (state, action) => {
+const handleRejected = (
+  state: InitialState,
+  { payload }: PayloadAction<string | undefined>
+) => {
   state.isLoading = false;
-  state.error = action.payload;
+  state.error = payload ?? 'Unknown error';
 };
 
-const handleFulfilled = (state, action) => {
+const handleFulfilled = (
+  state: InitialState,
+  { payload }: PayloadAction<{ result: (Product | ProductZbirky)[] }>
+) => {
   state.isLoading = false;
   state.error = null;
-  state.allProducts = action.payload.result;
+  state.allProducts = payload.result;
 };
 
-const handleDeleteFulfilled = (state, action) => {
+const handleDeleteFulfilled = (
+  state: InitialState,
+  { payload }: PayloadAction<{ id: string }>
+) => {
   state.isLoading = false;
   state.error = null;
   state.allProducts = state.allProducts.filter(
-    el => el.codeOfGood !== action.payload.id
+    el => el.codeOfGood !== payload.id
   );
 };
 

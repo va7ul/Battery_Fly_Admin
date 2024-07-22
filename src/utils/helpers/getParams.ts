@@ -1,5 +1,15 @@
-export const getParams = category => {
-  const productCategories = {
+type ProductCategories = {
+  [key: string]: [string, string, string];
+};
+
+type Params = {
+  paramsCategory: string | undefined;
+  paramsType: string | undefined;
+  paramsSubType: string | undefined;
+};
+
+export const getParams = (category: string): Params => {
+  const productCategories: ProductCategories = {
     'Готові батареї': ['assembly', 'null', 'zbirka'],
     'Батареї для FPV-дронів': ['fpv', 'null', 'zbirka'],
     'Батареї для електротранспорту': ['transport', 'null', 'zbirka'],
@@ -15,11 +25,14 @@ export const getParams = category => {
   };
 
   if (productCategories[category]) {
-    const paramsCategory = productCategories[category][0];
-    const paramsType = productCategories[category][1];
-    const paramsSubType = productCategories[category][2];
+    const [paramsCategory, paramsType, paramsSubType] =
+      productCategories[category];
     return { paramsCategory, paramsType, paramsSubType };
   }
 
-  return undefined;
+  return {
+    paramsCategory: undefined,
+    paramsType: undefined,
+    paramsSubType: undefined,
+  };
 };
