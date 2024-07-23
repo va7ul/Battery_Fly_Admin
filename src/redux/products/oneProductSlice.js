@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getOneProduct } from '../products/productsOperations';
-import { addProduct, addProductZbirky } from '../products/productsOperations';
+import { getOneProduct } from './productsOperations';
+import { addProduct, addProductZbirky } from './productsOperations';
 
 const initialState = {
   result: {

@@ -1,0 +1,24 @@
+import { Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import { themeMUI } from 'styles/themeMUI';
+import { Container } from './Layout.styled';
+import { Header } from '../../components/Header/Header';
+
+export const Layout = () => {
+  return (
+    <>
+      <ThemeProvider theme={themeMUI}>
+        <Header />
+        <main>
+          <Container>
+            <Suspense fallback={null}>
+              <Outlet />
+            </Suspense>
+          </Container>
+        </main>
+        <footer></footer>
+      </ThemeProvider>
+    </>
+  );
+};
