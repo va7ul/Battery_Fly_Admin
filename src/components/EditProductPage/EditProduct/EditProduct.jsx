@@ -36,7 +36,12 @@ export const EditProduct = () => {
     const editProductButton = () => {
         navigate(
             `/admin/assortment/batteries-${type}`
-        );
+        )
+        if (category === type) {
+            navigate(
+                `/admin/assortment/${type}`
+            )
+        }
     };
 
     const getBack = () => {
