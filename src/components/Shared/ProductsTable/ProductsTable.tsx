@@ -221,12 +221,14 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({ category }) => {
         },
       }}
     >
-      <ModalConfirm
-        open={open}
-        handleClose={handleClose}
-        handleAction={deleteItem}
-        text="Ви впевнені, що хочете видалити товар?"
-      />
+      {open && (
+        <ModalConfirm
+          open={open}
+          handleClose={handleClose}
+          handleAction={deleteItem}
+          text="Ви впевнені, що хочете видалити товар?"
+        />
+      )}
       <DataGrid
         autoHeight
         apiRef={apiRef}

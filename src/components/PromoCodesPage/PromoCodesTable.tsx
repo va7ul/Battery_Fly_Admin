@@ -242,12 +242,14 @@ export const PromoCodesTable = () => {
         },
       }}
     >
-      <ModalConfirm
-        open={open}
-        handleClose={handleClose}
-        handleAction={deleteItem}
-        text="Ви впевнені, що хочете видалити промокод?"
-      />
+      {open && (
+        <ModalConfirm
+          open={open}
+          handleClose={handleClose}
+          handleAction={deleteItem}
+          text="Ви впевнені, що хочете видалити промокод?"
+        />
+      )}
       <DataGrid
         autoHeight
         apiRef={apiRef}
