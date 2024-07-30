@@ -269,12 +269,14 @@ export const Banners = () => {
         },
       }}
     >
-      <ModalConfirm
-        open={open}
-        handleClose={handleClose}
-        handleAction={handleDelete}
-        text={'Ви впевнені, що хочете видалити банер?'}
-      />
+      {open && (
+        <ModalConfirm
+          open={open}
+          handleClose={handleClose}
+          handleAction={handleDelete}
+          text={'Ви впевнені, що хочете видалити банер?'}
+        />
+      )}
       <DataGrid
         rows={rows}
         columns={columns}

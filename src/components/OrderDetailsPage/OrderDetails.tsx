@@ -1,5 +1,5 @@
-import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { useTypedSelector, useTypedDispatch } from '../../redux/hooks';
 import { selectProducts } from '../../redux/products/productsSelectors';
 import { getProducts } from '../../redux/products/productsOperations';
@@ -54,6 +54,10 @@ export const OrderDetails = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const updateItem = () => {
+    data && dispatch(updateOneOrder(data));
   };
 
   const handleApproveClick = () => {
@@ -115,11 +119,11 @@ export const OrderDetails = () => {
           handleFinishClick={handleFinishClick}
           handleCancelClick={handleCancelClick}
         />
-        {data && (
+        {open && data && (
           <ModalConfirm
             open={open}
             handleClose={handleClose}
-            handleAction={() => dispatch(updateOneOrder(data))}
+            handleAction={updateItem}
             text={text}
           />
         )}
