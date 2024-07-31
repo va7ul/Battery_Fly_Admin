@@ -369,7 +369,7 @@ export const EditProductZbirky = () => {
                             </BoxField>
                         </Label>
                         <ButtonBox>
-                        <BackButton onClick={getBack}>Назад</BackButton>
+                        <BackButton type="button" onClick={getBack}>Назад</BackButton>
                         <SubmitButton
                             type="submit"
                         >
