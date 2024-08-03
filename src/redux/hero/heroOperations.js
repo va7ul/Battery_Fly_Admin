@@ -5,10 +5,6 @@ import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = baseURL;
 
-const setAuthHeader = token => {
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-};
-
 export const getHero = createAsyncThunk('hero/getHero', async (_, thunkAPI) => {
   try {
     const { data } = await axios.get('hero');
@@ -22,14 +18,12 @@ export const getHero = createAsyncThunk('hero/getHero', async (_, thunkAPI) => {
 export const addHero = createAsyncThunk(
   'hero/addHero',
   async (formData, thunkAPI) => {
-    const { token } = thunkAPI.getState().admin;
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     };
     try {
-      setAuthHeader(token);
       const { data } = await axios.post('adm/hero', formData, config);
       toast.success('Банер додано!');
       return data.hero;
@@ -43,14 +37,12 @@ export const addHero = createAsyncThunk(
 export const editHero = createAsyncThunk(
   'hero/editHero',
   async ({ id, formData }, thunkAPI) => {
-    const { token } = thunkAPI.getState().admin;
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     };
     try {
-      setAuthHeader(token);
       const { data } = await axios.put(`adm/hero/${id}`, formData, config);
       toast.success('Дані змінено!');
       return data;
@@ -64,9 +56,7 @@ export const editHero = createAsyncThunk(
 export const deleteHero = createAsyncThunk(
   'hero/deleteHero',
   async (id, thunkAPI) => {
-    const { token } = thunkAPI.getState().admin;
     try {
-      setAuthHeader(token);
       const { data } = await axios.delete(`adm/hero/${id}`);
       toast.success('Банер видалено!');
       return data;

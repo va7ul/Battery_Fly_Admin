@@ -16,10 +16,10 @@ import {
   deleteProduct,
   deleteProductZbirky,
 } from './productsOperations';
-import { Product, ProductZbirky } from '../../@types/products.types';
+import { Product } from '../../@types/products.types';
 
 type InitialState = {
-  allProducts: (Product | ProductZbirky)[];
+  allProducts: Product[];
   isLoading: boolean;
   error: string | null;
 };
@@ -44,7 +44,7 @@ const handleRejected = (
 
 const handleFulfilled = (
   state: InitialState,
-  { payload }: PayloadAction<{ result: (Product | ProductZbirky)[] }>
+  { payload }: PayloadAction<{ result: Product[] }>
 ) => {
   state.isLoading = false;
   state.error = null;

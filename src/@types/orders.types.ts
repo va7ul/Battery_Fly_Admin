@@ -1,24 +1,13 @@
-export type CartItem = {
-  _id: string;
-  codeOfGood: string;
-  name: string;
-  description: string;
-  image: string[];
+import { Product } from './products.types';
+
+export type CartItem = Product & {
   price: number;
-  quantity: number;
-  sale: boolean;
-  popular: boolean;
-  category: string;
-  type: string;
-  information: string;
-  discount: number;
   capacityKey: string;
   selectedSealing: boolean;
   selectedHolder: boolean;
   quantityOrdered: number;
   totalPrice: number;
-  createdAt: string;
-  updatedAt: string;
+  priceOneProduct: number;
 };
 
 export type Order = {
