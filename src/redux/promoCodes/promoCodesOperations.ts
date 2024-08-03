@@ -1,15 +1,10 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from 'redux/store';
 import { baseURL } from 'utils/constants/baseURL';
 import toast from 'react-hot-toast';
 import { PromoCode, PromoData } from '../../@types/promoCodes.types';
 
 axios.defaults.baseURL = baseURL;
-
-const setAuthHeader = (token: string) => {
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-};
 
 const handleError = (error: any): string => {
   if (error.response && error.response.data && error.response.data.message) {
@@ -24,10 +19,7 @@ export const getPromoCodes = createAsyncThunk<
   undefined,
   { rejectValue: string }
 >('promoCodes/getPromoCodes', async (_, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.get<{ promo: PromoCode[] }>('adm/promo-codes');
 
     return data;
@@ -45,10 +37,7 @@ export const addPromoCode = createAsyncThunk<
   PromoData,
   { rejectValue: string }
 >('promoCodes/addPromoCode', async (promoData, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.post<{ promo: PromoCode }>(
       'adm/promo-code',
       promoData
@@ -70,9 +59,7 @@ export const updatePromoCode = createAsyncThunk<
   { id: string; promoData: PromoData },
   { rejectValue: string }
 >('promoCodes/updatePromoCode', async ({ id, promoData }, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
   try {
-    setAuthHeader(token);
     const { data } = await axios.put<{ promo: PromoCode }>(
       `adm/promo-code/${id}`,
       {
@@ -96,10 +83,7 @@ export const deletePromoCode = createAsyncThunk<
   string,
   { rejectValue: string }
 >('promoCodes/deletePromoCode', async (id, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.delete<{ id: string }>(`adm/promo-code/${id}`);
     toast.success('Промокод видалено!');
 
