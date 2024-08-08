@@ -52,74 +52,68 @@ export const App = () => {
           element={
             <RestrictedRoute
               redirectTo="/admin/orders/product-orders"
-              component={<LoginPage />}
+              component={LoginPage}
             />
           }
         />
         <Route
           path="admin/orders/product-orders"
-          element={<PrivateRoute redirectTo="/" component={<OrdersPage />} />}
+          element={<PrivateRoute redirectTo="/" component={OrdersPage} />}
         />
         <Route
           path="admin/orders/:orderId"
-          element={
-            <PrivateRoute redirectTo="/" component={<OrderDetailsPage />} />
-          }
+          element={<PrivateRoute redirectTo="/" component={OrderDetailsPage} />}
         />
         <Route
           path="admin/orders/prints-3D"
-          element={<PrivateRoute redirectTo="/" component={<Prints3DPage />} />}
+          element={<PrivateRoute redirectTo="/" component={Prints3DPage} />}
         />
         <Route
           path="admin/orders/quick-orders"
-          element={
-            <PrivateRoute redirectTo="/" component={<QuickOrdersPage />} />
-          }
+          element={<PrivateRoute redirectTo="/" component={QuickOrdersPage} />}
         />
         <Route
           path="admin/orders/applications"
-          element={
-            <PrivateRoute redirectTo="/" component={<ApplicationsPage />} />
-          }
+          element={<PrivateRoute redirectTo="/" component={ApplicationsPage} />}
         />
         <Route
           path="admin/assortment/batteries-18650"
           element={
-            <PrivateRoute redirectTo="/" component={<Batteries18650Page />} />
+            <PrivateRoute redirectTo="/" component={Batteries18650Page} />
           }
         />
         <Route
           path="admin/assortment/batteries-21700"
           element={
-            <PrivateRoute redirectTo="/" component={<Batteries21700Page />} />
+            <PrivateRoute redirectTo="/" component={Batteries21700Page} />
           }
         />
         <Route
           path="admin/assortment/batteries-32650"
           element={
-            <PrivateRoute redirectTo="/" component={<Batteries32650Page />} />
+            <PrivateRoute redirectTo="/" component={Batteries32650Page} />
           }
         />
         <Route
           path="admin/assortment/batteries-li-po"
           element={
-            <PrivateRoute redirectTo="/" component={<BatteriesLiPoPage />} />
+            <PrivateRoute redirectTo="/" component={BatteriesLiPoPage} />
           }
         />
         <Route
           path="admin/assortment/batteries-lifepo4"
           element={
-            <PrivateRoute redirectTo="/" component={<BatteriesLifepo4Page />} />
+            <PrivateRoute redirectTo="/" component={BatteriesLifepo4Page} />
           }
         />
         <Route
           path="admin/assortment/assembly"
-          element={<PrivateRoute redirectTo="/" component={<AssemblyPage />} />}
+          element={<PrivateRoute redirectTo="/" component={AssemblyPage} />}
         />
         <Route
           path="admin/assortment/batteries-for-fpv"
           element={
-            <PrivateRoute redirectTo="/" component={<BatteriesForFPVPage />} />
+            <PrivateRoute redirectTo="/" component={BatteriesForFPVPage} />
           }
         />
         <Route
@@ -127,53 +121,43 @@ export const App = () => {
           element={
             <PrivateRoute
               redirectTo="/"
-              component={<BatteriesForTransportPage />}
+              component={BatteriesForTransportPage}
             />
           }
         />
         <Route
           path="admin/assortment/batteries-for-toys"
           element={
-            <PrivateRoute redirectTo="/" component={<BatteriesForToysPage />} />
+            <PrivateRoute redirectTo="/" component={BatteriesForToysPage} />
           }
         />
         <Route
           path="admin/assortment/devices"
-          element={<PrivateRoute redirectTo="/" component={<DevicesPage />} />}
+          element={<PrivateRoute redirectTo="/" component={DevicesPage} />}
         />
         <Route
           path="admin/assortment/materials"
-          element={
-            <PrivateRoute redirectTo="/" component={<MaterialsPage />} />
-          }
+          element={<PrivateRoute redirectTo="/" component={MaterialsPage} />}
         />
         <Route
           path="admin/assortment/:cardId"
-          element={
-            <PrivateRoute redirectTo="/" component={<EditProductPage />} />
-          }
+          element={<PrivateRoute redirectTo="/" component={EditProductPage} />}
         />
         <Route
           path="admin/assortment/:category/:type/:subType"
-          element={
-            <PrivateRoute redirectTo="/" component={<AddProductPage />} />
-          }
+          element={<PrivateRoute redirectTo="/" component={AddProductPage} />}
         />
         <Route
           path="admin/customers"
-          element={
-            <PrivateRoute redirectTo="/" component={<CustomersPage />} />
-          }
+          element={<PrivateRoute redirectTo="/" component={CustomersPage} />}
         />
         <Route
           path="admin/banners"
-          element={<PrivateRoute redirectTo="/" component={<BannersPage />} />}
+          element={<PrivateRoute redirectTo="/" component={BannersPage} />}
         />
         <Route
           path="admin/promo-codes"
-          element={
-            <PrivateRoute redirectTo="/" component={<PromoCodesPage />} />
-          }
+          element={<PrivateRoute redirectTo="/" component={PromoCodesPage} />}
         />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Route>

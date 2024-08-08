@@ -12,7 +12,7 @@ const OrderDetailsPage = () => {
   const { orderId } = useParams();
 
   useEffect(() => {
-    dispatch(getOneOrder(orderId));
+    orderId && dispatch(getOneOrder(orderId));
   }, [dispatch, orderId]);
 
   return (
