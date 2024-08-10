@@ -39,7 +39,7 @@ export const getAllOrders = createAsyncThunk<
 
 export const getOneOrder = createAsyncThunk<
   { result: Order },
-  { orderId: string },
+  string,
   { rejectValue: string }
 >('orders/getOneOrder', async (orderId, thunkApi) => {
   try {

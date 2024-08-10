@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useTypedSelector } from '../redux/hooks';
 import { selectIsLoggedIn } from '../redux/admin/adminSelectors';
 
 type RestrictedRouteProps = {
-  component: ReactNode;
+  component: React.ComponentType;
   redirectTo?: string;
 };
 
@@ -14,5 +14,5 @@ export const RestrictedRoute: React.FC<RestrictedRouteProps> = ({
 }) => {
   const isLoggedIn = useTypedSelector(selectIsLoggedIn);
 
-  return isLoggedIn ? <Navigate to={redirectTo} /> : Component;
+  return isLoggedIn ? <Navigate to={redirectTo} /> : <Component />;
 };
