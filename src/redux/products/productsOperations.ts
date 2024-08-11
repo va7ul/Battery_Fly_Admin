@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseURL } from 'utils/constants/baseURL';
 import toast from 'react-hot-toast';
-import { Product } from '../../@types/products.types';
+import { Product, Result } from '../../@types/products.types';
 
 axios.defaults.baseURL = baseURL;
 
@@ -300,11 +300,19 @@ export const getMaterials = createAsyncThunk<
   }
 });
 
-export const getOneProduct = createAsyncThunk(
+export const getOneProduct = createAsyncThunk<
+  {
+    result: Result;
+  },
+  string,
+  { rejectValue: string }
+  >(
   'products/getOneProduct',
   async (productId, thunkApi) => {
     try {
-      const { data } = await axios.get(`products/${productId}`);
+      const { data } = await axios.get<{
+        result: Result
+      }>(`products/${productId}`);
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
@@ -316,7 +324,13 @@ export const getOneProduct = createAsyncThunk(
   }
 );
 
-export const addProduct = createAsyncThunk(
+export const addProduct = createAsyncThunk<
+  {
+    addResult: Product
+  },
+  Product,
+  { rejectValue: string }
+  >(
   'products/product-add',
   async (formData, thunkApi) => {
     const config = {
@@ -325,7 +339,9 @@ export const addProduct = createAsyncThunk(
       },
     };
     try {
-      const { data } = await axios.post(`adm/product-add`, formData, config);
+      const { data } = await axios.post<{
+    addResult: Product
+  }>(`adm/product-add`, formData, config);
       toast.success('Товар додано!');
 
       return data;
@@ -366,7 +382,13 @@ export const editProduct = createAsyncThunk(
   }
 );
 
-export const addProductZbirky = createAsyncThunk(
+export const addProductZbirky = createAsyncThunk<
+  {
+    addResult: Product
+  },
+  Product,
+  { rejectValue: string }
+  >(
   'products/productZbirky-add',
   async (formData, thunkApi) => {
     const config = {
