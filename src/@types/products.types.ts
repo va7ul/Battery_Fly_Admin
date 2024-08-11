@@ -1,6 +1,7 @@
 type BatteryCapacity = {
   description: string;
   price: number;
+  holder?: number;
 };
 
 type BatteryConfig = {
@@ -25,4 +26,14 @@ export type Product = {
   createdAt: string;
   updatedAt: string;
   discount: number;
+};
+ 
+export type Result = {
+  description: string;
+  capacity?: BatteryConfig;
+  capacityKey?: string;
+  information: string;
+  price: string | number;
+  priceOneProduct: string | number;
+  image: string[];
 };
