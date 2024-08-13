@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, FC, ChangeEvent } from 'react';
+import { useTypedDispatch } from '../../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
-import { Formik, FieldArray } from 'formik'
+import { Formik, FieldArray, FormikHelpers } from 'formik'
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -11,34 +11,62 @@ import { yellow } from '@mui/material/colors';
 import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema'
 import { addProductZbirky } from '../../../redux/products/productsOperations';
 import { Container, Box, StyledForm, Title, Subtitle, SubTitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
+import { AddProductProps } from '../AddProduct/AddProduct';
 
-export const AddProductZbirky = ({ category }) => {
-    const dispatch = useDispatch();
+type CategoryMap = {
+    [key: string]: string;
+};
+
+  type capacityObj = {
+      capacity: string;
+      description: string;
+      price: string;
+      holder: string;
+  };
+    
+  interface MyFormValues {
+    name: string;
+    price: string;
+    description: string;
+    quantity: string;
+    discount: string;
+    information: string;
+    capacity: capacityObj[],
+};
+
+export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
+    const dispatch = useTypedDispatch();
     const navigate = useNavigate();
 
-    const [images, setImages] = useState('');
+    const [images, setImages] = useState<File[]>([]);
     const [sale, setSale] = useState(false);
     const [popular, setPopular] = useState(false);
     const [holder, setHolder] = useState(false);
 
-    const categoryMapping = {
-    assembly: 'assembly',
-    fpv: 'batteries-for-fpv',
-    transport: 'batteries-for-transport',
-    toys: 'batteries-for-toys',
-  };
+    const categoryMapping: CategoryMap = {
+        assembly: 'assembly',
+        fpv: 'batteries-for-fpv',
+        transport: 'batteries-for-transport',
+        toys: 'batteries-for-toys'
+    };
+    
+    let categoryForAdd = '';
+    if (category) {
+     categoryForAdd = categoryMapping[category];   
+    };
 
-    const categoryForAdd = categoryMapping[category];
-
-    const capacityObj = {
+    const capacityObj: capacityObj = {
         capacity: '',
         description: '',
         price: '',
         holder: ''
     };
 
-      const attachImages = e => {
-        setImages(e.currentTarget.files);
+     const attachImages = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.currentTarget.files) {
+            const fileArray = Array.from(e.currentTarget.files);
+            setImages(fileArray);
+        }
     };
 
       const AddProductButton = () => {
@@ -60,7 +88,10 @@ export const AddProductZbirky = ({ category }) => {
                     capacity: [capacityObj],
                 }}
                 validationSchema={productZbirkySchema}
-                onSubmit={(values) => {
+                onSubmit={(
+                    values: MyFormValues,
+                    { setSubmitting }: FormikHelpers<MyFormValues>
+                ) => {
                     let newCapacity = [];
                     for (const cap of values.capacity) {
 
@@ -77,12 +108,12 @@ export const AddProductZbirky = ({ category }) => {
                     formData.append('price', values.price);
                     formData.append('description', values.description);
                     formData.append('quantity', values.quantity);
-                    formData.append('sale', sale);
-                    formData.append('discount', values.discount || 10);
-                    formData.append('category', category);
+                    formData.append('sale', sale.toString());
+                    formData.append('discount', sale ? values.discount : '0');
+                    formData.append('category', category || '');
                     formData.append('capacity', JSON.stringify(newCapacity));
-                    formData.append('holder', holder);
-                    formData.append('popular', popular);
+                    formData.append('holder', holder.toString());
+                    formData.append('popular', popular.toString());
                     formData.append('information', values.information);
                     
                     for (const image of images) {
@@ -90,14 +121,14 @@ export const AddProductZbirky = ({ category }) => {
                     };
 
                     dispatch(addProductZbirky(formData))
-                        .then(result => {
+                        .then((result: any) => {
                         if (result.meta.requestStatus === 'fulfilled') {
                             AddProductButton();
                         }
-                    })
+                    }).finally(() => setSubmitting(false));
                 }}
             >
-                {({ values }) => (
+                {({ isSubmitting, values }) => (
                     <StyledForm>
                         <Title>Додавання товару</Title>
                         <Label>
@@ -235,7 +266,7 @@ export const AddProductZbirky = ({ category }) => {
                         <FieldArray name="capacity">
                             {({ push, remove }) => (
                                 <>
-                                    {values.capacity.map((cap, index) => {
+                                    {values.capacity.map((_, index) => {
     
                                         return (
                                             <BoxCapacity key={index}>
@@ -332,6 +363,7 @@ export const AddProductZbirky = ({ category }) => {
                         </Label>
                         <SubmitButton
                             type="submit"
+                            disabled={isSubmitting}
                         >
                             Додати товар
                         </SubmitButton>
