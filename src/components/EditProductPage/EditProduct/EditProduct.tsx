@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, ChangeEvent } from 'react';
+import { useTypedDispatch, useTypedSelector } from '../../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import Radio from '@mui/material/Radio';
@@ -12,19 +12,36 @@ import { selectOneProduct } from '../../../redux/products/productsSelectors';
 import { editProduct } from '../../../redux/products/productsOperations';
 import { productSchema } from '../../../common/schemas/productSchema'
 import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, StyledErrorMessage } from "../../AddProductPage/AddProduct/AddProduct.styled";
-import { SubmitButton, ButtonBox, BackButton } from '../EditProduct/EditProduct.styled';
+import { SubmitButton, ButtonBox, BackButton } from './EditProduct.styled';
+
+// interface MyFormValues {
+//     name: string;
+//     price: string | number;
+//     description: string;
+//     quantity: number;
+//     sale: boolean;
+//     discount: number;
+//     information: string;
+//     category: string;
+//     type: string;
+//     popular: boolean;
+//     image: string[];
+// };
 
 export const EditProduct = () => {
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
     const navigate = useNavigate();
-    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, type, information, discount } = useSelector(selectOneProduct)
+    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, type, information, discount } = useTypedSelector(selectOneProduct)
     
     const [imagesLocal, setImagesLocal] = useState(image);
     const [saleLocal, setSaleLocal] = useState(sale);
     const [popularLocal, setPopularLocal] = useState(popular);
 
-    const attachImages = e => {
-        setImagesLocal(e.currentTarget.files);
+    const attachImages = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.currentTarget.files) {
+            const fileArray = Array.from(e.currentTarget.files);
+            setImagesLocal(fileArray);
+        }
     };
 
     const changeType = () => {
@@ -65,19 +82,18 @@ export const EditProduct = () => {
                     image: image,
 
                 }}
-                enctype="multipart/form-data"
                 validationSchema={productSchema}
                 onSubmit={values => {
                     const formData = new FormData();
                     formData.append('name', values.name);
-                    formData.append('price', values.price);
+                    formData.append('price', values.price.toString());
                     formData.append('description', values.description);
-                    formData.append('quantity', values.quantity);
-                    formData.append('sale', saleLocal);
-                    formData.append('discount', values.discount || 10);
+                    formData.append('quantity', values.quantity.toString());
+                    formData.append('sale', saleLocal.toString());
+                    formData.append('discount', values.discount.toString());
                     formData.append('category', values.category);
                     formData.append('type', values.type = changeType() || type);
-                    formData.append('popular', popularLocal);
+                    formData.append('popular', popularLocal.toString());
                     formData.append('information', values.information);
 
                     for (const i of imagesLocal) {

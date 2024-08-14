@@ -76,7 +76,7 @@ export const AddProduct: FC<AddProductProps>  = ({ category, type }) => {
                     formData.append('sale', sale.toString());
                     formData.append('discount', sale ? values.discount : '0');
                     formData.append('category', category || '');
-                    formData.append('type', changeType()|| '');
+                    formData.append('type', changeType() || '');
                     formData.append('popular', popular.toString());
                     formData.append('information', values.information);
 
