@@ -47,21 +47,7 @@ export type Result = {
   category: string;
 };
 
-export type AddProduct = {
-  name: string;
-  description: string;
-  image: string[];
-  price: number | string;
-  quantity: number;
-  sale: boolean;
-  popular: boolean;
-  category: string;
-  type?: string;
-  capacity?: BatteryConfig;
-  holder?: boolean;
-  information: string;
-  discount: number;
-};
+export type AddProduct = Omit <Result, 'codeOfGood' | 'name'  | 'priceOneProduct'>
 
 export type CategoryMap = {
   [key: string]: string;
