@@ -1,9 +1,8 @@
-import { useTypedDispatch, useTypedSelector } from 'redux/hooks';
+import { useTypedDispatch, useTypedSelector } from '../redux/hooks';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getOneProduct } from '../redux/products/productsOperations';
-import { selectOneProductIsLoading }  from '../redux/products/productsSelectors';
-import { selectOneProduct } from '../redux/products/productsSelectors';
+import { selectOneProduct, selectOneProductIsLoading } from '../redux/products/productsSelectors';
 import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
 import { EditProduct } from 'components/EditProductPage/EditProduct/EditProduct';
 import { EditProductZbirky } from 'components/EditProductPage/EditProductZbirky/EditProductZbirky';
