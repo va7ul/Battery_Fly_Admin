@@ -4,7 +4,7 @@ type BatteryCapacity = {
   holder?: number;
 };
 
-type BatteryConfig = {
+export type BatteryConfig = {
   [key: string]: BatteryCapacity;
 };
 
@@ -70,6 +70,6 @@ export type CategoryMap = {
 export type CapacityObj = {
   capacity: string;
   description: string;
-  price: string;
-  holder: string;
+  price: number;
+  holder?: number;
 };

@@ -48,8 +48,8 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
     const capacityObj: CapacityObj = {
         capacity: '',
         description: '',
-        price: '',
-        holder: ''
+        price: 0,
+        holder: 0,
     };
 
      const attachImages = (e: ChangeEvent<HTMLInputElement>) => {

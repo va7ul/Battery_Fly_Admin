@@ -13,7 +13,7 @@ import { editProductZbirky } from '../../../redux/products/productsOperations';
 import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema'
 import { Container, Box, StyledForm, Title, Subtitle, SubTitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, StyledErrorMessage } from "../../AddProductPage/AddProductZbirky/AddProductZbirky.styled";
 import { SubmitButton, ButtonBox, BackButton } from './EditProductZbirky.styled';
-import { CategoryMap, CapacityObj } from '../../../@types/products.types';
+import { CategoryMap, CapacityObj, BatteryConfig } from '../../../@types/products.types';
 
 export const EditProductZbirky = () => {
     const dispatch = useTypedDispatch();
@@ -37,11 +37,11 @@ export const EditProductZbirky = () => {
     const capacityObj: CapacityObj = {
         capacity: "",
         description: "",
-        price: "",
-        holder: ""
+        price: 0,
+        holder: 0,
     };
 
-    let newCapacity = [];
+    let newCapacity: CapacityObj[] = [];
 
     if (capacity) {
         const keys = Object.keys(capacity)
@@ -93,10 +93,10 @@ export const EditProductZbirky = () => {
                 }}
                 validationSchema={productZbirkySchema}
                 onSubmit={(values) => {
-                    let newCapacity = [];
+                    let newCapacity: BatteryConfig[] = [];
                     for (const cap of values.capacity) {
 
-                        const obj = {
+                        const obj: BatteryConfig = {
                             [cap["capacity"].toString()]: {
                                 description: cap.description,
                                 holder: cap.holder,
