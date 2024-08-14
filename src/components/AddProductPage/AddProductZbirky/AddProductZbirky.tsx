@@ -12,17 +12,7 @@ import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema
 import { addProductZbirky } from '../../../redux/products/productsOperations';
 import { Container, Box, StyledForm, Title, Subtitle, SubTitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
 import { AddProductProps } from '../AddProduct/AddProduct';
-
-type CategoryMap = {
-    [key: string]: string;
-};
-
-  type capacityObj = {
-      capacity: string;
-      description: string;
-      price: string;
-      holder: string;
-  };
+import { CategoryMap, CapacityObj } from '../../../@types/products.types';
     
   interface MyFormValues {
     name: string;
@@ -31,7 +21,7 @@ type CategoryMap = {
     quantity: string;
     discount: string;
     information: string;
-    capacity: capacityObj[],
+    capacity: CapacityObj[],
 };
 
 export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
@@ -55,7 +45,7 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
      categoryForAdd = categoryMapping[category];   
     };
 
-    const capacityObj: capacityObj = {
+    const capacityObj: CapacityObj = {
         capacity: '',
         description: '',
         price: '',
