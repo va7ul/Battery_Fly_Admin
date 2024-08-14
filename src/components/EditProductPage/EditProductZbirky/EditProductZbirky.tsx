@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, ChangeEvent } from 'react';
+import { useTypedDispatch, useTypedSelector } from '../../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Formik, FieldArray } from 'formik'
 import Radio from '@mui/material/Radio';
@@ -12,19 +12,20 @@ import { selectOneProduct } from '../../../redux/products/productsSelectors';
 import { editProductZbirky } from '../../../redux/products/productsOperations';
 import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema'
 import { Container, Box, StyledForm, Title, Subtitle, SubTitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, StyledErrorMessage } from "../../AddProductPage/AddProductZbirky/AddProductZbirky.styled";
-import { SubmitButton, ButtonBox, BackButton } from '../EditProductZbirky/EditProductZbirky.styled';
+import { SubmitButton, ButtonBox, BackButton } from './EditProductZbirky.styled';
+import { CategoryMap, CapacityObj } from '../../../@types/products.types';
 
 export const EditProductZbirky = () => {
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
     const navigate = useNavigate();
-    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, holder, capacity, information, discount } = useSelector(selectOneProduct)
+    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, holder, capacity, information, discount } = useTypedSelector(selectOneProduct)
 
     const [imagesLocal, setImagesLocal] = useState(image);
     const [saleLocal, setSaleLocal] = useState(sale);
     const [popularLocal, setPopularLocal] = useState(popular);
     const [holderLocal, setHolderLocal] = useState(holder);
 
-    const categoryMapping = {
+    const categoryMapping: CategoryMap = {
         assembly: 'assembly',
         fpv: 'batteries-for-fpv',
         transport: 'batteries-for-transport',
@@ -33,7 +34,7 @@ export const EditProductZbirky = () => {
 
     const categoryForAdd = categoryMapping[category];
 
-    const capacityObj = {
+    const capacityObj: CapacityObj = {
         capacity: "",
         description: "",
         price: "",
@@ -42,22 +43,26 @@ export const EditProductZbirky = () => {
 
     let newCapacity = [];
 
-    
-    const keys = Object.keys(capacity)
+    if (capacity) {
+        const keys = Object.keys(capacity)
 
-    for (let i = 0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length; i++) {
         
-        const obg = {
-            capacity: keys[i],
-            description: capacity[keys[i]].description,
-            price: capacity[keys[i]].price,
-            holder: capacity[keys[i]].holder
+            const obg = {
+                capacity: keys[i],
+                description: capacity[keys[i]].description,
+                price: capacity[keys[i]].price,
+                holder: capacity[keys[i]].holder
+            }
+            newCapacity.push(obg)
         }
-        newCapacity.push(obg)
-    }
+    };
 
-    const attachImages = e => {
-        setImagesLocal(e.currentTarget.files);
+  const attachImages = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.currentTarget.files) {
+            const fileArray = Array.from(e.currentTarget.files);
+            setImagesLocal(fileArray);
+        }
     };
 
     const editProductButton = () => {
@@ -86,7 +91,6 @@ export const EditProductZbirky = () => {
                     image: image,
                     capacity: [...newCapacity],
                 }}
-                enctype="multipart/form-data"
                 validationSchema={productZbirkySchema}
                 onSubmit={(values) => {
                     let newCapacity = [];
@@ -104,22 +108,22 @@ export const EditProductZbirky = () => {
                     
                     const formData = new FormData();
                     formData.append('name', values.name);
-                    formData.append('price', values.price);
+                    formData.append('price', values.price.toString());
                     formData.append('description', values.description);
-                    formData.append('quantity', values.quantity);
-                    formData.append('sale', saleLocal);
-                    formData.append('discount', values.discount || 10);
+                    formData.append('quantity', values.quantity.toString());
+                    formData.append('sale', saleLocal.toString());
+                    formData.append('discount', values.discount.toString());
                     formData.append('category', values.category);
                     formData.append('capacity', JSON.stringify(newCapacity));
-                    formData.append('holder', holderLocal);
-                    formData.append('popular', popularLocal);
+                    formData.append('holder', holderLocal.toString());
+                    formData.append('popular', popularLocal.toString());
                     formData.append('information', values.information);
                     
                     for (const i of imagesLocal) {
                         formData.append('files', i)
                     }
 
-                    dispatch(editProductZbirky({ formData, codeOfGood })).then(result => {
+                    dispatch(editProductZbirky({ formData, codeOfGood })).then((result: any) => {
                         if (result.meta.requestStatus === 'fulfilled') {
                             editProductButton();
                         }
