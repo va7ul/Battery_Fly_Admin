@@ -14,20 +14,6 @@ import { productSchema } from '../../../common/schemas/productSchema'
 import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, StyledErrorMessage } from "../../AddProductPage/AddProduct/AddProduct.styled";
 import { SubmitButton, ButtonBox, BackButton } from './EditProduct.styled';
 
-// interface MyFormValues {
-//     name: string;
-//     price: string | number;
-//     description: string;
-//     quantity: number;
-//     sale: boolean;
-//     discount: number;
-//     information: string;
-//     category: string;
-//     type: string;
-//     popular: boolean;
-//     image: string[];
-// };
-
 export const EditProduct = () => {
     const dispatch = useTypedDispatch();
     const navigate = useNavigate();
@@ -100,7 +86,7 @@ export const EditProduct = () => {
                         formData.append('files', i)
                     }
 
-                    dispatch(editProduct({ formData, codeOfGood })).then(result => {
+                    dispatch(editProduct({ formData, codeOfGood })).then((result: any) => {
                         if (result.meta.requestStatus === 'fulfilled') {
                             editProductButton();
                         }
