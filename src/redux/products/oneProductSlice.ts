@@ -17,13 +17,22 @@ type Initial = {
 
 const initialState: Initial = {
   result: {
+    codeOfGood: '',
+    name: '',
+    quantity: 0,
+    sale: false,
+    popular: false,
+    type: '',
+    discount: 0,
     description: '',
     capacity: {},
     capacityKey: '',
+    holder: false,
     information: '',
     price: '',
     priceOneProduct: '',
     image: [],
+    category: '',
   },
   selectedHolder: false,
   selectedSealing: false,
@@ -72,13 +81,13 @@ const oneProductSlice = createSlice({
       .addCase(getOneProduct.pending, state => {
         state.isLoading = true;
       })
-      .addCase(getOneProduct.fulfilled, (state, action) => {
+      .addCase(getOneProduct.fulfilled, (state, action: PayloadAction<{ result: Result }>) => {
         state.isLoading = false;
         state.error = null;
-        state.result = action.payload.result;
         state.result.priceOneProduct = action.payload.result.price;
+        state.result = action.payload.result;
       })
-      .addCase(getOneProduct.rejected, (state, action) => {
+      .addCase(getOneProduct.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.isLoading = false;
         state.error = action.payload ?? 'Unknown error';
       })
@@ -89,7 +98,7 @@ const oneProductSlice = createSlice({
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(addProduct.rejected, (state, action) => {
+      .addCase(addProduct.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.isLoading = false;
         state.error = action.payload ?? 'Unknown error';
       })
@@ -100,7 +109,7 @@ const oneProductSlice = createSlice({
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(addProductZbirky.rejected, (state, action) => {
+      .addCase(addProductZbirky.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.isLoading = false;
         state.error = action.payload ?? 'Unknown error';
       }),

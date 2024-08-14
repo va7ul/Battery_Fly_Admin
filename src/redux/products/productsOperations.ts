@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseURL } from 'utils/constants/baseURL';
 import toast from 'react-hot-toast';
-import { Product, Result } from '../../@types/products.types';
+import { Product, Result, AddProduct } from '../../@types/products.types';
 
 axios.defaults.baseURL = baseURL;
 
@@ -326,9 +326,9 @@ export const getOneProduct = createAsyncThunk<
 
 export const addProduct = createAsyncThunk<
   {
-    addResult: Product
+    addResult: AddProduct
   },
-  Product,
+  FormData,
   { rejectValue: string }
   >(
   'products/product-add',
@@ -340,7 +340,7 @@ export const addProduct = createAsyncThunk<
     };
     try {
       const { data } = await axios.post<{
-    addResult: Product
+    addResult: AddProduct
   }>(`adm/product-add`, formData, config);
       toast.success('Товар додано!');
 
@@ -355,7 +355,13 @@ export const addProduct = createAsyncThunk<
   }
 );
 
-export const editProduct = createAsyncThunk(
+export const editProduct = createAsyncThunk<
+  {
+    editResult: Product
+  },
+  { formData: FormData, codeOfGood: string },
+  { rejectValue: string }
+  >(
   'products/product-edit',
   async ({ formData, codeOfGood }, thunkApi) => {
     const config = {
@@ -364,7 +370,7 @@ export const editProduct = createAsyncThunk(
       },
     };
     try {
-      const { data } = await axios.put(
+      const { data } = await axios.put<{ editResult: Product }>(
         `adm/product-edit/${codeOfGood}`,
         formData,
         config
@@ -384,9 +390,9 @@ export const editProduct = createAsyncThunk(
 
 export const addProductZbirky = createAsyncThunk<
   {
-    addResult: Product
+    addResult: AddProduct
   },
-  Product,
+  FormData,
   { rejectValue: string }
   >(
   'products/productZbirky-add',
@@ -411,7 +417,13 @@ export const addProductZbirky = createAsyncThunk<
   }
 );
 
-export const editProductZbirky = createAsyncThunk(
+export const editProductZbirky = createAsyncThunk<
+  {
+    editResult: Product
+  },
+  { formData: FormData, codeOfGood: string },
+  { rejectValue: string }
+  >(
   'products/productZbirky-edit',
   async ({ formData, codeOfGood }, thunkApi) => {
     const config = {
@@ -420,7 +432,7 @@ export const editProductZbirky = createAsyncThunk(
       },
     };
     try {
-      const { data } = await axios.put(
+      const { data } = await axios.put<{ editResult: Product }>(
         `adm/assemblies-edit/${codeOfGood}`,
         formData,
         config
