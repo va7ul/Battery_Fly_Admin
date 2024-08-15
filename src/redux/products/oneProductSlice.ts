@@ -1,16 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getOneProduct } from './productsOperations';
 import { addProduct, addProductZbirky } from './productsOperations';
+import { Result } from '../../@types/products.types';
 
-const initialState = {
+type Initial = {
+  result: Result;
+  selectedHolder: boolean;
+  selectedSealing: boolean;
+  holderPrice: number;
+  sealingPrice: number;
+  quantityOrders: number;
+  priceWithSale: number;
+  isLoading: boolean;
+  error: string | null;
+}
+
+const initialState: Initial = {
   result: {
+    codeOfGood: '',
+    name: '',
+    quantity: 0,
+    sale: false,
+    popular: false,
+    type: '',
+    discount: 0,
     description: '',
     capacity: {},
     capacityKey: '',
+    holder: false,
     information: '',
     price: '',
     priceOneProduct: '',
     image: [],
+    category: '',
   },
   selectedHolder: false,
   selectedSealing: false,
@@ -26,31 +48,31 @@ const oneProductSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    setPrice(state, action) {
+    setPrice(state, action: PayloadAction<number>) {
       state.result.price = action.payload;
     },
-    setCapacityKey(state, action) {
+    setCapacityKey(state, action: PayloadAction<string>) {
       state.result.capacityKey = action.payload;
     },
-    setPriceOneProduct(state, action) {
+    setPriceOneProduct(state, action: PayloadAction<number>) {
       state.result.priceOneProduct = action.payload;
     },
-    setSelectedHolder(state, action) {
+    setSelectedHolder(state, action: PayloadAction<boolean>) {
       state.selectedHolder = action.payload;
     },
-    setSelectedSealing(state, action) {
+    setSelectedSealing(state, action: PayloadAction<boolean>) {
       state.selectedSealing = action.payload;
     },
-    setQuantityOrders(state, action) {
+    setQuantityOrders(state, action: PayloadAction<number>) {
       state.quantityOrders = action.payload;
     },
-    setSealingPrice(state, action) {
+    setSealingPrice(state, action: PayloadAction<number>) {
       state.sealingPrice = action.payload;
     },
-    setHolderPrice(state, action) {
+    setHolderPrice(state, action: PayloadAction<number>) {
       state.holderPrice = action.payload;
     },
-    setPriceWithSale(state, action) {
+    setPriceWithSale(state, action: PayloadAction<number>) {
       state.priceWithSale = Math.round(action.payload);
     },
   },
@@ -59,37 +81,37 @@ const oneProductSlice = createSlice({
       .addCase(getOneProduct.pending, state => {
         state.isLoading = true;
       })
-      .addCase(getOneProduct.fulfilled, (state, action) => {
+      .addCase(getOneProduct.fulfilled, (state, action: PayloadAction<{ result: Result }>) => {
         state.isLoading = false;
         state.error = null;
-        state.result = action.payload.result;
         state.result.priceOneProduct = action.payload.result.price;
+        state.result = action.payload.result;
       })
-      .addCase(getOneProduct.rejected, (state, action) => {
+      .addCase(getOneProduct.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.error = action.payload ?? 'Unknown error';
       })
       .addCase(addProduct.pending, state => {
         state.isLoading = true;
       })
-      .addCase(addProduct.fulfilled, (state, action) => {
+      .addCase(addProduct.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(addProduct.rejected, (state, action) => {
+      .addCase(addProduct.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.error = action.payload ?? 'Unknown error';
       })
       .addCase(addProductZbirky.pending, state => {
         state.isLoading = true;
       })
-      .addCase(addProductZbirky.fulfilled, (state, action) => {
+      .addCase(addProductZbirky.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(addProductZbirky.rejected, (state, action) => {
+      .addCase(addProductZbirky.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.error = action.payload ?? 'Unknown error';
       }),
 });
 

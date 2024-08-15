@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, ChangeEvent } from 'react';
+import { useTypedDispatch, useTypedSelector } from '../../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import Radio from '@mui/material/Radio';
@@ -8,20 +8,26 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
-import { addProduct } from '../../../redux/products/productsOperations';
+import { selectOneProduct } from '../../../redux/products/productsSelectors';
+import { editProduct } from '../../../redux/products/productsOperations';
 import { productSchema } from '../../../common/schemas/productSchema'
-import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProduct.styled";
+import { Container, StyledForm, Title, SubTitle, Label, Box, StyledField, Input, StyledTextField, StyledErrorMessage } from "../../AddProductPage/AddProduct/AddProduct.styled";
+import { SubmitButton, ButtonBox, BackButton } from './EditProduct.styled';
 
-export const AddProduct = ({ category, type }) => {
-    const dispatch = useDispatch();
+export const EditProduct = () => {
+    const dispatch = useTypedDispatch();
     const navigate = useNavigate();
+    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, type, information, discount } = useTypedSelector(selectOneProduct)
+    
+    const [imagesLocal, setImagesLocal] = useState(image);
+    const [saleLocal, setSaleLocal] = useState(sale);
+    const [popularLocal, setPopularLocal] = useState(popular);
 
-    const [images, setImages] = useState([]);
-    const [sale, setSale] = useState(false);
-    const [popular, setPopular] = useState(false);
-
-    const attachImages = e => {
-        setImages(e.currentTarget.files);
+    const attachImages = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.currentTarget.files) {
+            const fileArray = Array.from(e.currentTarget.files);
+            setImagesLocal(fileArray);
+        }
     };
 
     const changeType = () => {
@@ -30,52 +36,65 @@ export const AddProduct = ({ category, type }) => {
         }
     };
 
-    const AddProductButton = () => {
+    const editProductButton = () => {
         navigate(
             `/admin/assortment/batteries-${type}`
-        );
+        )
+        if (category === type) {
+            navigate(
+                `/admin/assortment/${type}`
+            )
+        }
+    };
+
+    const getBack = () => {
+        navigate(-1);
     };
 
     return (
         <Container>
             <Formik
                 initialValues={{
-                    name: '',
-                    price: '',
-                    description: '',
-                    quantity: '',
-                    discount: '',
-                    information: '',
+                    name: name,
+                    price: price,
+                    description: description,
+                    quantity: quantity,
+                    sale: sale,
+                    discount: discount,
+                    information: information,
+                    category: category,
+                    type: type,
+                    popular: popular,
+                    image: image,
+
                 }}
-                enctype="multipart/form-data"
                 validationSchema={productSchema}
                 onSubmit={values => {
                     const formData = new FormData();
                     formData.append('name', values.name);
-                    formData.append('price', values.price);
+                    formData.append('price', values.price.toString());
                     formData.append('description', values.description);
-                    formData.append('quantity', values.quantity);
-                    formData.append('sale', sale);
-                    formData.append('discount', values.discount || 10);
-                    formData.append('category', category);
-                    formData.append('type', type = changeType() || type);
-                    formData.append('popular', popular);
+                    formData.append('quantity', values.quantity.toString());
+                    formData.append('sale', saleLocal.toString());
+                    formData.append('discount', values.discount.toString());
+                    formData.append('category', values.category);
+                    formData.append('type', values.type = changeType() || type);
+                    formData.append('popular', popularLocal.toString());
                     formData.append('information', values.information);
 
-                    for (const image of images) {
-                        formData.append('files', image)
-                    };
-                    
-                    dispatch(addProduct(formData)).then(result => {
+                    for (const i of imagesLocal) {
+                        formData.append('files', i)
+                    }
+
+                    dispatch(editProduct({ formData, codeOfGood })).then((result: any) => {
                         if (result.meta.requestStatus === 'fulfilled') {
-                            AddProductButton();
+                            editProductButton();
                         }
                     })
                 }}
             >
-                
                 <StyledForm>
-                    <Title>Додавання товару</Title>
+                    <Title>Редагування товару</Title>
                     <Label>
                         Назва товару
                         <Box>
@@ -129,21 +148,22 @@ export const AddProduct = ({ category, type }) => {
                             }}
                         >Знижка</FormLabel>
                         <RadioGroup
+                            value={saleLocal}
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
                             name="row-radio-buttons-group"
                         >
                             <FormControlLabel
-                                value="yes"
-                                onChange={() => { setSale(true) }}
+                                value={true}
+                                onChange={() => { setSaleLocal(true) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
                                     },
                                 }} />} label="Так" />
                             <FormControlLabel
-                                value="no"
-                                onChange={() => { setSale(false) }}
+                                value={false}
+                                onChange={() => { setSaleLocal(false) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
@@ -151,7 +171,7 @@ export const AddProduct = ({ category, type }) => {
                                 }} />} label="Ні" />
                         </RadioGroup>
                     </FormControl>
-                    {sale && <Label>
+                    {saleLocal && <Label>
                         Відсоток знижки
                         <Box>
                             <StyledField name="discount" type="number" />
@@ -162,14 +182,14 @@ export const AddProduct = ({ category, type }) => {
                     <Label>
                         Категорія
                         <Box>
-                            <StyledField name="category" type="text" value={category} disabled/>
+                            <StyledField name="category" type="text" value={category} disabled />
                         </Box>
                     </Label>
 
                     {type !== "null" && <Label>
                         Тип
                         <Box>
-                            <StyledField name="type" type="text" value={type} disabled/>
+                            <StyledField name="type" type="text" value={type} disabled />
                         </Box>
                     </Label>}
                      
@@ -185,21 +205,22 @@ export const AddProduct = ({ category, type }) => {
                             }}
                         >Популярний</FormLabel>
                         <RadioGroup
+                            value={popularLocal}
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
                             name="row-radio-buttons-group"
                         >
                             <FormControlLabel
-                                value="yes"
-                                onChange={() => { setPopular(true) }}
+                                value={true}
+                                onChange={() => { setPopularLocal(true) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
                                     },
                                 }} />} label="Так" />
                             <FormControlLabel
-                                value="no"
-                                onChange={() => { setPopular(false) }}
+                                value={false}
+                                onChange={() => { setPopularLocal(false) }}
                                 control={<Radio sx={{
                                     '&.Mui-checked': {
                                         color: yellow[800],
@@ -210,15 +231,18 @@ export const AddProduct = ({ category, type }) => {
                     <Label>
                         Інформація
                         <Box>
-                            <StyledTextField name="information" type="text" placeholder="Наприкінці кожного абзацу ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
+                            <StyledTextField name="information" type="text" component="textarea" />
                             <StyledErrorMessage name="information" component="div" />
                         </Box>
                     </Label>
-                    <SubmitButton
-                        type="submit"
-                    >
-                        Додати товар
-                    </SubmitButton>
+                    <ButtonBox>
+                        <BackButton type="button" onClick={getBack}>Назад</BackButton>
+                        <SubmitButton
+                            type="submit"
+                        >
+                            Зберегти
+                        </SubmitButton>
+                    </ButtonBox>
                 </StyledForm>
             </Formik>
         </Container>
