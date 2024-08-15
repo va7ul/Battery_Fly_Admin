@@ -13,9 +13,13 @@ const handleError = (error: any): string => {
   }
 };
 
-export const getHero = createAsyncThunk('hero/getHero', async (_, thunkAPI) => {
+export const getHero = createAsyncThunk<
+ HeroData[],
+  undefined,
+   { rejectValue: string }
+  >('hero/getHero', async (_, thunkAPI) => {
   try {
-    const { data } = await axios.get('hero');
+    const { data } = await axios.get<{ image: HeroData[]}>('hero');
     return data.image;
   } catch (error) {
     const errorMessage = handleError(error);
@@ -27,7 +31,7 @@ export const getHero = createAsyncThunk('hero/getHero', async (_, thunkAPI) => {
 });
 
 export const addHero = createAsyncThunk<
-   HeroItem,
+HeroData,
   HeroData,
   { rejectValue: string }
 >(
@@ -39,7 +43,7 @@ export const addHero = createAsyncThunk<
       },
     };
     try {
-      const { data } = await axios.post('adm/hero', formData, config);
+      const { data } = await axios.post<{hero: HeroData}>('adm/hero', formData, config);
       toast.success('Банер додано!');
       return data.hero;
     } catch (error) {
@@ -53,8 +57,8 @@ export const addHero = createAsyncThunk<
 );
 
 export const editHero = createAsyncThunk<
-  { hero: HeroItem },
-  { id: string; formData: HeroData },
+{hero: HeroData},
+  { id: string, formData: FormData },
   { rejectValue: string }
 >(
   'hero/editHero',
@@ -65,7 +69,7 @@ export const editHero = createAsyncThunk<
       },
     };
     try {
-      const { data } = await axios.put(`adm/hero/${id}`, formData, config);
+      const { data } = await axios.put<{hero: HeroData}>(`adm/hero/${id}`, formData, config);
       toast.success('Дані змінено!');
       return data;
     } catch (error) {
