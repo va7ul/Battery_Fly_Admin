@@ -1,20 +1,9 @@
 import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import { addHero, deleteHero, editHero, getHero } from './heroOperations';
-
-export type BannerData = {
-  _id: string;
-  image: string;
-  text: string
-};
-
-export type BannerItem = BannerData & {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-};
+import { HeroItem } from '../../@types/hero.types';
 
 type InitialState = {
-  items: BannerItem[];
+  items: HeroItem[];
   isLoading: boolean;
   error: string | null;
 };
@@ -34,19 +23,19 @@ const handleRejected = (state: InitialState, action: PayloadAction<string | unde
   state.error = action.payload ?? 'Unknown error';
 };
 
-const handleGetHeroFulfilled = (state: InitialState, action: PayloadAction<BannerItem[]>) => {
+const handleGetHeroFulfilled = (state: InitialState, action: PayloadAction<HeroItem[]>) => {
   state.items = action.payload;
   state.isLoading = false;
   state.error = null;
 };
 
-const handleAddHeroFulfilled = (state: InitialState, action: PayloadAction<BannerItem>) => {
+const handleAddHeroFulfilled = (state: InitialState, action: PayloadAction<HeroItem>) => {
   state.items.push(action.payload);
   state.isLoading = false;
   state.error = null;
 };
 
-const handleEditHeroFulfilled = (state:InitialState, action: PayloadAction<{hero: BannerItem}>) => {
+const handleEditHeroFulfilled = (state:InitialState, action: PayloadAction<{hero: HeroItem}>) => {
   state.items = state.items.map(el => {
     if (el._id === action.payload.hero._id) {
       return action.payload.hero;
@@ -57,8 +46,8 @@ const handleEditHeroFulfilled = (state:InitialState, action: PayloadAction<{hero
   state.error = null;
 };
 
-const handleDeleteHeroFulfilled = (state:InitialState, action: PayloadAction<BannerItem>) => {
-  state.items = state.items.filter(item => item._id !== action.payload._id);
+const handleDeleteHeroFulfilled = (state: InitialState, action: PayloadAction<{ id: string }>) => {
+  state.items = state.items.filter(item => item._id !== action.payload.id);
   state.isLoading = false;
   state.error = null;
 };
