@@ -1,9 +1,9 @@
 import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import { addHero, deleteHero, editHero, getHero } from './heroOperations';
-import { HeroItem } from '../../@types/hero.types';
+import { HeroData} from '../../@types/hero.types';
 
 type InitialState = {
-  items: HeroItem[];
+  items: HeroData[];
   isLoading: boolean;
   error: string | null;
 };
@@ -23,19 +23,19 @@ const handleRejected = (state: InitialState, action: PayloadAction<string | unde
   state.error = action.payload ?? 'Unknown error';
 };
 
-const handleGetHeroFulfilled = (state: InitialState, action: PayloadAction<HeroItem[]>) => {
+const handleGetHeroFulfilled = (state: InitialState, action: PayloadAction<HeroData[]>) => {
   state.items = action.payload;
   state.isLoading = false;
   state.error = null;
 };
 
-const handleAddHeroFulfilled = (state: InitialState, action: PayloadAction<HeroItem>) => {
+const handleAddHeroFulfilled = (state: InitialState, action: PayloadAction<HeroData>) => {
   state.items.push(action.payload);
   state.isLoading = false;
   state.error = null;
 };
 
-const handleEditHeroFulfilled = (state:InitialState, action: PayloadAction<{hero: HeroItem}>) => {
+const handleEditHeroFulfilled = (state: InitialState, action: PayloadAction<{hero: HeroData }>) => {
   state.items = state.items.map(el => {
     if (el._id === action.payload.hero._id) {
       return action.payload.hero;
