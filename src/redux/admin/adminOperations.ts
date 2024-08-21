@@ -68,9 +68,9 @@ export const logOut = createAsyncThunk<
 export const refreshAdmin = createAsyncThunk<
   AuthData,
   undefined,
-  { rejectValue: string }
+  { state: RootState; rejectValue: string }
 >('admin/refresh', async (_, thunkAPI) => {
-  const { token } = (thunkAPI.getState() as RootState).admin;
+  const { token } = thunkAPI.getState().admin;
 
   if (token === '') {
     return thunkAPI.rejectWithValue('Unable to fetch admin');
