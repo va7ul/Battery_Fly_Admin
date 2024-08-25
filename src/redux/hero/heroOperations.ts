@@ -32,7 +32,7 @@ export const getHero = createAsyncThunk<
 
 export const addHero = createAsyncThunk<
 HeroData,
-  HeroData,
+  FormData,
   { rejectValue: string }
 >(
   'hero/addHero',
