@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { baseURL } from '../../utils/constants/baseURL';
 import toast from 'react-hot-toast';
-import { HeroData, HeroItem } from '../../@types/hero.types';
+import { HeroData } from '../../@types/hero.types';
 axios.defaults.baseURL = baseURL;
 
 const handleError = (error: any): string => {
