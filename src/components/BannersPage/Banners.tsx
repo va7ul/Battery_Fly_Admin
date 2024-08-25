@@ -81,10 +81,10 @@ export const Banners = () => {
 
   const [image, setImage] = useState<Image>({});
   const [text, setText] = useState<{ [key: GridRowId]: string }>({});
-
+  let file: File;
   const handleFileChange = (id: GridRowId) => (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    let file
+   
     if (e.target.files) {
        file = e.target.files[0];
     }
@@ -184,7 +184,7 @@ export const Banners = () => {
               type="text"
               defaultValue={params.value}
               onChange={handleTextChange(id)}
-              onKeyDown={(e: KeyboardEvent) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
             />
           );
         }
