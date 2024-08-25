@@ -1,9 +1,10 @@
 type BatteryCapacity = {
   description: string;
   price: number;
+  holder?: number;
 };
 
-type BatteryConfig = {
+export type BatteryConfig = {
   [key: string]: BatteryCapacity;
 };
 
@@ -25,4 +26,36 @@ export type Product = {
   createdAt: string;
   updatedAt: string;
   discount: number;
+};
+
+export type Result = {
+  codeOfGood: string;
+  name: string;
+  quantity: number;
+  sale: boolean;
+  popular: boolean;
+  type: string;
+  discount: number;
+  description: string;
+  capacity?: BatteryConfig;
+  capacityKey?: string;
+  holder: boolean;
+  information: string;
+  price: string | number;
+  priceOneProduct: string | number;
+  image: string[] | File[];
+  category: string;
+};
+
+export type AddProduct = Omit <Result, 'codeOfGood' | 'name'  | 'priceOneProduct'>
+
+export type CategoryMap = {
+  [key: string]: string;
+};
+
+export type CapacityObj = {
+  capacity: string;
+  description: string;
+  price: number;
+  holder?: number;
 };
