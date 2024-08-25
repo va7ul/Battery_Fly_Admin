@@ -6,4 +6,4 @@ export const StyledInput = styled.input`
   background: inherit;
   border: none;
   outline: none;
-`;
+` ;
