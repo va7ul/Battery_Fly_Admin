@@ -14,7 +14,7 @@ export const productZbirkySchema = Yup.object().shape({
     .min(0, 'Число повинно бути більшим або дорівнювати 0')
     .required('Введіть кількість товару')
     .integer(),
-  discount: Yup.number().positive('Число повинно бути позитивним').integer(),
+  discount: Yup.number().min(0, 'Число повинно бути більшим або дорівнювати 0').integer(),
   information: Yup.string().required('Введіть загальну інформацію про товар'),
   capacity: Yup.array()
     .of(
@@ -31,7 +31,7 @@ export const productZbirkySchema = Yup.object().shape({
           .positive('Число повинно бути позитивним')
           .integer(),
         holder: Yup.number()
-          .positive('Число повинно бути позитивним')
+          .min(0, 'Число повинно бути більшим або дорівнювати 0')
           .integer(),
       })
     )
