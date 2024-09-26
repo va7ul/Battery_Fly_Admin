@@ -1,4 +1,4 @@
-import { useState, FC, ChangeEvent } from 'react';
+import { useState, FC, ChangeEvent, WheelEvent } from 'react';
 import { useTypedDispatch } from '../../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Formik, FieldArray, FormikHelpers } from 'formik'
@@ -42,7 +42,7 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
     
     let categoryForAdd = '';
     if (category) {
-     categoryForAdd = categoryMapping[category];   
+        categoryForAdd = categoryMapping[category];
     };
 
     const capacityObj: CapacityObj = {
@@ -52,17 +52,21 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
         holder: 0,
     };
 
-     const attachImages = (e: ChangeEvent<HTMLInputElement>) => {
+    const attachImages = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.currentTarget.files) {
             const fileArray = Array.from(e.currentTarget.files);
             setImages(fileArray);
         }
     };
 
-      const AddProductButton = () => {
-         navigate(
+    const AddProductButton = () => {
+        navigate(
             `/admin/assortment/${categoryForAdd}`
         );
+    };
+    
+    const removeScroll = (e: WheelEvent<HTMLElement>) => {
+        e.currentTarget.blur();
     };
 
     return (
@@ -85,11 +89,13 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
                     let newCapacity = [];
                     for (const cap of values.capacity) {
 
-                        const obj = { [cap["capacity"].toString()] : {
-                description: cap.description,
-                holder: cap.holder,
-                price: cap.price
-                        }}
+                        const obj = {
+                            [cap["capacity"].toString()]: {
+                                description: cap.description,
+                                holder: cap.holder,
+                                price: cap.price
+                            }
+                        }
                         newCapacity.push(obj)
                     }
                     
@@ -112,10 +118,10 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
 
                     dispatch(addProductZbirky(formData))
                         .then((result: any) => {
-                        if (result.meta.requestStatus === 'fulfilled') {
-                            AddProductButton();
-                        }
-                    }).finally(() => setSubmitting(false));
+                            if (result.meta.requestStatus === 'fulfilled') {
+                                AddProductButton();
+                            }
+                        }).finally(() => setSubmitting(false));
                 }}
             >
                 {({ isSubmitting, values }) => (
@@ -132,7 +138,7 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
                         <Label>
                             Ціна за одиницю
                             <BoxField>
-                                <StyledField name="price" type="text"    placeholder='Приклад: 4100-9500' />
+                                <StyledField name="price" type="text" placeholder='Приклад: 4100-9500' />
                                 <StyledErrorMessage name="price" component="div" />
                             </BoxField>
                         </Label>
@@ -144,25 +150,25 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
                                     name="description"
                                     type="text"
                                     component="textarea"
-                                placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" 
+                                    placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!"
                                 />
                                 <StyledErrorMessage name="description" component="div" />
                             </BoxField>
                         </Label>
-                     <Box>
-                        <SubTitle>Додати фото</SubTitle>
-                        <Input
-                            accept="image/*"
-                            type="file"
-                            name="image"
-                            onChange={attachImages}
-                            multiple
+                        <Box>
+                            <SubTitle>Додати фото</SubTitle>
+                            <Input
+                                accept="image/*"
+                                type="file"
+                                name="image"
+                                onChange={attachImages}
+                                multiple
                             />
-                              </Box>
+                        </Box>
                         <Label>
                             Кількість в наявності
                             <BoxField>
-                                <StyledField name="quantity" type="number" />
+                                <StyledField name="quantity" type="number" onWheel={removeScroll} />
                                 <StyledErrorMessage name="quantity" component="div" />
                             </BoxField>
                         </Label>
@@ -203,7 +209,7 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
                         {sale && <Label>
                             Відсоток знижки
                             <BoxField>
-                                <StyledField name="discount" type="number" />
+                                <StyledField name="discount" type="number" onWheel={removeScroll} />
                                 <StyledErrorMessage name="discount" component="div" />
                             </BoxField>
                         </Label>}
@@ -211,7 +217,7 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
                         <Label>
                             Категорія
                             <BoxField>
-                                <StyledField name="category" type="text" value={category} disabled/>
+                                <StyledField name="category" type="text" value={category} disabled />
                                 <StyledErrorMessage name="category" component="div" />
                             </BoxField>
                         </Label>
@@ -264,41 +270,42 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
                                                     Значення ємності
                                                     <BoxField>
                                                         <CapacityField name={`capacity[${index}].capacity`}
-                                                        
-                                                            type="number" />
+                                                            type="number"
+                                                            onWheel={removeScroll}
+                                                        />
                                                         <StyledErrorMessage name={`capacity[${index}].capacity`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>
                                                 <LabelCapacity>
                                                     Характеристики
                                                     <BoxField>
-                                                        <CapacityTextField name={`capacity[${index}].description`} type="text"  placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
+                                                        <CapacityTextField name={`capacity[${index}].description`} type="text" placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
                                                         <StyledErrorMessage name={`capacity[${index}].description`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>
                                                 <LabelCapacity >
                                                     Ціна
                                                     <BoxField>
-                                                        <CapacityField name={`capacity[${index}].price`} type="number" />
+                                                        <CapacityField name={`capacity[${index}].price`} type="number" onWheel={removeScroll} />
                                                         <StyledErrorMessage name={`capacity[${index}].price`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>
                                                 {holder && <LabelCapacity >
                                                     Кількість холдерів
                                                     <BoxField>
-                                                        <CapacityField name={`capacity[${index}].holder`} type="number" />
+                                                        <CapacityField name={`capacity[${index}].holder`} type="number" onWheel={removeScroll} />
                                                         <StyledErrorMessage name={`capacity[${index}].holder`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>}
                                                 <BoxField>
-                                                <DeleteButton type='button'
-                                                    onClick={() => {
-                                                        if (values.capacity.length === 1) return window.alert('Єдиний блок видаляти не можна');
-                                                        remove(index)
-                                                    }}>
-                                                    - видалити блок
+                                                    <DeleteButton type='button'
+                                                        onClick={() => {
+                                                            if (values.capacity.length === 1) return window.alert('Єдиний блок видаляти не можна');
+                                                            remove(index)
+                                                        }}>
+                                                        - видалити блок
                                                     </DeleteButton>
-                                                    </BoxField>
+                                                </BoxField>
                                             </BoxCapacity>
                                         )
                                     })
@@ -363,4 +370,3 @@ export const AddProductZbirky: FC<AddProductProps> = ({ category }) => {
         </Container>
     );
 };
-
