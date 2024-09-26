@@ -1,40 +1,41 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import { addHero, deleteHero, editHero, getHero } from './heroOperations';
+import { HeroData} from '../../@types/hero.types';
 
-const initialState = {
-  items: [
-    {
-      _id: '',
-      image: '',
-      text: '',
-    },
-  ],
-  isLoading: false,
-  error: null,
+type InitialState = {
+  items: HeroData[];
+  isLoading: boolean;
+  error: string | null;
 };
 
-const handlePending = state => {
+const initialState: InitialState = {
+  items: [],
+  isLoading: false,
+  error: null,
+}
+
+const handlePending =( state: InitialState) => {
   state.isLoading = true;
 };
 
-const handleRejected = (state, action) => {
+const handleRejected = (state: InitialState, action: PayloadAction<string | undefined>) => {
   state.isLoading = false;
-  state.error = action.payload;
+  state.error = action.payload ?? 'Unknown error';
 };
 
-const handleGetHeroFulfilled = (state, action) => {
+const handleGetHeroFulfilled = (state: InitialState, action: PayloadAction<HeroData[]>) => {
   state.items = action.payload;
   state.isLoading = false;
   state.error = null;
 };
 
-const handleAddHeroFulfilled = (state, action) => {
+const handleAddHeroFulfilled = (state: InitialState, action: PayloadAction<HeroData>) => {
   state.items.push(action.payload);
   state.isLoading = false;
   state.error = null;
 };
 
-const handleEditHeroFulfilled = (state, action) => {
+const handleEditHeroFulfilled = (state: InitialState, action: PayloadAction<{hero: HeroData }>) => {
   state.items = state.items.map(el => {
     if (el._id === action.payload.hero._id) {
       return action.payload.hero;
@@ -45,7 +46,7 @@ const handleEditHeroFulfilled = (state, action) => {
   state.error = null;
 };
 
-const handleDeleteHeroFulfilled = (state, action) => {
+const handleDeleteHeroFulfilled = (state: InitialState, action: PayloadAction<{ id: string }>) => {
   state.items = state.items.filter(item => item._id !== action.payload.id);
   state.isLoading = false;
   state.error = null;
@@ -54,6 +55,7 @@ const handleDeleteHeroFulfilled = (state, action) => {
 const heroSlice = createSlice({
   name: 'hero',
   initialState,
+  reducers: {},
   extraReducers: builder =>
     builder
       .addCase(getHero.fulfilled, handleGetHeroFulfilled)

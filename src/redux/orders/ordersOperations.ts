@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { RootState } from 'redux/store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   Order,
@@ -11,10 +10,6 @@ import { baseURL } from 'utils/constants/baseURL';
 import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = baseURL;
-
-const setAuthHeader = (token: string) => {
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-};
 
 const handleError = (error: any): string => {
   if (error.response && error.response.data && error.response.data.message) {
@@ -29,10 +24,7 @@ export const getAllOrders = createAsyncThunk<
   undefined,
   { rejectValue: string }
 >('orders/getAllOrders', async (_, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.get<{ result: Order[] }>('adm/get-orders');
 
     return data;
@@ -47,13 +39,10 @@ export const getAllOrders = createAsyncThunk<
 
 export const getOneOrder = createAsyncThunk<
   { result: Order },
-  { orderId: string },
+  string,
   { rejectValue: string }
 >('orders/getOneOrder', async (orderId, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.get<{ result: Order }>(
       `adm/get-order/${orderId}`
     );
@@ -73,10 +62,7 @@ export const updateOneOrder = createAsyncThunk<
   { orderId: string; orderData: Order },
   { rejectValue: string }
 >('orders/updateOneOrder', async ({ orderId, orderData }, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.put<{ result: Order }>(
       `adm/put-order/${orderId}`,
       {
@@ -100,10 +86,7 @@ export const getPrints3D = createAsyncThunk<
   undefined,
   { rejectValue: string }
 >('orders/getPrints3D', async (_, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.get<{ result: Print3D[] }>(
       'adm/3dprint-orders'
     );
@@ -123,10 +106,7 @@ export const getQuickOrders = createAsyncThunk<
   undefined,
   { rejectValue: string }
 >('orders/getQuickOrders', async (_, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.get<{ result: QuickOrder[] }>(
       'adm/quick-orders'
     );
@@ -146,10 +126,7 @@ export const getApplications = createAsyncThunk<
   undefined,
   { rejectValue: string }
 >('orders/getApplications', async (_, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.get<{ result: Aplication[] }>('adm/feedback');
 
     return data;

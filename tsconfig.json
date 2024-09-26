@@ -3,11 +3,10 @@
     "baseUrl": "src",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext", "ES2021"],
-    "allowJs": true,
+    "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
@@ -18,5 +17,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "src/@types"]
+  "include": ["src", "src/@types"],
+  "exclude": ["node_modules"]
 }

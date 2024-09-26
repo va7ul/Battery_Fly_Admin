@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, ChangeEvent } from 'react';
+import { useTypedDispatch, useTypedSelector } from '../../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Formik, FieldArray } from 'formik'
 import Radio from '@mui/material/Radio';
@@ -8,91 +8,124 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { yellow } from '@mui/material/colors';
+import { selectOneProduct } from '../../../redux/products/productsSelectors';
+import { editProductZbirky } from '../../../redux/products/productsOperations';
 import { productZbirkySchema } from '../../../common/schemas/productZbirkySchema'
-import { addProductZbirky } from '../../../redux/products/productsOperations';
-import { Container, Box, StyledForm, Title, Subtitle, SubTitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, SubmitButton, StyledErrorMessage } from "./AddProductZbirky.styled";
+import { Container, Box, StyledForm, Title, Subtitle, SubTitle, Input, Label, BoxField, AddButton, DeleteButton, LabelCapacity, BoxCapacity, StyledField, CapacityTextField, CapacityField, StyledTextField, StyledErrorMessage } from "../../AddProductPage/AddProductZbirky/AddProductZbirky.styled";
+import { SubmitButton, ButtonBox, BackButton } from './EditProductZbirky.styled';
+import { CategoryMap, CapacityObj, BatteryConfig } from '../../../@types/products.types';
 
-export const AddProductZbirky = ({ category }) => {
-    const dispatch = useDispatch();
+export const EditProductZbirky = () => {
+    const dispatch = useTypedDispatch();
     const navigate = useNavigate();
+    const { codeOfGood, name, description, image, price, quantity, sale, popular, category, holder, capacity, information, discount } = useTypedSelector(selectOneProduct)
 
-    const [images, setImages] = useState('');
-    const [sale, setSale] = useState(false);
-    const [popular, setPopular] = useState(false);
-    const [holder, setHolder] = useState(false);
+    const [imagesLocal, setImagesLocal] = useState(image);
+    const [saleLocal, setSaleLocal] = useState(sale);
+    const [popularLocal, setPopularLocal] = useState(popular);
+    const [holderLocal, setHolderLocal] = useState(holder);
 
-    const categoryMapping = {
-    assembly: 'assembly',
-    fpv: 'batteries-for-fpv',
-    transport: 'batteries-for-transport',
-    toys: 'batteries-for-toys',
-  };
+    const categoryMapping: CategoryMap = {
+        assembly: 'assembly',
+        fpv: 'batteries-for-fpv',
+        transport: 'batteries-for-transport',
+        toys: 'batteries-for-toys',
+    };
 
     const categoryForAdd = categoryMapping[category];
 
-    const capacityObj = {
-        capacity: '',
-        description: '',
-        price: '',
-        holder: ''
+    const capacityObj: CapacityObj = {
+        capacity: "",
+        description: "",
+        price: 0,
+        holder: 0,
     };
 
-      const attachImages = e => {
-        setImages(e.currentTarget.files);
+    let newCapacity: CapacityObj[] = [];
+
+    if (capacity) {
+        const keys = Object.keys(capacity)
+
+        for (let i = 0; i < keys.length; i++) {
+        
+            const obg = {
+                capacity: keys[i],
+                description: capacity[keys[i]].description,
+                price: capacity[keys[i]].price,
+                holder: capacity[keys[i]].holder
+            }
+            newCapacity.push(obg)
+        }
     };
 
-      const AddProductButton = () => {
-         navigate(
+  const attachImages = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.currentTarget.files) {
+            const fileArray = Array.from(e.currentTarget.files);
+            setImagesLocal(fileArray);
+        }
+    };
+
+    const editProductButton = () => {
+        navigate(
             `/admin/assortment/${categoryForAdd}`
         );
+    };
+
+    const getBack = () => {
+        navigate(-1);
     };
 
     return (
         <Container>
             <Formik
                 initialValues={{
-                    name: '',
-                    price: '',
-                    description: '',
-                    quantity: '',
-                    discount: '',
-                    information: '',
-                    capacity: [capacityObj],
+                    name: name,
+                    price: price,
+                    description: description,
+                    quantity: quantity,
+                    sale: sale,
+                    discount: discount,
+                    information: information,
+                    category: category,
+                    popular: popular,
+                    image: image,
+                    capacity: [...newCapacity],
                 }}
                 validationSchema={productZbirkySchema}
                 onSubmit={(values) => {
-                    let newCapacity = [];
+                    let newCapacity: BatteryConfig[] = [];
                     for (const cap of values.capacity) {
 
-                        const obj = { [cap["capacity"].toString()] : {
-                description: cap.description,
-                holder: cap.holder,
-                price: cap.price
-                        }}
+                        const obj: BatteryConfig = {
+                            [cap["capacity"].toString()]: {
+                                description: cap.description,
+                                holder: cap.holder,
+                                price: cap.price
+                            }
+                        }
                         newCapacity.push(obj)
                     }
                     
                     const formData = new FormData();
                     formData.append('name', values.name);
-                    formData.append('price', values.price);
+                    formData.append('price', values.price.toString());
                     formData.append('description', values.description);
-                    formData.append('quantity', values.quantity);
-                    formData.append('sale', sale);
-                    formData.append('discount', values.discount || 10);
-                    formData.append('category', category);
+                    formData.append('quantity', values.quantity.toString());
+                    formData.append('sale', saleLocal.toString());
+                    formData.append('discount', values.discount.toString());
+                    formData.append('category', values.category);
                     formData.append('capacity', JSON.stringify(newCapacity));
-                    formData.append('holder', holder);
-                    formData.append('popular', popular);
+                    formData.append('holder', holderLocal.toString());
+                    formData.append('popular', popularLocal.toString());
                     formData.append('information', values.information);
                     
-                    for (const image of images) {
-                        formData.append('files', image)
-                    };
+                    for (const i of imagesLocal) {
+                        formData.append('files', i)
+                    }
 
-                    dispatch(addProductZbirky(formData))
-                        .then(result => {
+                    dispatch(editProductZbirky({ formData, codeOfGood })).then((result: any) => {
                         if (result.meta.requestStatus === 'fulfilled') {
-                            AddProductButton();
+                            editProductButton();
                         }
                     })
                 }}
@@ -111,7 +144,7 @@ export const AddProductZbirky = ({ category }) => {
                         <Label>
                             Ціна за одиницю
                             <BoxField>
-                                <StyledField name="price" type="text"    placeholder='Приклад: 4100-9500' />
+                                <StyledField name="price" type="text" placeholder='Приклад: 4100-9500' />
                                 <StyledErrorMessage name="price" component="div" />
                             </BoxField>
                         </Label>
@@ -123,21 +156,21 @@ export const AddProductZbirky = ({ category }) => {
                                     name="description"
                                     type="text"
                                     component="textarea"
-                                placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" 
+                                    placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!"
                                 />
                                 <StyledErrorMessage name="description" component="div" />
                             </BoxField>
                         </Label>
-                     <Box>
-                        <SubTitle>Додати фото</SubTitle>
-                        <Input
-                            accept="image/*"
-                            type="file"
-                            name="image"
-                            onChange={attachImages}
-                            multiple
+                        <Box>
+                            <SubTitle>Додати фото</SubTitle>
+                            <Input
+                                accept="image/*"
+                                type="file"
+                                name="image"
+                                onChange={attachImages}
+                                multiple
                             />
-                              </Box>
+                        </Box>
                         <Label>
                             Кількість в наявності
                             <BoxField>
@@ -157,21 +190,22 @@ export const AddProductZbirky = ({ category }) => {
                                 }}
                             >Знижка</FormLabel>
                             <RadioGroup
+                                value={saleLocal}
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="row-radio-buttons-group"
                             >
                                 <FormControlLabel
-                                    value="yes"
-                                    onChange={() => { setSale(true) }}
+                                    value={true}
+                                    onChange={() => { setSaleLocal(true) }}
                                     control={<Radio sx={{
                                         '&.Mui-checked': {
                                             color: yellow[800],
                                         },
                                     }} />} label="Так" />
                                 <FormControlLabel
-                                    value="no"
-                                    onChange={() => { setSale(false) }}
+                                    value={false}
+                                    onChange={() => { setSaleLocal(false) }}
                                     control={<Radio sx={{
                                         '&.Mui-checked': {
                                             color: yellow[800],
@@ -179,7 +213,7 @@ export const AddProductZbirky = ({ category }) => {
                                     }} />} label="Ні" />
                             </RadioGroup>
                         </FormControl>
-                        {sale && <Label>
+                        {saleLocal && <Label>
                             Відсоток знижки
                             <BoxField>
                                 <StyledField name="discount" type="number" />
@@ -190,7 +224,7 @@ export const AddProductZbirky = ({ category }) => {
                         <Label>
                             Категорія
                             <BoxField>
-                                <StyledField name="category" type="text" value={category} disabled/>
+                                <StyledField name="category" type="text" value={category} disabled />
                                 <StyledErrorMessage name="category" component="div" />
                             </BoxField>
                         </Label>
@@ -207,21 +241,22 @@ export const AddProductZbirky = ({ category }) => {
                                 }}
                             >Наявність холдерів</FormLabel>
                             <RadioGroup
+                                value={holderLocal}
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="row-radio-buttons-group"
                             >
                                 <FormControlLabel
-                                    value="yes"
-                                    onChange={() => { setHolder(true) }}
+                                    value={true}
+                                    onChange={() => { setHolderLocal(true) }}
                                     control={<Radio sx={{
                                         '&.Mui-checked': {
                                             color: yellow[800],
                                         },
                                     }} />} label="Так" />
                                 <FormControlLabel
-                                    value="no"
-                                    onChange={() => { setHolder(false) }}
+                                    value={false}
+                                    onChange={() => { setHolderLocal(false) }}
                                     control={<Radio sx={{
                                         '&.Mui-checked': {
                                             color: yellow[800],
@@ -231,7 +266,6 @@ export const AddProductZbirky = ({ category }) => {
                         </FormControl>
 
                         <Subtitle>Блок характеристик ємності</Subtitle>
-
                         <FieldArray name="capacity">
                             {({ push, remove }) => (
                                 <>
@@ -243,6 +277,7 @@ export const AddProductZbirky = ({ category }) => {
                                                     Значення ємності
                                                     <BoxField>
                                                         <CapacityField name={`capacity[${index}].capacity`}
+                                                            value={cap.capacity}
                                                         
                                                             type="number" />
                                                         <StyledErrorMessage name={`capacity[${index}].capacity`} component="div" />
@@ -251,33 +286,39 @@ export const AddProductZbirky = ({ category }) => {
                                                 <LabelCapacity>
                                                     Характеристики
                                                     <BoxField>
-                                                        <CapacityTextField name={`capacity[${index}].description`} type="text"  placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
+                                                        <CapacityTextField name={`capacity[${index}].description`} value={cap.description} type="text" placeholder="Наприкінці кожного пункту ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
                                                         <StyledErrorMessage name={`capacity[${index}].description`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>
                                                 <LabelCapacity >
                                                     Ціна
                                                     <BoxField>
-                                                        <CapacityField name={`capacity[${index}].price`} type="number" />
+
+                                                        <CapacityField name={`capacity[${index}].price`} type="number"
+                                                            value={cap.price}
+                                                        />
                                                         <StyledErrorMessage name={`capacity[${index}].price`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>
-                                                {holder && <LabelCapacity >
+                                                {holderLocal && <LabelCapacity >
                                                     Кількість холдерів
                                                     <BoxField>
-                                                        <CapacityField name={`capacity[${index}].holder`} type="number" />
+
+                                                        <CapacityField name={`capacity[${index}].holder`} type="number"
+                                                            value={cap.holder}
+                                                        />
                                                         <StyledErrorMessage name={`capacity[${index}].holder`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>}
                                                 <BoxField>
-                                                <DeleteButton type='button'
-                                                    onClick={() => {
-                                                        if (values.capacity.length === 1) return window.alert('Єдиний блок видаляти не можна');
-                                                        remove(index)
-                                                    }}>
-                                                    - видалити блок
+                                                    <DeleteButton type='button'
+                                                        onClick={() => {
+                                                            if (values.capacity.length === 1) return window.alert('Ти шо, дурний? Єдиний блок він видаляє.. Нахєр я його малювала тоді');
+                                                            remove(index)
+                                                        }}>
+                                                        - видалити блок
                                                     </DeleteButton>
-                                                    </BoxField>
+                                                </BoxField>
                                             </BoxCapacity>
                                         )
                                     })
@@ -301,21 +342,22 @@ export const AddProductZbirky = ({ category }) => {
                                 }}
                             >Популярний</FormLabel>
                             <RadioGroup
+                                value={popularLocal}
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="row-radio-buttons-group"
                             >
                                 <FormControlLabel
-                                    value="yes"
-                                    onChange={() => { setPopular(true) }}
+                                    value={true}
+                                    onChange={() => { setPopularLocal(true) }}
                                     control={<Radio sx={{
                                         '&.Mui-checked': {
                                             color: yellow[800],
                                         },
                                     }} />} label="Так" />
                                 <FormControlLabel
-                                    value="no"
-                                    onChange={() => { setPopular(false) }}
+                                    value={false}
+                                    onChange={() => { setPopularLocal(false) }}
                                     control={<Radio sx={{
                                         '&.Mui-checked': {
                                             color: yellow[800],
@@ -326,15 +368,18 @@ export const AddProductZbirky = ({ category }) => {
                         <Label>
                             Інформація
                             <BoxField>
-                                <StyledTextField name="information" type="text" placeholder="Наприкінці кожного абзацу ОБОВ'ЯЗКОВО ставте &#171;;&#187;, крім останнього!" component="textarea" />
+                                <StyledTextField name="information" type="text" component="textarea" />
                                 <StyledErrorMessage name="information" component="div" />
                             </BoxField>
                         </Label>
+                        <ButtonBox>
+                        <BackButton type="button" onClick={getBack}>Назад</BackButton>
                         <SubmitButton
                             type="submit"
                         >
-                            Додати товар
+                            Зберегти
                         </SubmitButton>
+                    </ButtonBox>
                     </StyledForm>
                 )}
             </Formik>

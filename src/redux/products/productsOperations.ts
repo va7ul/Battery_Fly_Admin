@@ -1,15 +1,10 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from 'redux/store';
 import { baseURL } from 'utils/constants/baseURL';
 import toast from 'react-hot-toast';
-import { Product, ProductZbirky } from '../../@types/products.types';
+import { Product, Result, AddProduct } from '../../@types/products.types';
 
 axios.defaults.baseURL = baseURL;
-
-const setAuthHeader = (token: string) => {
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-};
 
 const handleError = (error: any): string => {
   if (error.response && error.response.data && error.response.data.message) {
@@ -21,14 +16,14 @@ const handleError = (error: any): string => {
 
 export const getAssortment = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getAssortment', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products');
 
     return data;
@@ -43,14 +38,14 @@ export const getAssortment = createAsyncThunk<
 
 export const getProducts = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   string[],
   { rejectValue: string }
 >('products/getProducts', async (products, thunkApi) => {
   try {
     const { data } = await axios.post<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products', { products });
 
     return data;
@@ -65,14 +60,14 @@ export const getProducts = createAsyncThunk<
 
 export const getBatteries18650 = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getBatteries18650', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/batteries/18650');
 
     return data;
@@ -87,14 +82,14 @@ export const getBatteries18650 = createAsyncThunk<
 
 export const getBatteries21700 = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getBatteries21700', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/batteries/21700');
 
     return data;
@@ -109,14 +104,14 @@ export const getBatteries21700 = createAsyncThunk<
 
 export const getBatteries32650 = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getBatteries32650', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/batteries/32650');
 
     return data;
@@ -131,14 +126,14 @@ export const getBatteries32650 = createAsyncThunk<
 
 export const getBatterieslipo = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getBatterieslipo', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/batteries/lipo');
 
     return data;
@@ -153,14 +148,14 @@ export const getBatterieslipo = createAsyncThunk<
 
 export const getBatterieslifepo4 = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getBatterieslifepo4', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/batteries/lifepo4');
 
     return data;
@@ -175,14 +170,14 @@ export const getBatterieslifepo4 = createAsyncThunk<
 
 export const getAssemblies = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getAssemblies', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/assemblies');
 
     return data;
@@ -197,14 +192,14 @@ export const getAssemblies = createAsyncThunk<
 
 export const getBatteriesForFPV = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getBatteriesForFPV', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/batteries-for-fpv');
 
     return data;
@@ -219,14 +214,14 @@ export const getBatteriesForFPV = createAsyncThunk<
 
 export const getBatteriesForTransport = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getBatteriesForTransport', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/batteries-for-transport');
 
     return data;
@@ -241,14 +236,14 @@ export const getBatteriesForTransport = createAsyncThunk<
 
 export const getBatteriesForToys = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getBatteriesForToys', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/batteries-for-toys');
 
     return data;
@@ -263,14 +258,14 @@ export const getBatteriesForToys = createAsyncThunk<
 
 export const getDevices = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getDevices', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/devices');
 
     return data;
@@ -285,14 +280,14 @@ export const getDevices = createAsyncThunk<
 
 export const getMaterials = createAsyncThunk<
   {
-    result: (Product | ProductZbirky)[];
+    result: Product[];
   },
   undefined,
   { rejectValue: string }
 >('products/getMaterials', async (_, thunkApi) => {
   try {
     const { data } = await axios.get<{
-      result: (Product | ProductZbirky)[];
+      result: Product[];
     }>('products/materials');
 
     return data;
@@ -305,11 +300,19 @@ export const getMaterials = createAsyncThunk<
   }
 });
 
-export const getOneProduct = createAsyncThunk(
+export const getOneProduct = createAsyncThunk<
+  {
+    result: Result;
+  },
+  string,
+  { rejectValue: string }
+  >(
   'products/getOneProduct',
   async (productId, thunkApi) => {
     try {
-      const { data } = await axios.get(`products/${productId}`);
+      const { data } = await axios.get<{
+        result: Result
+      }>(`products/${productId}`);
       return data;
     } catch (error) {
       const errorMessage = handleError(error);
@@ -321,7 +324,13 @@ export const getOneProduct = createAsyncThunk(
   }
 );
 
-export const addProduct = createAsyncThunk(
+export const addProduct = createAsyncThunk<
+  {
+    addResult: AddProduct
+  },
+  FormData,
+  { rejectValue: string }
+  >(
   'products/product-add',
   async (formData, thunkApi) => {
     const config = {
@@ -330,7 +339,9 @@ export const addProduct = createAsyncThunk(
       },
     };
     try {
-      const { data } = await axios.post(`adm/product-add`, formData, config);
+      const { data } = await axios.post<{
+    addResult: AddProduct
+  }>(`adm/product-add`, formData, config);
       toast.success('Товар додано!');
 
       return data;
@@ -344,7 +355,13 @@ export const addProduct = createAsyncThunk(
   }
 );
 
-export const editProduct = createAsyncThunk(
+export const editProduct = createAsyncThunk<
+  {
+    editResult: Product
+  },
+  { formData: FormData, codeOfGood: string },
+  { rejectValue: string }
+  >(
   'products/product-edit',
   async ({ formData, codeOfGood }, thunkApi) => {
     const config = {
@@ -353,7 +370,7 @@ export const editProduct = createAsyncThunk(
       },
     };
     try {
-      const { data } = await axios.put(
+      const { data } = await axios.put<{ editResult: Product }>(
         `adm/product-edit/${codeOfGood}`,
         formData,
         config
@@ -371,7 +388,13 @@ export const editProduct = createAsyncThunk(
   }
 );
 
-export const addProductZbirky = createAsyncThunk(
+export const addProductZbirky = createAsyncThunk<
+  {
+    addResult: AddProduct
+  },
+  FormData,
+  { rejectValue: string }
+  >(
   'products/productZbirky-add',
   async (formData, thunkApi) => {
     const config = {
@@ -394,7 +417,13 @@ export const addProductZbirky = createAsyncThunk(
   }
 );
 
-export const editProductZbirky = createAsyncThunk(
+export const editProductZbirky = createAsyncThunk<
+  {
+    editResult: Product
+  },
+  { formData: FormData, codeOfGood: string },
+  { rejectValue: string }
+  >(
   'products/productZbirky-edit',
   async ({ formData, codeOfGood }, thunkApi) => {
     const config = {
@@ -403,7 +432,7 @@ export const editProductZbirky = createAsyncThunk(
       },
     };
     try {
-      const { data } = await axios.put(
+      const { data } = await axios.put<{ editResult: Product }>(
         `adm/assemblies-edit/${codeOfGood}`,
         formData,
         config
@@ -428,10 +457,7 @@ export const deleteProduct = createAsyncThunk<
   string,
   { rejectValue: string }
 >('products/product-delete', async (codeOfGood, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.delete<{ id: string }>(
       `adm/product/${codeOfGood}`
     );
@@ -454,10 +480,7 @@ export const deleteProductZbirky = createAsyncThunk<
   string,
   { rejectValue: string }
 >('products/product-delete', async (codeOfGood, thunkApi) => {
-  const { token } = (thunkApi.getState() as RootState).admin;
-
   try {
-    setAuthHeader(token);
     const { data } = await axios.delete<{ id: string }>(
       `adm/assemblies/${codeOfGood}`
     );

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import Box from '@mui/material/Box';
-import AddIcon from '@mui/icons-material/Add';
+
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
@@ -11,36 +11,43 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridRowEditStopReasons,
+  GridRowId,
+  GridColDef,
+  GridRowsProp,
+  GridRowModesModel,
+  GridEventListener
 } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
-import { randomId } from '@mui/x-data-grid-generator';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { deleteHero, editHero, addHero } from '../../redux/hero/heroOperations';
 import { selectHero } from '../../redux/hero/heroSelectors';
 import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverlay';
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
+import { useTypedDispatch, useTypedSelector } from '../../redux/hooks';
+import { AddBannerButton } from './AddBannerButton';
+
+
 
 export const Banners = () => {
-  const dispatch = useDispatch();
-  const images = useSelector(selectHero);
-  const [rowModesModel, setRowModesModel] = useState({});
+  const dispatch = useTypedDispatch();
+  const images = useTypedSelector(selectHero);
+  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [open, setOpen] = useState(false);
-  const [idToDelete, setIdToDelete] = useState();
+  const [idToDelete, setIdToDelete] = useState<GridRowId>('');
 
-  const initialRows = images.map(({ _id, image, text }) => ({
+  const initialRows: GridRowsProp = images.map(({ _id, image, text }) => ({
     id: _id,
     image,
     text,
   }));
 
   const [rows, setRows] = useState(initialRows);
-  const handleRowEditStop = (params, event) => {
+  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
     }
   };
 
-  const openModalConfirm = id => () => {
+  const openModalConfirm = (id: GridRowId) => () => {
     setOpen(true);
     setIdToDelete(id);
   };
@@ -50,30 +57,38 @@ export const Banners = () => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteHero(idToDelete));
+    dispatch(deleteHero(idToDelete as string));
   };
 
-  const handleCancelClick = id => () => {
+  const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
   };
 
-  const handleEditClick = id => () => {
+  const handleEditClick = (id: GridRowId)=> () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleRowModesModelChange = newRowModesModel => {
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
 
-  const [image, setImage] = useState('');
-  const [text, setText] = useState('');
+  type Image = {
+  [key: string]: { url: string | ArrayBuffer | null, file: File}
+}
 
-  const handleFileChange = id => e => {
+  const [image, setImage] = useState<Image>({});
+  const [text, setText] = useState<{ [key: GridRowId]: string }>({});
+  let file: File;
+  const handleFileChange = (id: GridRowId) => (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const file = e.target.files[0];
+   
+    if (e.target.files) {
+       file = e.target.files[0];
+    }
+   
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -83,39 +98,40 @@ export const Banners = () => {
     }
   };
 
-  const handleSaveClick = id => () => {
+    const handleSaveClick = (id: GridRowId) => async () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    const newRow = rows.find(row => row.isNew === true && row.text === '');
+    const newRow = rows.find((row) => row.isNew && row.text === '');
     const formData = new FormData();
+
     if (image[id]?.file) {
       formData.append('image', image[id].file);
     }
-    formData.append('text', text[id] || rows.find(row => row.id === id).text);
+    formData.append('text', text[id] || rows.find((row) => row.id === id)?.text);
+
     try {
       if (newRow) {
-        dispatch(addHero(formData));
+        await dispatch(addHero(formData));
       } else {
-        dispatch(editHero({ id, formData }));
+        await dispatch(editHero({ id: id as string, formData }));
       }
     } catch (error) {
-      console.error(`error`, error.message);
+      console.error('Error saving row:', error);
     }
   };
 
-  const handleTextChange = id => e => {
+  const handleTextChange = (id: GridRowId) => (e: ChangeEvent<HTMLInputElement>) => {
     const newText = e.target.value;
-    setText(prev => ({
+    setText((prev ) => ({
       ...prev,
       [id]: newText,
     }));
   };
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: 'image',
       headerName: 'Фото',
       headerClassName: 'super-app-theme--header',
-      type: 'image',
       renderCell: params => {
         const { id } = params.row;
         const preview = image[id]?.url || params.value;
@@ -154,7 +170,7 @@ export const Banners = () => {
       field: 'text',
       headerName: 'Текст',
       headerClassName: 'super-app-theme--header',
-      type: 'text',
+      // type: 'text',
       width: 725,
       align: 'center',
       headerAlign: 'center',
@@ -168,7 +184,7 @@ export const Banners = () => {
               type="text"
               defaultValue={params.value}
               onChange={handleTextChange(id)}
-              onKeyDown={e => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
             />
           );
         }
@@ -226,39 +242,6 @@ export const Banners = () => {
     },
   ];
 
-  const AddBannerButton = props => {
-    const { setRows, setRowModesModel } = props;
-
-    const handleClick = () => {
-      const id = randomId();
-      setRows(oldRows => [
-        ...oldRows,
-        { id, image: '', text: '', isNew: true },
-      ]);
-      setRowModesModel(oldModel => ({
-        ...oldModel,
-        [id]: { mode: GridRowModes.Edit, fieldToFocus: 'text' },
-      }));
-    };
-
-    return (
-      <Button
-        variant="contained"
-        startIcon={<AddIcon />}
-        onClick={handleClick}
-        sx={{
-          marginRight: 'auto',
-          marginLeft: '10px',
-          '&:hover': {
-            backgroundColor: 'primary.main',
-          },
-        }}
-      >
-        Додати банер
-      </Button>
-    );
-  };
-
   return (
     <Box
       sx={{
@@ -291,12 +274,15 @@ export const Banners = () => {
         rowSelection={false}
         autoHeight
         slots={{
-          pagination: AddBannerButton,
+          pagination: () => (
+            <AddBannerButton  setRows={setRows}
+              setRowModesModel={setRowModesModel}/>
+          ) ,
           noRowsOverlay: CustomNoRowsOverlay,
         }}
-        slotProps={{
-          pagination: { setRows, setRowModesModel },
-        }}
+        // slotProps={{
+        //   pagination: { setRows, setRowModesModel },
+        // }}
         sx={{
           '& .MuiDataGrid-cell:hover': {
             color: 'primary.main',
