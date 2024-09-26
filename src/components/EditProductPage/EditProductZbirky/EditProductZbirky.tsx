@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, WheelEvent } from 'react';
 import { useTypedDispatch, useTypedSelector } from '../../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Formik, FieldArray } from 'formik'
@@ -58,7 +58,7 @@ export const EditProductZbirky = () => {
         }
     };
 
-  const attachImages = (e: ChangeEvent<HTMLInputElement>) => {
+    const attachImages = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.currentTarget.files) {
             const fileArray = Array.from(e.currentTarget.files);
             setImagesLocal(fileArray);
@@ -73,6 +73,10 @@ export const EditProductZbirky = () => {
 
     const getBack = () => {
         navigate(-1);
+    };
+
+    const removeScroll = (e: WheelEvent<HTMLElement>) => {
+        e.currentTarget.blur();
     };
 
     return (
@@ -174,7 +178,7 @@ export const EditProductZbirky = () => {
                         <Label>
                             Кількість в наявності
                             <BoxField>
-                                <StyledField name="quantity" type="number" />
+                                <StyledField name="quantity" type="number" onWheel={removeScroll} />
                                 <StyledErrorMessage name="quantity" component="div" />
                             </BoxField>
                         </Label>
@@ -216,7 +220,7 @@ export const EditProductZbirky = () => {
                         {saleLocal && <Label>
                             Відсоток знижки
                             <BoxField>
-                                <StyledField name="discount" type="number" />
+                                <StyledField name="discount" type="number" onWheel={removeScroll} />
                                 <StyledErrorMessage name="discount" component="div" />
                             </BoxField>
                         </Label>}
@@ -279,7 +283,9 @@ export const EditProductZbirky = () => {
                                                         <CapacityField name={`capacity[${index}].capacity`}
                                                             value={cap.capacity}
                                                         
-                                                            type="number" />
+                                                            type="number"
+                                                            onWheel={removeScroll}
+                                                        />
                                                         <StyledErrorMessage name={`capacity[${index}].capacity`} component="div" />
                                                     </BoxField>
                                                 </LabelCapacity>
@@ -294,7 +300,7 @@ export const EditProductZbirky = () => {
                                                     Ціна
                                                     <BoxField>
 
-                                                        <CapacityField name={`capacity[${index}].price`} type="number"
+                                                        <CapacityField name={`capacity[${index}].price`} type="number" onWheel={removeScroll}
                                                             value={cap.price}
                                                         />
                                                         <StyledErrorMessage name={`capacity[${index}].price`} component="div" />
@@ -304,7 +310,7 @@ export const EditProductZbirky = () => {
                                                     Кількість холдерів
                                                     <BoxField>
 
-                                                        <CapacityField name={`capacity[${index}].holder`} type="number"
+                                                        <CapacityField name={`capacity[${index}].holder`} type="number" onWheel={removeScroll}
                                                             value={cap.holder}
                                                         />
                                                         <StyledErrorMessage name={`capacity[${index}].holder`} component="div" />
@@ -313,7 +319,7 @@ export const EditProductZbirky = () => {
                                                 <BoxField>
                                                     <DeleteButton type='button'
                                                         onClick={() => {
-                                                            if (values.capacity.length === 1) return window.alert('Ти шо, дурний? Єдиний блок він видаляє.. Нахєр я його малювала тоді');
+                                                            if (values.capacity.length === 1) return window.alert('Не можна видалити єдиний блок');
                                                             remove(index)
                                                         }}>
                                                         - видалити блок
@@ -373,17 +379,16 @@ export const EditProductZbirky = () => {
                             </BoxField>
                         </Label>
                         <ButtonBox>
-                        <BackButton type="button" onClick={getBack}>Назад</BackButton>
-                        <SubmitButton
-                            type="submit"
-                        >
-                            Зберегти
-                        </SubmitButton>
-                    </ButtonBox>
+                            <BackButton type="button" onClick={getBack}>Назад</BackButton>
+                            <SubmitButton
+                                type="submit"
+                            >
+                                Зберегти
+                            </SubmitButton>
+                        </ButtonBox>
                     </StyledForm>
                 )}
             </Formik>
         </Container>
     );
 };
-

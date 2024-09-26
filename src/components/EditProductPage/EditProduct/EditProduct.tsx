@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, WheelEvent } from 'react';
 import { useTypedDispatch, useTypedSelector } from '../../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -49,6 +49,10 @@ export const EditProduct = () => {
 
     const getBack = () => {
         navigate(-1);
+    };
+
+    const removeScroll = (e: WheelEvent<HTMLElement>) => {
+        e.currentTarget.blur();
     };
 
     return (
@@ -106,7 +110,7 @@ export const EditProduct = () => {
                     <Label>
                         Ціна за одиницю
                         <Box>
-                            <StyledField name="price" type="number" />
+                            <StyledField name="price" type="number" onWheel={removeScroll} />
                             <StyledErrorMessage name="price" component="div" />
                         </Box>
                     </Label>
@@ -132,7 +136,7 @@ export const EditProduct = () => {
                     <Label>
                         Кількість в наявності
                         <Box>
-                            <StyledField name="quantity" type="number" />
+                            <StyledField name="quantity" type="number" onWheel={removeScroll} />
                             <StyledErrorMessage name="quantity" component="div" />
                         </Box>
                     </Label>
@@ -174,7 +178,7 @@ export const EditProduct = () => {
                     {saleLocal && <Label>
                         Відсоток знижки
                         <Box>
-                            <StyledField name="discount" type="number" />
+                            <StyledField name="discount" type="number" onWheel={removeScroll} />
                             <StyledErrorMessage name="discount" component="div" />
                         </Box>
                     </Label>}

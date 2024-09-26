@@ -1,4 +1,4 @@
-import { useState, FC, ChangeEvent } from 'react';
+import { useState, FC, ChangeEvent, WheelEvent } from 'react';
 import { useTypedDispatch } from '../../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Formik, FormikHelpers } from 'formik';
@@ -26,7 +26,7 @@ interface MyFormValues {
     information: string;
 };
 
-export const AddProduct: FC<AddProductProps>  = ({ category, type }) => {
+export const AddProduct: FC<AddProductProps> = ({ category, type }) => {
     const dispatch = useTypedDispatch();
     const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ export const AddProduct: FC<AddProductProps>  = ({ category, type }) => {
         }
     };
 
-       const changeType = () => {
+    const changeType = () => {
         return type === 'null' ? category : type;
     };
 
@@ -50,6 +50,11 @@ export const AddProduct: FC<AddProductProps>  = ({ category, type }) => {
             `/admin/assortment/batteries-${type}`
         );
     };
+
+    const removeScroll = (e: WheelEvent<HTMLElement>) => {
+        e.currentTarget.blur();
+    };
+
 
     return (
         <Container>
@@ -105,7 +110,9 @@ export const AddProduct: FC<AddProductProps>  = ({ category, type }) => {
                         <Label>
                             Ціна за одиницю
                             <Box>
-                                <StyledField name="price" type="number" />
+                                <StyledField name="price" type="number" onWheel={removeScroll}
+    
+                                />
                                 <StyledErrorMessage name="price" component="div" />
                             </Box>
                         </Label>
@@ -136,7 +143,7 @@ export const AddProduct: FC<AddProductProps>  = ({ category, type }) => {
                         <Label>
                             Кількість в наявності
                             <Box>
-                                <StyledField name="quantity" type="number" />
+                                <StyledField name="quantity" type="number" onWheel={removeScroll} />
                                 <StyledErrorMessage name="quantity" component="div" />
                             </Box>
                         </Label>
@@ -197,7 +204,7 @@ export const AddProduct: FC<AddProductProps>  = ({ category, type }) => {
                             <Label>
                                 Відсоток знижки
                                 <Box>
-                                    <StyledField name="discount" type="number" />
+                                    <StyledField name="discount" type="number" onWheel={removeScroll} />
                                     <StyledErrorMessage name="discount" component="div" />
                                 </Box>
                             </Label>
