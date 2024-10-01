@@ -2,7 +2,7 @@
   "name": "battery-fly-admin",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://va7ul.github.io/Battery_Fly_Admin/",
+  "homepage": "https://battery-fly.netlify.app",
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
