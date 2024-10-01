@@ -6,7 +6,7 @@ import { RestrictedRoute } from 'routes/RestrictedRoute';
 import { Layout } from './components/Layout/Layout';
 import { useAuth } from './utils/hooks';
 import { refreshAdmin } from './redux/admin/adminOperations';
-import { CustomLoader } from 'components/Shared/CustomLoader/CustomLoader';
+import { CustomLoader } from './components/Shared/CustomLoader/CustomLoader';
 
 const lazyLoadPage = (importPath: string) =>
   lazy(() => import(`./pages/${importPath}`));
