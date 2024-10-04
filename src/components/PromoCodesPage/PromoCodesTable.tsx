@@ -75,7 +75,7 @@ export const PromoCodesTable = () => {
       return undefined;
     }
 
-    if (newRow.discount < 1) {
+    if (newRow.discount < 0.01) {
       toast.error('Знижка повинна бути більшою за 0');
       return undefined;
     }
@@ -85,7 +85,7 @@ export const PromoCodesTable = () => {
 
     const newPromoData: PromoData = {
       name: newRow.promoCode,
-      discount: newRow.discount,
+      discount: Math.round(Number(newRow.discount) * 100) / 100,
       valid: newRow.valid,
     };
 
