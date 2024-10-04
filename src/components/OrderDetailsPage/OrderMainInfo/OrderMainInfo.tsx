@@ -32,9 +32,14 @@ export const OrderMainInfo = () => {
   const { deliveryType, city, warehouse, payment, status } = orderData;
 
   const { total, discountValue, together } = usePromoCode();
-  const prettyTogether = !together || getPrettyValue(together);
+  const finalDiscount = orderData.discountValue;
+  const finalTogether = orderData.together;
+  const prettyTogether =
+    !together || getPrettyValue(status === 'Нове' ? together : finalTogether);
   const prettyTotal = !total || getPrettyValue(total);
-  const prettyDiscount = discountValue ? getPrettyValue(discountValue) : 0;
+  const prettyDiscount = discountValue
+    ? getPrettyValue(status === 'Нове' ? discountValue : finalDiscount)
+    : 0;
 
   const handleWheel = (e: WheelEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;

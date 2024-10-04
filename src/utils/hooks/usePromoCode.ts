@@ -8,7 +8,7 @@ import {
 import { selectOneOrder } from '../../redux/orders/ordersSelectors';
 
 export const usePromoCode = () => {
-  const { cartItems, promoCodeDiscount, total, personalDiscountValue } =
+  const { cartItems, promoCodeDiscount, total, personalDiscountValue, status } =
     useTypedSelector(selectOneOrder);
 
   const discountValue =
@@ -29,9 +29,11 @@ export const usePromoCode = () => {
   const dispatch = useTypedDispatch();
 
   useEffect(() => {
-    dispatch(changeDiscountValue(discountValue));
-    dispatch(changeTogether(together));
-  }, [dispatch, discountValue, together]);
+    if (status === 'Нове') {
+      dispatch(changeDiscountValue(discountValue));
+      dispatch(changeTogether(together));
+    }
+  }, [dispatch, discountValue, together, status]);
 
   return { total, discountValue, together };
 };
