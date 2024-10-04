@@ -8,18 +8,21 @@ import {
 import { selectOneOrder } from '../../redux/orders/ordersSelectors';
 
 export const usePromoCode = () => {
-  const { cartItems, promoCodeDiscount, total } =
+  const { cartItems, promoCodeDiscount, total, personalDiscountValue } =
     useTypedSelector(selectOneOrder);
 
-  const discountValue = Math.round(
-    (cartItems
-      .filter(item => !item.sale)
-      .reduce((discount, item) => {
-        return discount + item.totalPrice;
-      }, 0) *
-      promoCodeDiscount) /
-      100
-  );
+  const discountValue =
+    personalDiscountValue && personalDiscountValue !== 0
+      ? personalDiscountValue
+      : Math.round(
+          (cartItems
+            .filter(item => !item.sale)
+            .reduce((discount, item) => {
+              return discount + item.totalPrice;
+            }, 0) *
+            promoCodeDiscount) /
+            100
+        );
 
   const together = total - discountValue;
 

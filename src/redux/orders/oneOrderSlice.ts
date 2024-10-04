@@ -29,8 +29,9 @@ const initialState: InitialState = {
     warehouse: '',
     payment: '',
     createdAt: '',
+    personalDiscountRate: 0,
+    personalDiscountValue: 0,
   },
-
   isLoading: false,
   error: null,
 };
@@ -145,12 +146,6 @@ const oneOrderSlice = createSlice({
     increaseQuantity: handleIncreaseQuantity,
     decreaseQuantity: handleDecreaseQuantity,
     deleteItem: handleDeleteItem,
-    changeDiscountRate(
-      state: InitialState,
-      { payload }: PayloadAction<number>
-    ) {
-      state.result.promoCodeDiscount = payload;
-    },
     changeDiscountValue(
       state: InitialState,
       { payload }: PayloadAction<number>
@@ -159,6 +154,18 @@ const oneOrderSlice = createSlice({
     },
     changeTogether(state: InitialState, { payload }: PayloadAction<number>) {
       state.result.together = payload;
+    },
+    changePersonalDiscountRate(
+      state: InitialState,
+      { payload }: PayloadAction<number>
+    ) {
+      state.result.personalDiscountRate = payload;
+    },
+    changePersonalDiscountValue(
+      state: InitialState,
+      { payload }: PayloadAction<number>
+    ) {
+      state.result.personalDiscountValue = payload;
     },
   },
   extraReducers: builder =>
@@ -181,8 +188,9 @@ export const {
   increaseQuantity,
   decreaseQuantity,
   deleteItem,
-  changeDiscountRate,
   changeDiscountValue,
   changeTogether,
+  changePersonalDiscountRate,
+  changePersonalDiscountValue,
 } = oneOrderSlice.actions;
 export const oneOrderReducer = oneOrderSlice.reducer;

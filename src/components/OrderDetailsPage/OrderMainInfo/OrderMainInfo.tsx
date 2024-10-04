@@ -4,9 +4,8 @@ import { usePromoCode } from 'utils/hooks';
 import { getPrettyValue } from 'utils/helpers';
 import { selectOneOrder } from '../../../redux/orders/ordersSelectors';
 import {
-  changeDiscountValue,
-  changeDiscountRate,
-  changeTogether,
+  changePersonalDiscountValue,
+  changePersonalDiscountRate,
 } from '../../../redux/orders/oneOrderSlice';
 import {
   Discount,
@@ -30,8 +29,7 @@ export const OrderMainInfo = () => {
 
   const dispatch = useTypedDispatch();
   const orderData = useTypedSelector(selectOneOrder);
-  const { promoCodeDiscount, deliveryType, city, warehouse, payment, status } =
-    orderData;
+  const { deliveryType, city, warehouse, payment, status } = orderData;
 
   const { total, discountValue, together } = usePromoCode();
   const prettyTogether = !together || getPrettyValue(together);
@@ -56,14 +54,12 @@ export const OrderMainInfo = () => {
   };
 
   const handleClick = () => {
-    if (inputValue === 0 || inputRate === 0 || inputRate >= 100) {
+    if (inputRate >= 100) {
       return;
     }
 
-    const together = total - inputValue;
-    dispatch(changeDiscountRate(inputRate));
-    dispatch(changeDiscountValue(inputValue));
-    dispatch(changeTogether(together));
+    dispatch(changePersonalDiscountRate(inputRate));
+    dispatch(changePersonalDiscountValue(inputValue));
   };
 
   return (
@@ -119,7 +115,7 @@ export const OrderMainInfo = () => {
         Загальна сума:
         <span> {prettyTotal} грн</span>
       </Sum>
-      <Discount discount={promoCodeDiscount}>
+      <Discount discount={discountValue}>
         Знижка:
         <span> - {prettyDiscount} грн</span>
       </Discount>
