@@ -2,7 +2,7 @@ import { useTypedSelector, useTypedDispatch } from '../../redux/hooks';
 
 import { useEffect } from 'react';
 import {
-  changeDiscount,
+  changeDiscountValue,
   changeTogether,
 } from '../../redux/orders/oneOrderSlice';
 import { selectOneOrder } from '../../redux/orders/ordersSelectors';
@@ -26,7 +26,7 @@ export const usePromoCode = () => {
   const dispatch = useTypedDispatch();
 
   useEffect(() => {
-    dispatch(changeDiscount(discountValue));
+    dispatch(changeDiscountValue(discountValue));
     dispatch(changeTogether(together));
   }, [dispatch, discountValue, together]);
 

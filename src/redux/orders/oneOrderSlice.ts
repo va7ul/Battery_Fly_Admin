@@ -145,7 +145,16 @@ const oneOrderSlice = createSlice({
     increaseQuantity: handleIncreaseQuantity,
     decreaseQuantity: handleDecreaseQuantity,
     deleteItem: handleDeleteItem,
-    changeDiscount(state: InitialState, { payload }: PayloadAction<number>) {
+    changeDiscountRate(
+      state: InitialState,
+      { payload }: PayloadAction<number>
+    ) {
+      state.result.promoCodeDiscount = payload;
+    },
+    changeDiscountValue(
+      state: InitialState,
+      { payload }: PayloadAction<number>
+    ) {
       state.result.discountValue = payload;
     },
     changeTogether(state: InitialState, { payload }: PayloadAction<number>) {
@@ -172,7 +181,8 @@ export const {
   increaseQuantity,
   decreaseQuantity,
   deleteItem,
-  changeDiscount,
+  changeDiscountRate,
+  changeDiscountValue,
   changeTogether,
 } = oneOrderSlice.actions;
 export const oneOrderReducer = oneOrderSlice.reducer;
