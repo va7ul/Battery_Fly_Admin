@@ -30,6 +30,8 @@ export type Order = {
   warehouse: string;
   payment: string;
   createdAt: string;
+  personalDiscountRate: number;
+  personalDiscountValue: number;
 };
 
 export type Aplication = {
