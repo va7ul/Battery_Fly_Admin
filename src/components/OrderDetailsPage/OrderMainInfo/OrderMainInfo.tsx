@@ -34,10 +34,11 @@ export const OrderMainInfo = () => {
   const { total, discountValue, together } = usePromoCode();
   const finalDiscount = orderData.discountValue;
   const finalTogether = orderData.together;
+
   const prettyTogether =
     !together || getPrettyValue(status === 'Нове' ? together : finalTogether);
   const prettyTotal = !total || getPrettyValue(total);
-  const prettyDiscount = discountValue
+  const prettyDiscount = finalDiscount
     ? getPrettyValue(status === 'Нове' ? discountValue : finalDiscount)
     : 0;
 
@@ -120,7 +121,7 @@ export const OrderMainInfo = () => {
         Загальна сума:
         <span> {prettyTotal} грн</span>
       </Sum>
-      <Discount discount={discountValue}>
+      <Discount discount={finalDiscount}>
         Знижка:
         <span> - {prettyDiscount} грн</span>
       </Discount>
