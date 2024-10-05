@@ -24,8 +24,8 @@ import {
 } from './OrderMainInfo.styled';
 
 export const OrderMainInfo = () => {
-  const [inputValue, setInputValue] = useState(0);
-  const [inputRate, setInputRate] = useState(0);
+  const [inputValue, setInputValue] = useState<number>();
+  const [inputRate, setInputRate] = useState<number>();
 
   const dispatch = useTypedDispatch();
   const orderData = useTypedSelector(selectOneOrder);
@@ -60,12 +60,13 @@ export const OrderMainInfo = () => {
   };
 
   const handleClick = () => {
-    if (inputRate >= 100) {
+    if (inputRate && inputRate >= 100) {
       return;
     }
 
-    dispatch(changePersonalDiscountRate(inputRate));
-    dispatch(changePersonalDiscountValue(inputValue));
+    dispatch(changePersonalDiscountRate(inputRate ? inputRate : 0));
+    dispatch(changePersonalDiscountValue(inputValue ? inputValue : 0));
+    // }
   };
 
   return (
@@ -96,12 +97,14 @@ export const OrderMainInfo = () => {
             <DiscountInput>
               <Input
                 type="number"
+                min={0}
                 onWheel={handleWheel}
                 onChange={handleChangeRate}
                 value={inputRate}
               ></Input>
               <Input
                 type="number"
+                min={0}
                 value={inputValue}
                 onWheel={handleWheel}
                 onChange={handleChangeValue}
