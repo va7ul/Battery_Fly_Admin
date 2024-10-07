@@ -30,8 +30,8 @@ export type Order = {
   warehouse: string;
   payment: string;
   createdAt: string;
-  personalDiscountRate: number;
-  personalDiscountValue: number;
+  personalDiscountRate: number | string;
+  personalDiscountValue: number | string;
 };
 
 export type Aplication = {
