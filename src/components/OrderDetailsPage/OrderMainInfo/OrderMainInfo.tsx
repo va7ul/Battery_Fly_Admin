@@ -24,8 +24,8 @@ import {
 } from './OrderMainInfo.styled';
 
 export const OrderMainInfo = () => {
-  const [inputValue, setInputValue] = useState<number>();
-  const [inputRate, setInputRate] = useState<number>();
+  const [inputValue, setInputValue] = useState<number | string>('');
+  const [inputRate, setInputRate] = useState<number | string>('');
 
   const dispatch = useTypedDispatch();
   const orderData = useTypedSelector(selectOneOrder);
@@ -39,7 +39,7 @@ export const OrderMainInfo = () => {
     !together || getPrettyValue(status === 'Нове' ? together : finalTogether);
   const prettyTotal = !total || getPrettyValue(total);
   const prettyDiscount = finalDiscount
-    ? getPrettyValue(status === 'Нове' ? discountValue : finalDiscount)
+    ? getPrettyValue(status === 'Нове' ? Number(discountValue) : finalDiscount)
     : 0;
 
   const handleWheel = (e: WheelEvent<HTMLInputElement>) => {
@@ -48,25 +48,24 @@ export const OrderMainInfo = () => {
   };
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(Number(e.target.value));
+    setInputValue(e.target.value);
     setInputRate(
       Math.round((Number(e.target.value) / total) * 100 * 100) / 100
     );
   };
 
   const handleChangeRate = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputRate(Number(e.target.value));
+    setInputRate(e.target.value);
     setInputValue(Math.round((total * Number(e.target.value)) / 100));
   };
 
   const handleClick = () => {
-    if (inputRate && inputRate >= 100) {
+    if (typeof inputRate === 'number' && inputRate >= 100) {
       return;
     }
 
-    dispatch(changePersonalDiscountRate(inputRate ? inputRate : 0));
-    dispatch(changePersonalDiscountValue(inputValue ? inputValue : 0));
-    // }
+    dispatch(changePersonalDiscountRate(inputRate ? inputRate : ''));
+    dispatch(changePersonalDiscountValue(inputValue ? inputValue : ''));
   };
 
   return (
@@ -101,6 +100,7 @@ export const OrderMainInfo = () => {
                 onWheel={handleWheel}
                 onChange={handleChangeRate}
                 value={inputRate}
+                onKeyDown={e => e.key === '-' && e.preventDefault()}
               ></Input>
               <Input
                 type="number"

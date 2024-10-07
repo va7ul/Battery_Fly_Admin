@@ -29,8 +29,8 @@ const initialState: InitialState = {
     warehouse: '',
     payment: '',
     createdAt: '',
-    personalDiscountRate: 0,
-    personalDiscountValue: 0,
+    personalDiscountRate: '',
+    personalDiscountValue: '',
   },
   isLoading: false,
   error: null,
@@ -157,13 +157,13 @@ const oneOrderSlice = createSlice({
     },
     changePersonalDiscountRate(
       state: InitialState,
-      { payload }: PayloadAction<number>
+      { payload }: PayloadAction<number | string>
     ) {
       state.result.personalDiscountRate = payload;
     },
     changePersonalDiscountValue(
       state: InitialState,
-      { payload }: PayloadAction<number>
+      { payload }: PayloadAction<number | string>
     ) {
       state.result.personalDiscountValue = payload;
     },

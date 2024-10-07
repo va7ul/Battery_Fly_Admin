@@ -24,13 +24,13 @@ export const usePromoCode = () => {
             100
         );
 
-  const together = total - discountValue;
+  const together = total - Number(discountValue);
 
   const dispatch = useTypedDispatch();
 
   useEffect(() => {
     if (status === 'Нове') {
-      dispatch(changeDiscountValue(discountValue));
+      dispatch(changeDiscountValue(Number(discountValue)));
       dispatch(changeTogether(together));
     }
   }, [dispatch, discountValue, together, status]);
