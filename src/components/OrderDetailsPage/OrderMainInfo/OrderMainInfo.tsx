@@ -52,11 +52,19 @@ export const OrderMainInfo = () => {
     setInputRate(
       Math.round((Number(e.target.value) / total) * 100 * 100) / 100
     );
+
+    if (e.target.value === '') {
+      setInputRate('');
+    }
   };
 
   const handleChangeRate = (e: ChangeEvent<HTMLInputElement>) => {
     setInputRate(e.target.value);
     setInputValue(Math.round((total * Number(e.target.value)) / 100));
+
+    if (e.target.value === '') {
+      setInputValue('');
+    }
   };
 
   const handleClick = () => {
