@@ -69,15 +69,18 @@ export const PromoCodesTable = () => {
 
   const [rows, setRows] = useState<GridRowsProp>(initialRows);
 
-  const processRowUpdate = (newRow: GridRowModel): GridRowModel | undefined => {
+  const processRowUpdate = (
+    newRow: GridRowModel,
+    oldRow: GridRowModel
+  ): GridRowModel | Promise<GridRowModel> => {
     if (newRow.discount > 100) {
       toast.error('Знижка повинна бути менше 100%');
-      return undefined;
+      return oldRow;
     }
 
     if (newRow.discount < 0.01) {
       toast.error('Знижка повинна бути більшою за 0');
-      return undefined;
+      return oldRow;
     }
 
     const updatedRow = { ...newRow, isNew: false };
@@ -134,7 +137,9 @@ export const PromoCodesTable = () => {
         if (value == null) {
           return '';
         }
-        return `${value.toLocaleString().slice(0, 10)}`;
+        const date = value.toLocaleString().slice(0, 10);
+        const hours = value.toLocaleString().slice(11, 16);
+        return `${date} ${hours}`;
       },
     },
     {

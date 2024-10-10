@@ -115,7 +115,9 @@ export const OrdersTable = () => {
         if (value == null) {
           return '';
         }
-        return `${value.toLocaleString()} %`;
+        const date = value.toLocaleString().slice(0, 10);
+        const hours = value.toLocaleString().slice(11, 16);
+        return `${date} ${hours}`;
       },
     },
     {
