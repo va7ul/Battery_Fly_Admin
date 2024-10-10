@@ -93,7 +93,9 @@ export const QuickOrdersTable = () => {
         if (value == null) {
           return '';
         }
-        return `${value.toLocaleString().slice(0, 10)}`;
+        const date = value.toLocaleString().slice(0, 10);
+        const hours = value.toLocaleString().slice(11, 16);
+        return `${date} ${hours}`;
       },
     },
   ];
