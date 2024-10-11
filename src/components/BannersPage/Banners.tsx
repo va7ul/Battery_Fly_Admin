@@ -272,7 +272,6 @@ export const Banners = () => {
         disableColumnSorting={true}
         rowHeight={100}
         rowSelection={false}
-        autoHeight
         slots={{
           pagination: () => (
             <AddBannerButton  setRows={setRows}
@@ -280,9 +279,6 @@ export const Banners = () => {
           ) ,
           noRowsOverlay: CustomNoRowsOverlay,
         }}
-        // slotProps={{
-        //   pagination: { setRows, setRowModesModel },
-        // }}
         sx={{
           '& .MuiDataGrid-cell:hover': {
             color: 'primary.main',

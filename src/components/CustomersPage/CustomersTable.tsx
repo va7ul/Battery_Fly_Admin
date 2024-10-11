@@ -144,7 +144,6 @@ export const CustomersTable = () => {
       }}
     >
       <DataGrid
-        autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
