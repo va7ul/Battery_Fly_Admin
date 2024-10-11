@@ -115,9 +115,7 @@ export const OrdersTable = () => {
         if (value == null) {
           return '';
         }
-        const date = value.toLocaleString().slice(0, 10);
-        const hours = value.toLocaleString().slice(11, 16);
-        return `${date} ${hours}`;
+        return `${value.toLocaleString()} %`;
       },
     },
     {
@@ -168,7 +166,9 @@ export const OrdersTable = () => {
         if (value == null) {
           return '';
         }
-        return `${value.toLocaleString().slice(0, 10)}`;
+        const date = value.toLocaleString().slice(0, 10);
+        const hours = value.toLocaleString().slice(11, 16);
+        return `${date} ${hours}`;
       },
     },
     {
@@ -241,7 +241,6 @@ export const OrdersTable = () => {
         columns={columns}
         editMode="row"
         apiRef={apiRef}
-        autoHeight
         autosizeOnMount={true}
         autosizeOptions={autosizeOptions}
         pageSizeOptions={[10, 25, 100]}

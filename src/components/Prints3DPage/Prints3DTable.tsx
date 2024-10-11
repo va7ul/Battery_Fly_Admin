@@ -124,7 +124,6 @@ export const Prints3DTable = () => {
       }}
     >
       <DataGrid
-        autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
