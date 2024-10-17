@@ -109,6 +109,7 @@ export const QuickOrdersTable = () => {
       }}
     >
       <DataGrid
+        autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}

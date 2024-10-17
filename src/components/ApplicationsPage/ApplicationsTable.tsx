@@ -100,6 +100,7 @@ export const ApplicationsTable = () => {
       }}
     >
       <DataGrid
+        autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}

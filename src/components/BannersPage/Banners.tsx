@@ -15,7 +15,7 @@ import {
   GridColDef,
   GridRowsProp,
   GridRowModesModel,
-  GridEventListener
+  GridEventListener,
 } from '@mui/x-data-grid';
 
 import { deleteHero, editHero, addHero } from '../../redux/hero/heroOperations';
@@ -24,8 +24,6 @@ import { CustomNoRowsOverlay } from 'components/Shared/NoRowsOverlay/NoRowsOverl
 import { ModalConfirm } from 'components/Modals/ModalConfirm/ModalConfirm';
 import { useTypedDispatch, useTypedSelector } from '../../redux/hooks';
 import { AddBannerButton } from './AddBannerButton';
-
-
 
 export const Banners = () => {
   const dispatch = useTypedDispatch();
@@ -41,7 +39,10 @@ export const Banners = () => {
   }));
 
   const [rows, setRows] = useState(initialRows);
-  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
+  const handleRowEditStop: GridEventListener<'rowEditStop'> = (
+    params,
+    event
+  ) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
     }
@@ -67,7 +68,7 @@ export const Banners = () => {
     });
   };
 
-  const handleEditClick = (id: GridRowId)=> () => {
+  const handleEditClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
@@ -76,37 +77,38 @@ export const Banners = () => {
   };
 
   type Image = {
-  [key: string]: { url: string | ArrayBuffer | null, file: File}
-}
+    [key: string]: { url: string | ArrayBuffer | null; file: File };
+  };
 
   const [image, setImage] = useState<Image>({});
   const [text, setText] = useState<{ [key: GridRowId]: string }>({});
   let file: File;
-  const handleFileChange = (id: GridRowId) => (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-   
-    if (e.target.files) {
-       file = e.target.files[0];
-    }
-   
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage({ [id]: { url: reader.result, file } });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const handleFileChange =
+    (id: GridRowId) => (e: ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
 
-    const handleSaveClick = (id: GridRowId) => async () => {
+      if (e.target.files) {
+        file = e.target.files[0];
+      }
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImage({ [id]: { url: reader.result, file } });
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+  const handleSaveClick = (id: GridRowId) => async () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    const newRow = rows.find((row) => row.isNew && row.text === '');
+    const newRow = rows.find(row => row.isNew && row.text === '');
     const formData = new FormData();
 
     if (image[id]?.file) {
       formData.append('image', image[id].file);
     }
-    formData.append('text', text[id] || rows.find((row) => row.id === id)?.text);
+    formData.append('text', text[id] || rows.find(row => row.id === id)?.text);
 
     try {
       if (newRow) {
@@ -119,13 +121,14 @@ export const Banners = () => {
     }
   };
 
-  const handleTextChange = (id: GridRowId) => (e: ChangeEvent<HTMLInputElement>) => {
-    const newText = e.target.value;
-    setText((prev ) => ({
-      ...prev,
-      [id]: newText,
-    }));
-  };
+  const handleTextChange =
+    (id: GridRowId) => (e: ChangeEvent<HTMLInputElement>) => {
+      const newText = e.target.value;
+      setText(prev => ({
+        ...prev,
+        [id]: newText,
+      }));
+    };
 
   const columns: GridColDef[] = [
     {
@@ -184,7 +187,7 @@ export const Banners = () => {
               type="text"
               defaultValue={params.value}
               onChange={handleTextChange(id)}
-              onKeyDown={(e) => e.stopPropagation()}
+              onKeyDown={e => e.stopPropagation()}
             />
           );
         }
@@ -261,6 +264,7 @@ export const Banners = () => {
         />
       )}
       <DataGrid
+        autoHeight
         rows={rows}
         columns={columns}
         editMode="row"
@@ -274,9 +278,11 @@ export const Banners = () => {
         rowSelection={false}
         slots={{
           pagination: () => (
-            <AddBannerButton  setRows={setRows}
-              setRowModesModel={setRowModesModel}/>
-          ) ,
+            <AddBannerButton
+              setRows={setRows}
+              setRowModesModel={setRowModesModel}
+            />
+          ),
           noRowsOverlay: CustomNoRowsOverlay,
         }}
         sx={{
