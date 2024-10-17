@@ -154,6 +154,7 @@ export const OrderDetailsTable = () => {
       }}
     >
       <DataGrid
+        autoHeight
         rows={rows}
         columns={columns}
         editMode="row"

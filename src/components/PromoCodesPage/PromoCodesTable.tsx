@@ -256,6 +256,7 @@ export const PromoCodesTable = () => {
         />
       )}
       <DataGrid
+        autoHeight
         apiRef={apiRef}
         rows={rows}
         columns={columns}
